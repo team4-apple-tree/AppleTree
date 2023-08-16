@@ -6,12 +6,12 @@
 
 ### 팀원 소개
 
-| 이름   | Blog                             | Github                               |
-| ------ | -------------------------------- | ------------------------------------ |
-| 이다영 | https://verdantjuly.tistory.com/ | https://github.com/verdantjuly/zbase |
-| 오준석 | https://velog.io/@y21zzp         | https://github.com/KORjunseok        |
-| 장시훈 | https://velog.io/@sh_j225        | https://github.com/sihunjang225      |
-| 이연오 | https://velog.io/@yeono          | https://github.com/yeonoh0101        |
+| 이름   | Blog                                 | Github                          |
+| ------ | ------------------------------------ | ------------------------------- |
+| 장시훈 | https://velog.io/@sh_j225            | https://github.com/sihunjang225 |
+| 배찬용 | https://baecy341.tistory.com         | https://github.com/baechanyong1 |
+| 김태진 | https://qpdbdbqp.tistory.com         | https://github.com/ktj0         |
+| 김재혁 | https://jh-healing-place.tistory.com | http://github.com/tuy112        |
 
 ### 프로젝트 목적과 기능
 
