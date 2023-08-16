@@ -36,4 +36,4 @@
       `chore` : 빌드 업무 수정, 패키지 매니저 수정
 
 ### API 명세
-[https://chanyongbae341s-organization.gitbook.io/untitled/](https://chanyongbae341s-organization.gitbook.io/untitled/reference/api-reference/api)https://chanyongbae341s-organization.gitbook.io/untitled/reference/api-reference/api
+https://chanyongbae341s-organization.gitbook.io/untitled/reference/api-reference/api
