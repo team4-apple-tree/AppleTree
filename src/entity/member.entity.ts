@@ -7,15 +7,19 @@ import {
     Index,
     CreateDateColumn,
     UpdateDateColumn,
-    DeleteDateColumn
+    DeleteDateColumn,
+    ManyToOne
   
   } from 'typeorm';
+  import { User } from './user.entity'
 
   @Entity({ schema: 'apple', name: 'member' })
 export class Member {
   @PrimaryGeneratedColumn()
   memberId: number;
 
+  @ManyToOne(()=>User, user=> user.posts)
+  user:User
 
   @CreateDateColumn()
   createdAt: Date;

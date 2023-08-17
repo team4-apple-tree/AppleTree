@@ -14,6 +14,9 @@ import { UserModule } from './user/user.module';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthMiddleware } from './middleware/auth'
+import { JwtConfigService } from './config/jwt.config.service';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -22,6 +25,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       imports : [ConfigModule],
       useClass : TypeOrmConfigService,
       inject : [ConfigService],
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useClass: JwtConfigService,
+      inject: [ConfigService],
     }),
     BoardModule, CommentModule, PostModule, ToDoModule, GroupModule, RoomModule, SeatModule, CardModule, MemberModule, UserModule],
   controllers: [AppController],

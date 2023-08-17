@@ -14,21 +14,21 @@ import {
     readonly email : string
     
     @IsString()
-    @MinLength()
-    @MaxLength()
-    @Matches()
+    @MinLength(4)
+    @MaxLength(10)
+    @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])/)
     readonly password : string
 
     @IsString()
-    @MinLength()
-    @MaxLength()
-    @Matches()
+    @MinLength(4)
+    @MaxLength(10)
+    @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])/)
     readonly confirm : string
 
     @IsString()
     readonly name : string
 
-    @IsEnum()
+    @IsEnum(roleEnum)
     @IsOptional()
     readonly role : roleEnum | null
     state : roleEnum

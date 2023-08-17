@@ -7,11 +7,11 @@ export class DeleteUserDto extends PickType(CreateUserDto, [
     'password'
 ]){
     @IsString()
-    @MinLength()
-    @MaxLength()
-    @Matches()
+    @MinLength(4)
+    @MaxLength(10)
+    @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])/)
     readonly newPassword: string;
 
-    @IsEnum()
+    @IsEnum(roleEnum)
     readonly newEnum : roleEnum
 }

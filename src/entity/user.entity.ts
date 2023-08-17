@@ -25,7 +25,16 @@ export class User {
   @PrimaryGeneratedColumn()
   userId: number;
 
-  // 관계 설정 여기에
+  @OneToMany(()=> Board, (board) => board.user)
+  boards:Board[]
+  @OneToMany(()=> Member, (member) => member.user)
+  members:Member[]
+  @OneToMany(()=> Room, (room) => room.user)
+  rooms:Room[]
+  @OneToMany(()=> Comment, (comment) => comment.user)
+  comments:Comment[]
+  @OneToMany(()=> Post, (post) => post.user)
+  posts:Post[]
 
   @Column('varchar')
   name: string;
