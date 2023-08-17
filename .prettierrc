@@ -1,0 +1,10 @@
+{
+  "trailingComma": "all",
+  "tapWidth": 4,
+  "printWidth": 80,
+  "semi": true,
+  "rangeStart": 0,
+  "singleQuote": true,
+  "jsxBracketSameLine": false,
+  "editor.formatOnSave": true
+}
