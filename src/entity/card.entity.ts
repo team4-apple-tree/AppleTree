@@ -7,14 +7,19 @@ import {
     Index,
     CreateDateColumn,
     UpdateDateColumn,
-    DeleteDateColumn
+    DeleteDateColumn,
+    ManyToOne
   
   } from 'typeorm';
+import { Todo } from './to-do.entity';
 
   @Entity({ schema: 'apple', name: 'card' })
 export class Card {
   @PrimaryGeneratedColumn()
   cardId: number;
+
+  @ManyToOne(()=>Todo, todo=>todo.cards)
+  toDos:Todo
 
 
   @CreateDateColumn()

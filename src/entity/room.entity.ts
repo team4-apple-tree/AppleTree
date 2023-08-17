@@ -11,6 +11,7 @@ import {
     ManyToOne
   
   } from 'typeorm';
+  import { Seat } from './seat.entity'
   import { User } from './user.entity'
 
   @Entity({ schema: 'apple', name: 'room' })
@@ -20,6 +21,8 @@ export class Room {
 
   @ManyToOne(()=>User, user=>user.rooms)
   user:User
+  @OneToMany(()=>Seat, seat=>seat.rooms)
+  seats:Seat
 
   @CreateDateColumn()
   createdAt: Date;

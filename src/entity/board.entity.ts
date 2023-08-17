@@ -12,7 +12,7 @@ import {
   
   } from 'typeorm';
 import { User } from './user.entity'
-
+import { Post } from './post.entity'
   @Entity({ schema: 'apple', name: 'board' })
 export class Board {
   @PrimaryGeneratedColumn()
@@ -20,6 +20,8 @@ export class Board {
 
   @ManyToOne(()=>User, user=> user.boards)
   user:User
+  @OneToMany(()=>Post, post=> post.boards)
+  posts:Post
 
   @Column('varchar')
   category : string

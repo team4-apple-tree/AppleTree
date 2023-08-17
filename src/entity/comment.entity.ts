@@ -12,6 +12,7 @@ import {
   
   } from 'typeorm';
 import { User } from './user.entity'
+import { Post } from './post.entity'
 
   @Entity({ schema: 'apple', name: 'comment' })
 export class Comment {
@@ -20,6 +21,8 @@ export class Comment {
 
   @ManyToOne(()=>User, user=> user.comments)
   user:User
+  @ManyToOne(()=>Post, post=> post.comments)
+  posts:Post
 
   @Column('varchar')
   comment : string
