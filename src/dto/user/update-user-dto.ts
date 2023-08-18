@@ -3,8 +3,10 @@ import { CreateUserDto } from './create-user-dto';
 import { IsString, MinLength, MaxLength, Matches, IsEnum } from 'class-validator';
 import { roleEnum } from 'src/entity/user.entity';
 
-export class DeleteUserDto extends PickType(CreateUserDto, [
-    'password'
+export class UpdateUserDto extends PickType(CreateUserDto, [
+    'password',
+    'role',
+    'email'
 ]){
     @IsString()
     @MinLength(4)
