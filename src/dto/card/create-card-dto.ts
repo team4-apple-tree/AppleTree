@@ -1,10 +1,9 @@
-import {
-    Matches,
-    IsString,
-    IsEmail,
-    MinLength,
-    MaxLength,
-    IsEnum,
-    IsOptional
-  } from 'class-validator';
-  import { roleEnum } from 'src/entity/user.entity';
+import { IsNotEmpty } from 'class-validator';
+
+export class CreateCardDto {
+  @IsNotEmpty()
+  title: string;
+
+  @IsNotEmpty()
+  desc: string;
+}
