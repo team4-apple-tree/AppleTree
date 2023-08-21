@@ -23,7 +23,8 @@ export class Todo {
   todoId: number;
 
   @OneToMany(() => Card, (card) => card.toDos)
-  cards: Card;
+  cards: Card[];
+
   @ManyToOne(() => Member, (member) => member.toDos)
   members: Member;
 
