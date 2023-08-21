@@ -17,13 +17,13 @@ import {
     constructor(private readonly CommentService: CommentService) {}
   
     @Get('/comments')
-    getcomments() {
-      return this.CommentService.getcomments();
+    getComments() {
+      return this.CommentService.getComments();
     }
   
     @Get('/comments/:id')
-    getArticleById(@Param('id') articleId: number) {
-      return this.CommentService.getArticleById(articleId);
+    geCommentById(@Param('id') articleId: number) {
+      return this.CommentService.getCommentById(articleId);
     }
   
     @Post('/comments')
