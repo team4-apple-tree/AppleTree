@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { User, roleEnum } from 'src/entity/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -40,7 +41,11 @@ export class UserService {
       select: ['id', 'password', 'name'],
     });
 
-    if (!user || password !== user.password) {
+    if (!user) {
+      throw new UnauthorizedException('로그인!실!패!');
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
       throw new UnauthorizedException('로그인!실!패!');
     }
 
@@ -71,6 +76,8 @@ export class UserService {
     if (password !== confirm) {
       throw new UnauthorizedException(`패스워드가 틀렸지롱`);
     }
+    const hash = await bcrypt.hash(password, 10);
+    password = hash;
     const insertUser = await this.userRepository.insert({
       email,
       name,
