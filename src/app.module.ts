@@ -14,7 +14,7 @@ import { GroupModule } from './group/group.module';
 import { RoomModule } from './room/room.module';
 import { SeatModule } from './seat/seat.module';
 import { CardModule } from './card/card.module';
-import { MemberModule } from './member/member.module';
+// import { MemberModule } from './member/member.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -44,7 +44,7 @@ import { JwtModule } from '@nestjs/jwt';
     RoomModule,
     SeatModule,
     CardModule,
-    MemberModule,
+    // MemberModule,
     UserModule,
   ],
   controllers: [AppController],
@@ -57,7 +57,7 @@ export class AppModule implements NestModule {
       .exclude(
         // 예외 url 지정
         { path: 'user/sign', method: RequestMethod.POST },
-        { path: 'user/login', method: RequestMethod.POST }
+        { path: 'user/login', method: RequestMethod.POST },
       )
       .forRoutes('*'); // middleware를 모든 경로에 적용
   }

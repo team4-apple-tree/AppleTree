@@ -17,20 +17,34 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
+  // 이메일로 사용자 조회
+  async findByEmail(email: string): Promise<User> {
+    return await this.userRepository.findOne({
+      where: { email },
+    });
+  }
+
+  // ID로 사용자 조회
+  async findById(id: number): Promise<User> {
+    return await this.userRepository.findOne({
+      where: { id },
+    });
+  }
+
   //추후 고려
   // param이 아닌 방법으로 userId 가져오기
   // accesstoken 이외에 refreshtoken 추가
   async login(email: string, password: string) {
     const user = await this.userRepository.findOne({
       where: [{ deleteAt: null, email }],
-      select: ['userId', 'password', 'name'],
+      select: ['id', 'password', 'name'],
     });
 
     if (!user || password !== user.password) {
       throw new UnauthorizedException('로그인!실!패!');
     }
 
-    const payload = { id: user.userId, name: user.name };
+    const payload = { id: user.id, name: user.name };
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: '7d',
@@ -84,7 +98,7 @@ export class UserService {
   // 밑 로직 userId를 통해 password찾기
   private async checkPassword(userId: number, password: string) {
     const user = await this.userRepository.findOne({
-      where: [{ deleteAt: null }, { userId }],
+      where: [{ deleteAt: null }, { id: userId }],
       select: ['password'],
     });
     if (!user) {

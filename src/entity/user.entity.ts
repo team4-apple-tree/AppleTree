@@ -8,6 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Member } from './member.entity';
 import { Board } from './board.entity';
@@ -23,7 +25,7 @@ export enum roleEnum {
 @Entity({ schema: 'apple', name: 'user' })
 export class User {
   @PrimaryGeneratedColumn()
-  userId: number;
+  id: number;
 
   @OneToMany(() => Board, (board) => board.user)
   boards: Board[];
@@ -37,6 +39,10 @@ export class User {
   posts: Post[];
   @OneToMany(() => Group, (group) => group.user)
   groups: Group[];
+
+  // @ManyToMany(() => Group, (group) => group.members)
+  // @JoinTable({ name: 'group_member' })
+  // myGroups: Group[];
 
   @Column('varchar')
   name: string;
