@@ -112,7 +112,8 @@ export class UserService {
       throw new NotFoundException('유저가 없지롱~쿠쿠루삥뽕');
       //(`User not found. userId: ${userId}`);
     }
-    if (user.password !== password) {
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
       throw new UnauthorizedException('비밀번호가 틀렸지롱~쿠쿠루삥뽕');
     }
   }
