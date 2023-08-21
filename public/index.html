@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4조스피노자-사과나무</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
+    />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+
+    <!-- axios -->
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <p id="skipNav" class="hide"><a href="./index.html">본문 바로가기</a></p>
+
+    <!-- header -->
+    <header id="header">
+      <div class="container">
+        <h1 class="logo">사과나무</h1>
+        <div class="header-content">
+          <nav class="navigation">
+            <ul class="nav-list">
+              <li><a href="#">홈</a></li>
+              <li><a href="#">내 스터디</a></li>
+              <li><a href="#">포인트 샵</a></li>
+              <li><a href="#">예약하기</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="search-login">
+          <input type="text" placeholder="검색" />
+          <button class="login-button">로그인</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- mainVisual -->
+    <section id="mainVisual">
+      <div class="mystudyroom">
+        <article class="mine-study">
+          <div class="mine-study-header">
+            <h3 class="mine-study-title">내 스터디</h3>
+          </div>
+          <div class="mine-study-body">
+            <div class="study-item-list-cover active">
+              <p class="study-item-tx cover-title active">
+                내 스터디는 내가 만든 스터디 또는 <br />
+                초대 받은 스터디가 등록됩니다.
+              </p>
+              <p class="study-item-tx cover-sub active">
+                스터디 만들기에서 내 스터디를 만들어 보세요.
+              </p>
+            </div>
+          </div>
+        </article>
+        <article class="mine-goal">
+          <h3 class="mine-goal-title">내 목표</h3>
+          <div class="mine-goal-contents">
+            <div class="mine-goal-record-header">
+              <h4 class="mine-goal-record-tx title">
+                오늘 공부한 시간(스탑워치) / <em>내 목표 시간</em>
+              </h4>
+              <button class="form-setting">설정</button>
+            </div>
+            <div class="mine-goal-record-body">
+              <div class="mine-goal-record-tx-wrap">
+                <p class="mine-goal-record-tx time">
+                  0시간 0분
+                  <span class="mine-goal-record-tx total"> / 0시간 0분</span>
+                </p>
+                <p class="mine-goal-record-tx none">
+                  내 목표시간을 설정해보세요.
+                </p>
+              </div>
+              <div class="mine-goal-record-gauge-wrap">
+                <span class="mine-goal-record-gauge"></span>
+              </div>
+            </div>
+            <div class="my-contents-wrapper">
+              <div class="my-contents resolution">
+                <div class="my-contents-header">
+                  <h4 class="my-contents-tx title">내 각오</h4>
+                  <button class="form-edit">설정</button>
+                </div>
+                <div class="my-contents-body">
+                  <p class="my-contents-tx tx">
+                    각오는 30자 이내로 작성 가능합니다.
+                  </p>
+                </div>
+              </div>
+              <span class="contents-line"></span>
+              <div class="my-contents d-day">
+                <div class="my-contents-header">
+                  <h4 class="my-contents-tx title">내 디데이</h4>
+                  <button class="form-edit">설정</button>
+                </div>
+                <div class="my-contents-body">
+                  <p class="d-day-tx tx">디데이를 추가해보세요.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- main -->
+    <main id="container" class="main">
+      <section id="content">
+        <div class="studies-contents">
+          <div class="studies-header">
+            <div class="studies-header-title-wrap">
+              <div class="studies-header-tx-wrap">
+                <h3 class="studies-header-tx title">공개 스터디</h3>
+              </div>
+            </div>
+            <div class="studies-tab-wrap">
+              <ul class="studies-tab-list-wrap">
+                <li class="studies-tab-list">
+                  <button data-study-tab="all" class="studies-tab-btn active">
+                    전체
+                  </button>
+                </li>
+                <li class="studies-tab-list">
+                  <button data-study-tab="new" class="studies-tab-btn">
+                    신규 스터디
+                  </button>
+                </li>
+              </ul>
+              <span class="studies-filter-line"></span>
+            </div>
+          </div>
+          <div class="studies-body">
+            <div class="study-item-list-wrap flex-wrap">
+              <div class="study-item-list flex-wrap">
+                <div class="study-item-tx-hashtag-wrap"></div>
+              </div>
+            </div>
+            <div class="study-item-list flex-wrap">
+              <div class="study-item-img-wrap">
+                <img
+                  src="https://i.namu.wiki/i/phlRTbkF8GdUGSpqFcILZrDnL9zraZWewcAkq5IPnZYjy_LiR_pMpN5cko_Ty5PexliZr4HVyMz447SLFW3ieQ.webp"
+                  alt="study-img"
+                  class="study-item-img"
+                />
+                <div class="study-item-info-cover">
+                  <div class="study-item-info-badge-wrap">
+                    <!---->
+                    <!---->
+                    <!---->
+                  </div>
+                  <!---->
+                  <div class="study-item-info-personnel-wrap">
+                    <span class="study-item-info-personnel present">7 </span>
+                    <span class="study-item-info-personnel maximum">/16</span>
+                  </div>
+                  <div class="room-more-view-btn-area"><!----></div>
+                  <!---->
+                </div>
+              </div>
+              <div class="study-item-tx-wrap">
+                <em class="study-item-tx title">태진 고생했어~</em>
+                <div class="study-item-tx-hashtag-wrap"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer -->
+    <footer id="footer">
+      <div class="inner">푸터</div>
+    </footer>
+
+    <!-- script part -->
+    <script src="./js/main.js"></script>
+  </body>
+</html>
