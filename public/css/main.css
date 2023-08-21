@@ -389,13 +389,14 @@ header {
   display: flex;
   align-items: center;
 }
-/* 마진넣어볼것 */
+
 .studies-header-tx.title {
   font-size: 22px;
   font-weight: 700;
   color: #333;
   line-height: 30px;
   letter-spacing: -1px;
+  margin-top: 20px;
 }
 
 .studies-tab-wrap {
