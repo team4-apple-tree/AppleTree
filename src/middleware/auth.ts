@@ -23,7 +23,7 @@
 //       req.user = payload;
 //       next();
 //     } catch (err) {
-//       throw new UnauthorizedException(`JWT 만료 됫지롱: ${token}`);
+//       throw new UnauthorizedException(`JWT 만료 됐지롱: ${token}`);
 //     }
 //   }
 // }

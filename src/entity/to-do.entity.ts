@@ -3,8 +3,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
+<<<<<<< HEAD
   OneToOne,
   Index,
+=======
+>>>>>>> cf4881f0c9eb4f42147aa1661ea9f72c42731716
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -13,15 +16,22 @@ import {
 import { Card } from './card.entity';
 import { Member } from './member.entity';
 
+export enum ToDoState {
+  TODO = 1,
+  IN_PROGRESS = 2,
+  COMPLETED = 3,
+}
+
 @Entity({ schema: 'apple', name: 'todo' })
 export class Todo {
   @PrimaryGeneratedColumn()
   todoId: number;
 
   @OneToMany(() => Card, (card) => card.toDos)
-  cards: Card;
-  // @ManyToOne(()=>Member, member=>member.toDos)
-  // members:Member
+  cards: Card[];
+
+  @ManyToOne(() => Member, (member) => member.toDos)
+  members: Member;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -31,4 +41,7 @@ export class Todo {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @Column()
+  state: ToDoState;
 }
