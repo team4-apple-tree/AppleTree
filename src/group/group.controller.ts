@@ -76,7 +76,7 @@ export class GroupController {
   async updateGroup(
     @Body() data: UpdateGroupDto,
     @Param('groupId') groupId: number,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
       const user = res.locals.user;
@@ -101,7 +101,7 @@ export class GroupController {
   @Delete(':groupId')
   async deleteGroup(
     @Param('groupId') groupId: number,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
       const user = res.locals.user;
@@ -166,15 +166,20 @@ export class GroupController {
   async deleteMember(
     @Param('groupId') groupId: number,
     @Param('userId') userId: number,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
-      await this.groupService.deleteMember(groupId, userId);
+      const user = res.locals.user;
+
+      await this.groupService.deleteMember(groupId, user, userId);
 
       return { message: '스터디그룹 멤버에서 삭제되었습니다.' };
     } catch (error) {
       console.error(error);
 
       if (error instanceof NotFoundException) {
+        throw error;
+      } else if (error instanceof ForbiddenException) {
         throw error;
       } else {
         throw new InternalServerErrorException('서버 오류');

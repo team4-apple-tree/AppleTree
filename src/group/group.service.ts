@@ -46,7 +46,6 @@ export class GroupService {
   // 스터디그룹 전체 조회
   async findAllGroups(): Promise<Group[]> {
     return await this.groupRepository.find({
-      where: { deletedAt: null },
       select: ['id', 'name', 'image', 'createdAt', 'updatedAt'],
       order: { createdAt: 'DESC' },
     });
@@ -55,7 +54,7 @@ export class GroupService {
   // 스터디그룹 상세 조회
   async findGroup(groupId: number): Promise<Group> {
     const group = await this.groupRepository.findOne({
-      where: { id: groupId, deletedAt: null },
+      where: { id: groupId },
     });
 
     if (_.isNil(group)) {
@@ -73,12 +72,11 @@ export class GroupService {
   ): Promise<void> {
     await this.findGroup(groupId);
 
-    const reader = await this.memberRepository.findOne({
+    const member = await this.memberRepository.findOne({
       where: { user: { id: user.id }, group: { id: groupId } },
-      relations: ['user'],
     });
 
-    if (_.isNil(reader) || reader.user.id !== user.id) {
+    if (_.isNil(member) || member.role !== 1) {
       throw new ForbiddenException(
         '해당 스터디그룹을 수정할 권한이 존재하지 않습니다.',
       );
@@ -97,14 +95,14 @@ export class GroupService {
   async deleteGroup(groupId: number, user: User): Promise<void> {
     await this.findGroup(groupId);
 
-    const reader = await this.memberRepository.findOne({
+    const member = await this.memberRepository.findOne({
       where: { user: { id: user.id }, group: { id: groupId } },
       relations: ['user'],
     });
 
-    if (_.isNil(reader) || reader.user.id !== user.id) {
+    if (_.isNil(member) || member.role !== 1) {
       throw new ForbiddenException(
-        '해당 스터디그룹을 삭제할 권한이 존재하지 않습니다.',
+        '해당 스터디그룹을 수정할 권한이 존재하지 않습니다.',
       );
     }
 
@@ -158,8 +156,39 @@ export class GroupService {
   }
 
   //스터디그룹 멤버 삭제
-  async deleteMember(groupId: number, userId: number): Promise<void> {
+  async deleteMember(
+    groupId: number,
+    user: User,
+    userId: number,
+  ): Promise<void> {
     await this.findGroup(groupId);
+
+    const member = await this.memberRepository.findOne({
+      where: { user: { id: user.id }, group: { id: groupId } },
+      relations: ['user'],
+    });
+
+    if (_.isNil(member) || member.role !== 1) {
+      throw new ForbiddenException(
+        '해당 스터디그룹을 삭제할 권한이 존재하지 않습니다.',
+      );
+    }
+
+    const isExistUser = await this.userService.findById(userId);
+
+    if (_.isNil(isExistUser)) {
+      throw new NotFoundException('존재하지 않는 유저입니다.');
+    }
+
+    const invitedUser = await this.memberRepository.findOne({
+      where: { user: { id: userId }, group: { id: groupId } },
+    });
+
+    if (_.isNil(invitedUser)) {
+      throw new NotFoundException(
+        '해당 유저는 스터디그룹에 존재하지 않습니다.',
+      );
+    }
 
     const deleteResult = (
       await this.memberRepository.softDelete({
@@ -167,6 +196,8 @@ export class GroupService {
         group: { id: groupId },
       })
     ).affected;
+
+    console.log(deleteResult);
 
     if (!deleteResult) {
       throw new NotFoundException('스터디그룹 멤버 삭제에 실패하였습니다.');
