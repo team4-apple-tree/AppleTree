@@ -6,8 +6,8 @@
     <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원가입</title>
-    <link rel="stylesheet" href="../css/reset.css" />
-    <link rel="stylesheet" href="../css/user.css" />
+    <link rel="stylesheet" href="../public/css/reset.css" />
+    <link rel="stylesheet" href="../public/css/user.css" />
 
     <!-- axios -->
     <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
@@ -15,47 +15,56 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
+  <header id="header">
+    <div class="container">
+      <h1 class="logo">
+        <img src="" alt="" />
+        사과나무
+      </h1>
+    </div>
+  </header>
 
   <body>
     <div id="wrap">
       <form class="login">
-        <h2>회원가입</h2>
+        <h2>회원가입(Signup)</h2>
         <div class="login login_id">
-          <h4>loginId</h4>
+          <h4>이메일</h4>
           <input
             type="text"
             name="loginId"
             id="signloginId"
-            placeholder="아이디"
-          />
-        </div>
-        <div class="login login_pw">
-          <h4>Password</h4>
-          <input
-            type="password"
-            name="password"
-            id="signpassword"
-            placeholder="비밀번호"
-          />
-        </div>
-        <div class="login login_confirm">
-          <h4>Password Confirm</h4>
-          <input
-            type="password"
-            name="password"
-            id="signpasswordConfirm"
-            placeholder="비밀번호 재입력"
+            placeholder="ex) test@test.com"
           />
         </div>
         <div class="login login_nickname">
-          <h4>nickname</h4>
+          <h4>이름</h4>
           <input
             type="text"
             name="nickname"
             id="signnickname"
-            placeholder="닉네임"
+            placeholder="이름을 입력해주세요."
           />
         </div>
+        <div class="login login_pw">
+          <h4>비밀번호</h4>
+          <input
+            type="password"
+            name="password"
+            id="signpassword"
+            placeholder="대문자,소문자,숫자를 조합하여 설정해주세요."
+          />
+        </div>
+        <div class="login login_confirm">
+          <h4>비밀번호 확인</h4>
+          <input
+            type="password"
+            name="password"
+            id="signpasswordConfirm"
+            placeholder="비밀번호 재입력해주세요"
+          />
+        </div>
+        <div class="line"></div>
         <div class="submit">
           <input
             id="signinbtn"
