@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+// 대표 이미지
 document
   .getElementById('imageUpload')
   .addEventListener('change', function (event) {
