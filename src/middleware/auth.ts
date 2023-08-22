@@ -47,7 +47,6 @@ export class AuthMiddleware implements NestMiddleware {
         console.error(`JWT 만료 됐거나 유효하지 않음: ${token}`);
       }
     }
-
     next(); // 미들웨어 통과
   }
 }
