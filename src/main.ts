@@ -8,6 +8,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const jwtService = app.get(JwtService);
   const authMiddleware = new AuthMiddleware(jwtService);
+
+  app.enableCors({
+    origin: ['http://127.0.0.1:5500', 'http://127.0.0.1:5501'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  });
+
   app.use(authMiddleware.use.bind(authMiddleware));
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));

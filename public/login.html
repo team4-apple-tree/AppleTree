@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,14 +16,24 @@
         <h2>로그인</h2>
         <div class="login login_id">
           <h4>loginId</h4>
-          <input type="text" name="loginId" id="loginId" placeholder="아이디 입력" />
+          <input
+            type="text"
+            name="loginId"
+            id="loginId"
+            placeholder="아이디 입력"
+          />
         </div>
         <div class="login login_pw">
           <h4>Password</h4>
-          <input type="password" name="pw" id="password" placeholder="비밀번호 입력" />
+          <input
+            type="password"
+            name="pw"
+            id="password"
+            placeholder="비밀번호 입력"
+          />
         </div>
         <div class="submit">
-          <input type="button" class="btn" value="로그인하기" onclick="login();" />
+          <input type="button" id="loginbtn" class="btn" value="로그인하기" />
         </div>
       </form>
     </div>
@@ -35,6 +45,5 @@
       crossorigin="anonymous"
     ></script>
     <script src="js/login.js"></script>
-   
   </body>
 </html>

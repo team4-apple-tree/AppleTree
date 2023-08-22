@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,6 +11,9 @@
 
     <!-- axios -->
     <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
 
   <body>
@@ -19,22 +22,47 @@
         <h2>회원가입</h2>
         <div class="login login_id">
           <h4>loginId</h4>
-          <input type="text" name="loginId" id="signloginId" placeholder="아이디" />
+          <input
+            type="text"
+            name="loginId"
+            id="signloginId"
+            placeholder="아이디"
+          />
         </div>
         <div class="login login_pw">
           <h4>Password</h4>
-          <input type="password" name="password" id="signpassword" placeholder="비밀번호" />
+          <input
+            type="password"
+            name="password"
+            id="signpassword"
+            placeholder="비밀번호"
+          />
         </div>
         <div class="login login_confirm">
           <h4>Password Confirm</h4>
-          <input type="password" name="password" id="signpasswordConfirm" placeholder="비밀번호 재입력" />
+          <input
+            type="password"
+            name="password"
+            id="signpasswordConfirm"
+            placeholder="비밀번호 재입력"
+          />
         </div>
         <div class="login login_nickname">
           <h4>nickname</h4>
-          <input type="text" name="nickname" id="signnickname" placeholder="닉네임" />
+          <input
+            type="text"
+            name="nickname"
+            id="signnickname"
+            placeholder="닉네임"
+          />
         </div>
         <div class="submit">
-          <input type="button" class="btn" value="회원가입 완료" onclick="signup();" />
+          <input
+            id="signinbtn"
+            type="button"
+            class="btn"
+            value="회원가입 완료"
+          />
         </div>
       </form>
     </div>
