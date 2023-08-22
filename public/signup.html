@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- axios -->
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="stylesheet" href="../css/user.css" />
+
+    <!-- axios -->
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div id="wrap">
+      <form class="login">
+        <h2>회원가입</h2>
+        <div class="login login_id">
+          <h4>loginId</h4>
+          <input type="text" name="loginId" id="signloginId" placeholder="아이디" />
+        </div>
+        <div class="login login_pw">
+          <h4>Password</h4>
+          <input type="password" name="password" id="signpassword" placeholder="비밀번호" />
+        </div>
+        <div class="login login_confirm">
+          <h4>Password Confirm</h4>
+          <input type="password" name="password" id="signpasswordConfirm" placeholder="비밀번호 재입력" />
+        </div>
+        <div class="login login_nickname">
+          <h4>nickname</h4>
+          <input type="text" name="nickname" id="signnickname" placeholder="닉네임" />
+        </div>
+        <div class="submit">
+          <input type="button" class="btn" value="회원가입 완료" onclick="signup();" />
+        </div>
+      </form>
+    </div>
+
+    <!-- script part -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="js/signup.js"></script>
+  </body>
+</html>
