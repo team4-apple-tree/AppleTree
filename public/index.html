@@ -140,6 +140,93 @@
                   <button data-study-tab="new" class="studies-tab-btn">
                     신규 스터디
                   </button>
+                  <!-- 모달 -->
+                  <div id="newStudyModal" class="modal">
+                    <div class="modal-content">
+                      <span class="modal-close">&times;</span>
+                      <h2>스터디 만들기</h2>
+                      <form id="newStudyForm">
+                        <label for="studyName">스터디 이름:</label>
+                        <input
+                          type="text"
+                          id="studyName"
+                          name="studyName"
+                          required
+                        /><br />
+
+                        <label for="studyImage">대표 이미지:</label>
+                        <input
+                          type="file"
+                          id="studyImage"
+                          name="studyImage"
+                          accept="image/*"
+                        /><br />
+
+                        <label for="studyEtiquette">스터디 에티켓 내용:</label>
+                        <textarea
+                          id="studyEtiquette"
+                          name="studyEtiquette"
+                          rows="4"
+                          cols="50"
+                        ></textarea
+                        ><br />
+
+                        <label for="studyDuration">스터디 기간:</label>
+                        <select id="studyDuration" name="studyDuration">
+                          <option value="1주일">1주일</option>
+                          <option value="2주일">2주일</option>
+                          <option value="3주일">3주일</option>
+                          <!-- 다른 기간 옵션 추가 --></select
+                        ><br />
+
+                        <label>게스트 입장:</label><br />
+                        <input
+                          type="checkbox"
+                          id="guestParticipationPossible"
+                          name="guestParticipation"
+                          value="가능"
+                        />
+                        <label for="guestParticipationPossible">가능</label>
+
+                        <input
+                          type="checkbox"
+                          id="guestParticipationImpossible"
+                          name="guestParticipation"
+                          value="불가능"
+                        />
+                        <label for="guestParticipationImpossible">불가능</label>
+
+                        <input
+                          type="submit"
+                          value="미리보기"
+                          id="previewButton"
+                        />
+                      </form>
+
+                      <div id="previewSection" style="display: none">
+                        <h3>미리보기</h3>
+                        <p>
+                          <strong>스터디 이름:</strong>
+                          <span id="previewStudyName"></span>
+                        </p>
+                        <p>
+                          <strong>스터디 기간:</strong>
+                          <span id="previewStudyDuration"></span>
+                        </p>
+                        <p>
+                          <strong>게스트 입장:</strong>
+                          <span id="previewGuestParticipation"></span>
+                        </p>
+                        <p><strong>대표 이미지:</strong></p>
+                        <img id="previewStudyImage" src="" alt="대표 이미지" />
+                        <p>
+                          <strong>스터디 에티켓 내용:</strong>
+                          <span id="previewStudyEtiquette"></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 모달 -->
                 </li>
               </ul>
               <span class="studies-filter-line"></span>
@@ -174,7 +261,7 @@
                 </div>
               </div>
               <div class="study-item-tx-wrap">
-                <em class="study-item-tx title">태진 고생했어~</em>
+                <em class="study-item-tx title">민지 공부하기</em>
                 <div class="study-item-tx-hashtag-wrap"></div>
               </div>
             </div>
@@ -182,11 +269,6 @@
         </div>
       </section>
     </main>
-
-    <!-- footer -->
-    <footer id="footer">
-      <div class="inner">푸터</div>
-    </footer>
 
     <!-- script part -->
     <script src="./js/main.js"></script>
