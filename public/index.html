@@ -179,22 +179,33 @@
                           <!-- 다른 기간 옵션 추가 --></select
                         ><br />
 
-                        <label>게스트 입장:</label><br />
+                        <label for="studyVisibility">스터디 공개 여부:</label
+                        ><br />
                         <input
-                          type="checkbox"
-                          id="guestParticipationPossible"
-                          name="guestParticipation"
-                          value="가능"
+                          type="radio"
+                          id="studyPublic"
+                          name="studyVisibility"
+                          value="공개"
                         />
-                        <label for="guestParticipationPossible">가능</label>
+                        <label for="studyPublic">공개</label>
 
                         <input
-                          type="checkbox"
-                          id="guestParticipationImpossible"
-                          name="guestParticipation"
-                          value="불가능"
+                          type="radio"
+                          id="studyPrivate"
+                          name="studyVisibility"
+                          value="비공개"
                         />
-                        <label for="guestParticipationImpossible">불가능</label>
+                        <label for="studyPrivate">비공개</label><br />
+
+                        <label for="studyCapacity"
+                          >스터디 입장 가능 인원:</label
+                        >
+                        <input
+                          type="number"
+                          id="studyCapacity"
+                          name="studyCapacity"
+                          min="1"
+                        /><br />
 
                         <input
                           type="submit"
@@ -214,14 +225,18 @@
                           <span id="previewStudyDuration"></span>
                         </p>
                         <p>
-                          <strong>게스트 입장:</strong>
-                          <span id="previewGuestParticipation"></span>
+                          <strong>스터디 공개 여부:</strong>
+                          <span id="previewStudyVisibility"></span>
                         </p>
                         <p><strong>대표 이미지:</strong></p>
                         <img id="previewStudyImage" src="" alt="대표 이미지" />
                         <p>
                           <strong>스터디 에티켓 내용:</strong>
                           <span id="previewStudyEtiquette"></span>
+                        </p>
+                        <p>
+                          <strong>스터디 입장 가능 인원:</strong>
+                          <span id="previewStudyCapacity"></span>
                         </p>
                       </div>
                     </div>

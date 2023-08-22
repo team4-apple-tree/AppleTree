@@ -42,53 +42,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // 스터디 생성 미리보기 제어
 document.addEventListener('DOMContentLoaded', function () {
-  const guestParticipationPossible = document.getElementById(
-    'guestParticipationPossible',
-  );
-  const guestParticipationImpossible = document.getElementById(
-    'guestParticipationImpossible',
-  );
   const previewButton = document.getElementById('previewButton');
   const previewSection = document.getElementById('previewSection');
   const previewStudyName = document.getElementById('previewStudyName');
   const previewStudyDuration = document.getElementById('previewStudyDuration');
-  const previewGuestParticipation = document.getElementById(
-    'previewGuestParticipation',
+  const previewStudyVisibility = document.getElementById(
+    'previewStudyVisibility',
   );
   const previewStudyImage = document.getElementById('previewStudyImage');
   const previewStudyEtiquette = document.getElementById(
     'previewStudyEtiquette',
   );
-
-  guestParticipationPossible.addEventListener('change', function () {
-    if (guestParticipationPossible.checked) {
-      guestParticipationImpossible.checked = false;
-    }
-  });
-
-  guestParticipationImpossible.addEventListener('change', function () {
-    if (guestParticipationImpossible.checked) {
-      guestParticipationPossible.checked = false;
-    }
-  });
+  const previewStudyCapacity = document.getElementById('previewStudyCapacity');
 
   previewButton.addEventListener('click', function (event) {
     event.preventDefault();
 
     const studyName = document.getElementById('studyName').value;
     const studyDuration = document.getElementById('studyDuration').value;
-    const guestParticipation = guestParticipationPossible.checked
-      ? '가능'
-      : guestParticipationImpossible.checked
-      ? '불가능'
-      : '선택 안함';
-
+    const studyVisibility = document.querySelector(
+      'input[name="studyVisibility"]:checked',
+    ).value;
     const studyImage = document.getElementById('studyImage');
     const studyEtiquette = document.getElementById('studyEtiquette').value;
+    const studyCapacity = document.getElementById('studyCapacity').value;
 
     previewStudyName.textContent = studyName;
     previewStudyDuration.textContent = studyDuration;
-    previewGuestParticipation.textContent = guestParticipation;
+    previewStudyVisibility.textContent = studyVisibility;
 
     if (studyImage.files && studyImage.files[0]) {
       const reader = new FileReader();
@@ -99,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     previewStudyEtiquette.textContent = studyEtiquette;
+    previewStudyCapacity.textContent = studyCapacity;
 
     previewSection.style.display = 'block';
   });
