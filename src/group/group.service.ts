@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -196,8 +195,6 @@ export class GroupService {
         group: { id: groupId },
       })
     ).affected;
-
-    console.log(deleteResult);
 
     if (!deleteResult) {
       throw new NotFoundException('스터디그룹 멤버 삭제에 실패하였습니다.');
