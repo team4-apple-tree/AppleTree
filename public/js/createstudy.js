@@ -88,3 +88,64 @@ document
 document.getElementById('roomImage').addEventListener('click', function () {
   document.getElementById('imageUpload').click();
 });
+
+$(document).ready(function () {
+  // 스터디 만들기 버튼 클릭 시 미리보기 모달 열기
+  $('.createRoomBtn').click(function () {
+    // 미리보기 컨텐츠 생성
+    var previewContent = createPreviewContent();
+    // 모달에 미리보기 컨텐츠 추가
+    $('#previewContent').html(previewContent);
+
+    // 이미지 미리보기 업데이트
+    var selectedImage = document.getElementById('roomImage');
+    var previewImage = document.getElementById('previewImage');
+    previewImage.src = selectedImage.src;
+
+    // 모달 열기
+    $('#previewModal').show();
+  });
+
+  // 모달 닫기 버튼 클릭 시 모달 닫기
+  $('#closeModal').click(function () {
+    $('#previewModal').hide();
+  });
+
+  // 스터디 생성 버튼 클릭 시
+  $('#createStudyBtn').click(function () {
+    // 스터디를 생성하는 로직을 여기에 추가
+    alert('스터디가 생성되었습니다!');
+    // 모달 닫기
+    $('#previewModal').hide();
+  });
+});
+
+// 미리보기 컨텐츠 생성하는 함수
+function createPreviewContent() {
+  var publicOption =
+    $("input[name='publicOption']:checked").val() === 'true'
+      ? '공개 스터디'
+      : '비공개 스터디';
+  var title = $("input[name='title']").val();
+  var startDate = $('#startDate').val();
+  var endDate = $('#endDate').val();
+  var password = $("input[name='password']").val();
+  var studyEtiquette = $('#studyEtiquette').val();
+
+  const startDateObj = new Date(startDate);
+  const endDateObj = new Date(endDate);
+  const diffInDays = Math.floor(
+    (endDateObj - startDateObj) / (24 * 60 * 60 * 1000),
+  );
+
+  var content = `
+    <h1>${title}</h1>
+    <div><strong>스터디 유형</strong>
+    <p>${publicOption}</p></div>
+    <div> <strong>스터디 기간 <p class ="day">총${diffInDays}일</p></strong>
+    <p>${startDate} ~ ${endDate}</p></div>
+    <div class="confirm">스터디를 생성하시겠습니까?</div>
+  `;
+
+  return content;
+}
