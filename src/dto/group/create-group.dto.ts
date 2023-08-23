@@ -7,6 +7,10 @@ import {
   IsEnum,
   IsOptional,
   IsNotEmpty,
+  IsNumber,
+  IsBoolean,
+  IsDate,
+  ValidateIf,
 } from 'class-validator';
 import { roleEnum } from 'src/entity/user.entity';
 
@@ -21,4 +25,24 @@ export class CreateGroupDto {
 
   @IsString()
   readonly image: string;
+
+  @IsNumber()
+  readonly max: number;
+
+  @IsBoolean()
+  readonly isPublic: boolean;
+
+  @IsBoolean()
+  readonly isPassword: boolean;
+
+  @IsNotEmpty({ message: 'Password should not be empty' })
+  @ValidateIf((o) => o.isPassword === true)
+  @IsString()
+  readonly password: string;
+
+  @IsString()
+  readonly startDate: Date;
+
+  @IsString()
+  readonly endDate: Date;
 }

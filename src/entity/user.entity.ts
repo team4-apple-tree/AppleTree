@@ -17,6 +17,7 @@ import { Room } from './room.entity';
 import { Comment } from './comment.entity';
 import { Post } from './post.entity';
 import { Group } from './group.entity';
+import { Access } from './access.entity';
 export enum roleEnum {
   유저 = 1,
   관리자 = 2,
@@ -39,6 +40,8 @@ export class User {
   posts: Post[];
   @OneToMany(() => Group, (group) => group.user)
   groups: Group[];
+  @OneToMany(() => Access, (access) => access.user)
+  access: Access[];
 
   // @ManyToMany(() => Group, (group) => group.members)
   // @JoinTable({ name: 'group_member' })

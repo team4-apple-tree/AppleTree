@@ -14,6 +14,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Member } from './member.entity';
+import { Access } from './access.entity';
 @Entity({ schema: 'apple', name: 'group' })
 export class Group {
   @PrimaryGeneratedColumn()
@@ -28,15 +29,23 @@ export class Group {
   @Column()
   image: string;
 
-  @ManyToOne(() => User, (user) => user.groups)
-  user: User;
+  @Column()
+  max: number;
 
-  @OneToMany(() => Member, (member) => member.group)
-  members: Member[];
+  @Column()
+  isPublic: boolean;
 
-  // @ManyToMany(() => User, (user) => user.myGroups)
-  // @JoinTable({ name: 'group_member' })
-  // members: User[];
+  @Column()
+  isPassword: boolean;
+
+  @Column({ default: null })
+  password: string | null;
+
+  @Column()
+  startDate: Date;
+
+  @Column()
+  endDate: Date;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -46,4 +55,13 @@ export class Group {
 
   @DeleteDateColumn({ select: false })
   deletedAt: Date | null;
+
+  @ManyToOne(() => User, (user) => user.groups)
+  user: User;
+
+  @OneToMany(() => Member, (member) => member.group)
+  members: Member[];
+
+  @OneToMany(() => Access, (access) => access.group)
+  access: Access[];
 }

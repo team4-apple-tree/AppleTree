@@ -20,6 +20,7 @@ import { Response } from 'express';
 import { InviteGroupDto } from 'src/dto/group/invite-group.dto';
 import { Member } from 'src/entity/member.entity';
 import { UpdateGroupDto } from 'src/dto/group/update-group.dto';
+import { Access } from 'src/entity/access.entity';
 
 @Controller('group')
 export class GroupController {
@@ -39,6 +40,7 @@ export class GroupController {
       return { message: '스터디그룹이 생성되었습니다.' };
     } catch (error) {
       console.error(error);
+
       throw new InternalServerErrorException('서버 오류');
     }
   }
@@ -52,6 +54,22 @@ export class GroupController {
       console.error(error);
 
       throw new InternalServerErrorException('서버 오류');
+    }
+  }
+
+  // 스터디그룹 정보 조히
+  @Get(':groupId/info')
+  async findGroupInfo(@Param('groupId') groupId: number): Promise<Group> {
+    try {
+      return await this.groupService.findGroupInfo(groupId);
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException('서버 오류');
+      }
     }
   }
 
@@ -122,6 +140,42 @@ export class GroupController {
     }
   }
 
+  // 스터디그룹 입장
+  @Post(':groupId/enter')
+  async enterGroup(
+    @Param('groupId') groupId: number,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<any> {
+    try {
+      const user = res.locals.user;
+
+      await this.groupService.enterGroup(groupId, user);
+
+      return { message: '접속하였습니다.' };
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof ConflictException) {
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException('서버 오류');
+      }
+    }
+  }
+
+  // 스터디그룹 퇴장
+  @Delete(':groupId/exit')
+  async exitGroup(
+    @Param('groupId') groupId: number,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const user = res.locals.user;
+
+    await this.groupService.exitGroup(groupId, user.id);
+  }
+
   // 스터디그룹 멤버 초대
   @Post(':groupId')
   async inviteMember(
@@ -145,11 +199,11 @@ export class GroupController {
     }
   }
 
-  // 스터디그룹 멤버 조회
+  // 스터디그룹 접속해 있는 유저 조회
   @Get(':groupId/members')
-  async findMember(@Param('groupId') groupId: number): Promise<Member[]> {
+  async findMAccess(@Param('groupId') groupId: number): Promise<Access[]> {
     try {
-      return await this.groupService.findMember(groupId);
+      return await this.groupService.findMAccess(groupId);
     } catch (error) {
       console.error(error);
 
@@ -161,7 +215,7 @@ export class GroupController {
     }
   }
 
-  // 스터디그룹 멤버 삭제
+  // 스터디그룹 접속해 있는 유저 추방
   @Delete(':groupId/members/:userId')
   async deleteMember(
     @Param('groupId') groupId: number,
