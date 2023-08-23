@@ -111,12 +111,52 @@ $(document).ready(function () {
     $('#previewModal').hide();
   });
 
-  // 스터디 생성 버튼 클릭 시
-  $('#createStudyBtn').click(function () {
-    // 스터디를 생성하는 로직을 여기에 추가
-    alert('스터디가 생성되었습니다!');
-    // 모달 닫기
-    $('#previewModal').hide();
+  // // 스터디 생성 버튼 클릭 시
+  // $('#createStudyBtn').click(function () {
+  //   // 스터디를 생성하는 로직을 여기에 추가
+  //   alert('스터디가 생성되었습니다!');
+  //   // 모달 닫기
+  //   $('#previewModal').hide();
+  // });
+  // 스터디 생성 버튼 클릭 이벤트
+  $(document).on('click', '#createStudyBtn', async () => {
+    const isPublic = $(`input[name='publicOption']:checked`).val();
+    const name = $("input[name='title']").val();
+    const image = $('#imageUpload')[0].files[0];
+    const startDate = $('#startDate').val();
+    const endDate = $('#endDate').val();
+    const isPassword = $('#passwordToggle').prop('checked');
+    const password = $("input[name='password']").val();
+    const desc = $('#studyEtiquette').val();
+
+    const max = 16;
+
+    const formData = new FormData();
+
+    formData.append('isPublic', isPublic);
+    formData.append('name', name);
+    formData.append('image', image);
+    formData.append('startDate', startDate);
+    formData.append('endDate', endDate);
+    formData.append('isPassword', isPassword);
+    formData.append('desc', desc);
+    formData.append('max', max);
+    if (isPassword) {
+      formData.append('password', password);
+    }
+
+    await axios
+      .post('http://localhost:4444/group', formData)
+      .then((response) => {
+        console.log(response);
+
+        alert('성공');
+      })
+      .catch((response) => {
+        console.log(response);
+
+        alert('실패');
+      });
   });
 });
 

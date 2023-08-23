@@ -23,6 +23,10 @@ import { AuthMiddleware } from './middleware/auth';
 import { JwtConfigService } from './config/jwt.config.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ChatGateway } from './chat/chat.gateway';
+import { S3Service } from './aws.service';
+import { UploadService } from './upload.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Module({
   imports: [
@@ -37,6 +41,20 @@ import { ChatGateway } from './chat/chat.gateway';
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
+    MulterModule.register({
+      storage: diskStorage({
+        destination: (req, res, cb) => {
+          cb(null, './upload/');
+        },
+        filename: (req, file, cb) => {
+          const fileName = Buffer.from(file.originalname, 'latin1').toString(
+            'utf8',
+          );
+
+          cb(null, Date.now() + '-' + fileName);
+        },
+      }),
+    }),
     BoardModule,
     CommentModule,
     PostModule,
@@ -49,7 +67,7 @@ import { ChatGateway } from './chat/chat.gateway';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ChatGateway],
+  providers: [AppService, ChatGateway, S3Service, UploadService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

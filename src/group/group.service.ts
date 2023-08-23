@@ -15,6 +15,7 @@ import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
+import { UploadService } from 'src/upload.service';
 
 @Injectable()
 export class GroupService {
@@ -23,11 +24,21 @@ export class GroupService {
     @InjectRepository(Member) private memberRepository: Repository<Member>,
     @InjectRepository(Access) private accessRepository: Repository<Access>,
     private readonly userService: UserService,
+    private readonly uploadService: UploadService,
   ) {}
 
   // 스터디그룹 생성
-  async createGroup(data: CreateGroupDto, user: User): Promise<void> {
-    const createGroup = this.groupRepository.create(data);
+  async createGroup(
+    data: Omit<CreateGroupDto, 'image'>,
+    image: string,
+    user: User,
+  ): Promise<void> {
+    this.uploadService.createUploadFolder(image);
+
+    const createGroup = this.groupRepository.create({
+      ...data,
+      image,
+    });
 
     const group = await this.groupRepository.save(createGroup);
 

@@ -7,6 +7,10 @@ import { UserModule } from 'src/user/user.module';
 import { Member } from 'src/entity/member.entity';
 import { User } from 'src/entity/user.entity';
 import { Access } from 'src/entity/access.entity';
+import { S3Service } from 'src/aws.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { UploadService } from 'src/upload.service';
 
 @Module({
   imports: [
@@ -14,6 +18,6 @@ import { Access } from 'src/entity/access.entity';
     UserModule,
   ],
   controllers: [GroupController],
-  providers: [GroupService],
+  providers: [GroupService, S3Service, UploadService],
 })
 export class GroupModule {}
