@@ -1,0 +1,80 @@
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #19baa4;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+}
+
+main {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+section {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0 10px;
+  flex: 1;
+  height: 100px;
+  min-height: 700px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.chat-input input,
+.todo-input input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 70%;
+}
+
+.chat-input button,
+.todo-input button {
+  padding: 8px 12px;
+  background-color: #19baa4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.user-list,
+.todo-list,
+.chat-messages {
+  list-style: none;
+  padding: 0;
+}
+
+.user-list li,
+.todo-list li,
+.chat-messages li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-management-section {
+  height: 100px;
+}
+
+.main-section {
+  height: 680px;
+  position: absolute;
+  bottom: 30px;
+  width: 600px;
+  z-index: -1;
+}

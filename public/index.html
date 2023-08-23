@@ -23,10 +23,7 @@
     <!-- header -->
     <header id="header">
       <div class="container">
-        <h1 class="logo">
-          <img src="" alt="" />
-          사과나무
-        </h1>
+        <h1 class="logo">사과나무</h1>
         <div class="header-content">
           <nav class="navigation">
             <ul class="nav-list">
@@ -137,7 +134,11 @@
                   </button>
                 </li>
                 <li class="studies-tab-list">
-                  <button data-study-tab="new" class="studies-tab-btn">
+                  <button
+                    data-study-tab="new"
+                    class="studies-tab-btn"
+                    onclick="location.href='./createstudygroup.html'"
+                  >
                     신규 스터디
                   </button>
                 </li>
@@ -182,7 +183,6 @@
         </div>
       </section>
     </main>
-
     <!-- script part -->
     <script src="./js/main.js"></script>
   </body>
