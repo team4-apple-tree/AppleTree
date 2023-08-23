@@ -154,10 +154,9 @@ img {
 }
 .imgEditBtnRec .imgEditBtn {
   height: 30px;
-  padding: 0 10px 10px 30px;
-  background: rgba(0, 0, 0, 0.3) url(../images/pngwing.com.png) 10px center
-    no-repeat;
-  background-size: auto 44%;
+  padding: 10px 10px 10px 40px;
+  background: rgba(0, 0, 0, 0.3) url(../images/camera.png) -9px center no-repeat;
+  background-size: auto 150%;
   border-top-right-radius: 4px;
   font-size: 0.8rem;
   color: white;
