@@ -55,9 +55,10 @@ export class GroupService {
     await this.memberRepository.save(member);
   }
 
-  // 스터디그룹 전체 조회
+  // 공개 스터디 전체 조회
   async findAllGroups(): Promise<Group[]> {
     return await this.groupRepository.find({
+      where: { isPublic: true },
       select: [
         'id',
         'name',

@@ -66,7 +66,7 @@ export class GroupController {
     }
   }
 
-  // 스터디그룹 전체 조회
+  // 공개 스터디 전체 조회
   @Get()
   async findAllGroups(): Promise<Group[]> {
     try {
