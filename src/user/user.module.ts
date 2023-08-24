@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtConfigService } from '../config/jwt.config.service';
 import { User } from '../entity/user.entity';
+import { JwtAuthGuard } from './jwt.guard';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { User } from '../entity/user.entity';
       inject: [ConfigService],
     }),
   ],
-  providers: [UserService],
+  providers: [UserService, JwtAuthGuard],
   controllers: [UserController],
   exports: [UserService],
 })

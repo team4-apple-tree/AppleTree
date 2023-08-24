@@ -145,7 +145,11 @@ $(document).ready(function () {
     }
 
     await axios
-      .post('http://localhost:4444/group', formData)
+      .post('http://localhost:4444/group', formData, {
+        headers: {
+          Authorization: getCookie(),
+        },
+      })
       .then((response) => {
         console.log(response);
 
@@ -187,4 +191,11 @@ function createPreviewContent() {
   `;
 
   return content;
+}
+
+// 쿠키 값 가져오는 함수
+function getCookie() {
+  const cookie = decodeURIComponent(document.cookie);
+  const [name, value] = cookie.split('=');
+  return value;
 }

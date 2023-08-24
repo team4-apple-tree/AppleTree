@@ -11,8 +11,10 @@ import {
   Param,
   Post,
   Put,
+  Req,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
@@ -25,6 +27,7 @@ import { UpdateGroupDto } from 'src/dto/group/update-group.dto';
 import { Access } from 'src/entity/access.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from 'src/aws.service';
+import { JwtAuthGuard } from 'src/user/jwt.guard';
 
 @Controller('group')
 export class GroupController {
@@ -35,14 +38,20 @@ export class GroupController {
 
   // 스터디그룹 생성
   @Post()
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
   async createGroup(
     @Body() data: Omit<CreateGroupDto, 'image'>,
     @Res({ passthrough: true }) res: Response,
+    @Req() req: any,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
     try {
-      const user = res.locals.user;
+      // const user = res.locals.user;
+
+      const user = await req.user;
+
+      console.log(user);
 
       const folderName = 'image';
       const fileName = `${Date.now()}_${Buffer.from(

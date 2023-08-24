@@ -43,7 +43,7 @@ export class UserController {
       data.password,
     );
     console.log(authorization);
-    response.cookie('Authorization', 'Bearer' + authorization);
+    response.cookie('Authorization', `Bearer ${authorization}`);
   }
 
   @Put('/:userId')

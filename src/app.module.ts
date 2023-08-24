@@ -69,15 +69,16 @@ import { diskStorage } from 'multer';
   controllers: [AppController],
   providers: [AppService, ChatGateway, S3Service, UploadService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .exclude(
-        // 예외 url 지정
-        { path: 'user/sign', method: RequestMethod.POST },
-        { path: 'user/login', method: RequestMethod.POST },
-      )
-      .forRoutes('*'); // middleware를 모든 경로에 적용
-  }
-}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(AuthMiddleware)
+//       .exclude(
+//         // 예외 url 지정
+//         { path: 'user/sign', method: RequestMethod.POST },
+//         { path: 'user/login', method: RequestMethod.POST },
+//       )
+//       .forRoutes('*'); // middleware를 모든 경로에 적용
+//   }
+// }
+export class AppModule {}

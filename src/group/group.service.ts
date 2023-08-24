@@ -43,6 +43,7 @@ export class GroupService {
       isPublic,
       isPassword,
       image,
+      user,
     });
 
     const group = await this.groupRepository.save(createGroup);
