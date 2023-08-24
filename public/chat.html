@@ -15,15 +15,15 @@
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Document</title>
+    <title>채팅</title>
   </head>
   <body>
     <div class="container">
-      <h1>Socket.io Chat</h1>
-      <p>Your Nickname: <span id="random-animal-name"></span></p>
+      <h1>사과나무</h1>
+      <p>내 이름: <span id="UserName"></span></p>
       <div class="rooms">
         <div class="room" id="room1">
-          <h2>Room 1</h2>
+          <h2>스터디그룹</h2>
           <div class="button-container">
             <button onclick="joinRoom('room1')">Join</button>
             <button onclick="exitRoom('room1')">Exit</button>
@@ -33,16 +33,12 @@
             <ul class="chat-list" id="room1-chat-list"></ul>
           </div>
           <div class="chat-input">
-            <input
-              type="text"
-              id="room1-messageInput"
-              placeholder="Type a message..."
-            />
+            <input type="text" id="room1-messageInput" />
             <button onclick="sendRoomMessage('room1')">Send</button>
           </div>
         </div>
         <div class="room" id="room2">
-          <h2>Room 2</h2>
+          <h2>스터디그룹</h2>
           <div class="button-container">
             <button onclick="joinRoom('room2')">Join</button>
             <button onclick="exitRoom('room2')">Exit</button>
@@ -63,6 +59,6 @@
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
-    <script src="./js/chat-soket.js"></script>
+    <script src="./js/chat.js"></script>
   </body>
 </html>

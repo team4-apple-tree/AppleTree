@@ -58,8 +58,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
   }
 
-  @SubscribeMessage('setUserNick')
-  handleSetUserNick(client: Socket, nick: string): void {
+  @SubscribeMessage('setUserName')
+  handlesetUserName(client: Socket, nick: string): void {
     this.clientNickname[client.id] = nick;
   }
 
