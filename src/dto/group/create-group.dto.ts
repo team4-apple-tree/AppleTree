@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   Matches,
   IsString,

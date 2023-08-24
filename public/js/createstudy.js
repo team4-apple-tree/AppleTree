@@ -121,6 +121,7 @@ $(document).ready(function () {
   // 스터디 생성 버튼 클릭 이벤트
   $(document).on('click', '#createStudyBtn', async () => {
     const isPublic = $(`input[name='publicOption']:checked`).val();
+    const max = $('#max').val();
     const name = $("input[name='title']").val();
     const image = $('#imageUpload')[0].files[0];
     const startDate = $('#startDate').val();
@@ -129,18 +130,16 @@ $(document).ready(function () {
     const password = $("input[name='password']").val();
     const desc = $('#studyEtiquette').val();
 
-    const max = 16;
-
     const formData = new FormData();
 
     formData.append('isPublic', isPublic);
+    formData.append('max', max);
     formData.append('name', name);
     formData.append('image', image);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
     formData.append('isPassword', isPassword);
     formData.append('desc', desc);
-    formData.append('max', max);
     if (isPassword) {
       formData.append('password', password);
     }

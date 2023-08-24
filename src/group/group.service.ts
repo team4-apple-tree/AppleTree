@@ -33,10 +33,15 @@ export class GroupService {
     image: string,
     user: User,
   ): Promise<void> {
-    this.uploadService.createUploadFolder(image);
+    // this.uploadService.createUploadFolder(image);
+
+    const isPublic = String(data.isPublic) === 'true';
+    const isPassword = String(data.isPassword) === 'true';
 
     const createGroup = this.groupRepository.create({
       ...data,
+      isPublic,
+      isPassword,
       image,
     });
 
