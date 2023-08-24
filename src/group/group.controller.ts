@@ -11,7 +11,11 @@ import {
   Param,
   Post,
   Put,
+  Req,
   Res,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from 'src/dto/group/create-group.dto';
@@ -21,21 +25,47 @@ import { InviteGroupDto } from 'src/dto/group/invite-group.dto';
 import { Member } from 'src/entity/member.entity';
 import { UpdateGroupDto } from 'src/dto/group/update-group.dto';
 import { Access } from 'src/entity/access.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { S3Service } from 'src/aws.service';
+import { JwtAuthGuard } from 'src/user/jwt.guard';
 
 @Controller('group')
 export class GroupController {
-  constructor(private readonly groupService: GroupService) {}
+  constructor(
+    private readonly groupService: GroupService,
+    private readonly s3Service: S3Service,
+  ) {}
 
   // 스터디그룹 생성
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('image'))
   async createGroup(
-    @Body() data: CreateGroupDto,
+    @Body() data: Omit<CreateGroupDto, 'image'>,
     @Res({ passthrough: true }) res: Response,
+    @Req() req: any,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
     try {
-      const user = res.locals.user;
+      // const user = res.locals.user;
 
-      await this.groupService.createGroup(data, user);
+      const user = await req.user;
+
+      console.log(user);
+
+      const folderName = 'image';
+      const fileName = `${Date.now()}_${Buffer.from(
+        file.originalname,
+        'latin1',
+      ).toString('utf8')}`;
+
+      const image = await this.s3Service.uploadImageToS3(
+        file,
+        folderName,
+        fileName,
+      );
+
+      await this.groupService.createGroup(data, image, user);
 
       return { message: '스터디그룹이 생성되었습니다.' };
     } catch (error) {
@@ -45,7 +75,7 @@ export class GroupController {
     }
   }
 
-  // 스터디그룹 전체 조회
+  // 공개 스터디 전체 조회
   @Get()
   async findAllGroups(): Promise<Group[]> {
     try {

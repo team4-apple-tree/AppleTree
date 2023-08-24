@@ -15,6 +15,7 @@ import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
+import { UploadService } from 'src/upload.service';
 
 @Injectable()
 export class GroupService {
@@ -23,11 +24,27 @@ export class GroupService {
     @InjectRepository(Member) private memberRepository: Repository<Member>,
     @InjectRepository(Access) private accessRepository: Repository<Access>,
     private readonly userService: UserService,
+    private readonly uploadService: UploadService,
   ) {}
 
   // 스터디그룹 생성
-  async createGroup(data: CreateGroupDto, user: User): Promise<void> {
-    const createGroup = this.groupRepository.create(data);
+  async createGroup(
+    data: Omit<CreateGroupDto, 'image'>,
+    image: string,
+    user: User,
+  ): Promise<void> {
+    // this.uploadService.createUploadFolder(image);
+
+    const isPublic = String(data.isPublic) === 'true';
+    const isPassword = String(data.isPassword) === 'true';
+
+    const createGroup = this.groupRepository.create({
+      ...data,
+      isPublic,
+      isPassword,
+      image,
+      user,
+    });
 
     const group = await this.groupRepository.save(createGroup);
 
@@ -39,9 +56,10 @@ export class GroupService {
     await this.memberRepository.save(member);
   }
 
-  // 스터디그룹 전체 조회
+  // 공개 스터디 전체 조회
   async findAllGroups(): Promise<Group[]> {
     return await this.groupRepository.find({
+      where: { isPublic: true },
       select: [
         'id',
         'name',

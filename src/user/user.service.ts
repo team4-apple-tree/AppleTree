@@ -55,7 +55,8 @@ export class UserService {
       expiresIn: '7d',
     });
 
-    return { accessToken, refreshToken };
+    // return { accessToken, refreshToken };
+    return accessToken;
   }
 
   async signUp(
