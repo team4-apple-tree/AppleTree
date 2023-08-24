@@ -88,6 +88,17 @@ export class UserService {
     return this.userRepository.softDelete(userId);
   }
 
+  async getUser(userId:number){
+    const user = await this.userRepository.findOne({
+      where : { deleteAt:null, id:userId },
+      select : ['name', 'email', 'role']
+    })
+    if (_.isNil(user)){
+      throw new NotFoundException('해당 유저의 정보가 존재하지 않습니다.')
+    }
+    return user
+  }
+
   // 밑 로직 userId를 통해 password찾기
   private async checkPassword(userId: number, password: string) {
     const user = await this.userRepository.findOne({
@@ -116,4 +127,5 @@ export class UserService {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }
+  
 }

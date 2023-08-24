@@ -18,7 +18,7 @@ import { Group } from './group.entity';
 export enum roleEnum {
   유저 = 1,
   관리자 = 2,
-  리더 = 3,
+  마스터 = 3,
 }
 @Entity({ schema: 'apple', name: 'user' })
 export class User {

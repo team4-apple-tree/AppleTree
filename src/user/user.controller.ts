@@ -16,7 +16,7 @@ import { LoginUserDto } from '../dto/user/login-user-dto';
 import { UpdateUserDto } from '../dto/user/update-user-dto';
 import { DeleteUserDto } from '../dto/user/delete-user-dto';
 import * as cookieParser from 'cookie-parser';
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -58,4 +58,16 @@ export class UserController {
   ) {
     return await this.userService.deleteUser(userId, data.password);
   }
+
+  @Get('/out')
+  async logout(@Res() response: Response){
+    response.clearCookie('Authorization')
+    response.status(200).send('로그아웃 완료')
+  }
+
+  @Get('/:userId')
+  async getCustomRepositoryToken(@Param('userId') userId:number){
+    return await this.userService.getUser(userId)
+  }
+  //Get user로 얻어올 정보 이름, 이메일, 한마디
 }
