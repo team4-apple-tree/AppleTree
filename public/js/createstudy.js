@@ -127,20 +127,25 @@ $(document).ready(function () {
           Authorization: getCookie(),
         },
       })
-      .then((response) => {
-        alert('성공');
+      .then(() => {
+        alert('스터디가 생성되었습니다.');
 
-        window.location.herf = '/index';
+        window.location.href = 'index.html';
       })
       .catch((response) => {
         if (response.response.data.error === 'Forbidden') {
           alert('로그인이 필요한 기능입니다.');
 
-          window.location.herf = 'http://localhost:4444/login.html';
-        }
-        // console.log(response.response.data.error);
+          window.location.href = 'login.html';
+        } else if (response.response.data.error === 'Internal Server Error') {
+          alert('서버 오류');
 
-        // alert('실패');
+          window.location.href = 'index.html';
+        }
+
+        alert('스터디 생성에 실패하였습니다.');
+
+        window.location.href = 'index.html';
       });
   });
 });
