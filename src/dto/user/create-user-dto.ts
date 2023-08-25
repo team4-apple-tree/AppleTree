@@ -19,7 +19,6 @@ export class CreateUserDto {
   @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])/)
   readonly password: string;
 
-  @IsString()
   @MinLength(4)
   @MaxLength(10)
   @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])/)
@@ -27,6 +26,9 @@ export class CreateUserDto {
 
   @IsString()
   readonly name: string;
+
+  @IsString()
+  readonly desc: string | null
 
   @IsEnum(roleEnum)
   @IsOptional()
