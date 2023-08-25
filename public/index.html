@@ -23,14 +23,16 @@
     <!-- header -->
     <header id="header">
       <div class="container">
-        <h1 class="logo">사과나무</h1>
+        <h1 class="logo" onclick="location.href='http://localhost:4444/'">
+          사과나무
+        </h1>
         <div class="header-content">
           <nav class="navigation">
             <ul class="nav-list">
               <li><a href="#">홈</a></li>
-              <li><a href="#">내 스터디</a></li>
-              <li><a href="#">포인트 샵</a></li>
-              <li><a href="#">예약하기</a></li>
+              <li><a href="#">오프라인 예약</a></li>
+              <li><a href="#">게시판</a></li>
+              <li><a href="createstudygroup.html">스터디 생성</a></li>
             </ul>
           </nav>
         </div>
@@ -134,11 +136,7 @@
                   </button>
                 </li>
                 <li class="studies-tab-list">
-                  <button
-                    data-study-tab="new"
-                    class="studies-tab-btn"
-                    onclick="location.href='./createstudygroup.html'"
-                  >
+                  <button data-study-tab="new" class="studies-tab-btn">
                     신규 스터디
                   </button>
                 </li>
@@ -146,13 +144,7 @@
               <span class="studies-filter-line"></span>
             </div>
           </div>
-          <div class="studies-body">
-            <div class="study-item-list-wrap flex-wrap">
-              <div class="study-item-list flex-wrap">
-                <div class="study-item-tx-hashtag-wrap"></div>
-              </div>
-            </div>
-          </div>
+          <div class="studies-body"></div>
         </div>
       </section>
     </main>

@@ -12,6 +12,7 @@ header {
 .logo {
   font-size: 24px;
   margin-right: 20px;
+  cursor: pointer;
 }
 .container {
   max-width: 1200px;
@@ -98,7 +99,6 @@ header {
   margin: 0 8px 0 0;
   border-radius: 50%;
   line-height: 1;
-  background: #e1e6ea url(체크사진넣기) center no-repeat;
   background-size: auto 50%;
 }
 .checkbox,

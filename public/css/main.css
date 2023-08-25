@@ -13,6 +13,7 @@ header {
 .logo {
   font-size: 24px;
   margin-right: 20px;
+  cursor: pointer;
 }
 .container {
   max-width: 1200px;
@@ -49,8 +50,8 @@ header {
 }
 
 .login-button {
-  padding: 8px 16px;
-  background-color: #4caf50;
+  padding: 4px 16px;
+  background-color: #2acf30;
   border: none;
   border-radius: 4px;
   color: #fff;
@@ -93,10 +94,6 @@ header {
   border-radius: 4px;
   position: relative;
   overflow: hidden;
-}
-
-.study-item-list-wrap {
-  height: 100%;
 }
 
 .study-item-list-cover.active {
@@ -457,19 +454,31 @@ ul {
 
 .studies-body {
   margin-top: 30px;
-}
-
-.study-item-list-wrap.flex-wrap {
-  width: 100%;
   display: flex;
+  float: left;
   flex-wrap: wrap;
-}
-.study-item-list-wrap {
-  height: 100%;
 }
 
 .study-item-list.flex-wrap:nth-of-type(5n-4) {
-  margin-left: 0;
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.study-item-list.flex-wrap:nth-of-type(5n-3) {
+  margin-left: 10px;
+  margin-right: 0;
+}
+.study-item-list.flex-wrap:nth-of-type(5n-5) {
+  margin-left: 10px;
+  margin-right: 0;
+}
+.study-item-list.flex-wrap:nth-of-type(5n-2) {
+  margin-left: 10px;
+  margin-right: 0;
+}
+.study-item-list.flex-wrap:nth-of-type(5n-1) {
+  margin-left: 10px;
+  margin-right: 0;
 }
 
 .study-item-list.flex-wrap {
@@ -492,6 +501,8 @@ ul {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  width: 100%;
+  height: 70%;
 }
 
 .study-item-img {
@@ -500,6 +511,11 @@ ul {
   object-fit: cover;
   transition: 0.2s ease-out;
   max-width: 100%;
+}
+
+.study-item-img-wrap:hover {
+  transform: scale(1.1, 1.1);
+  transition-duration: 0.5s;
 }
 
 .study-item-info-cover {
@@ -524,7 +540,7 @@ ul {
 
 .study-item-info-personnel-wrap {
   padding-left: 18px;
-  background: url(/public/pngwing.com.png) no-repeat center left/auto 100%;
+  background: url(../images/pngwing.com.png) no-repeat center left/auto 100%;
   display: flex;
   position: absolute;
   bottom: 10px;
@@ -604,4 +620,23 @@ ul {
 .modal-close {
   float: right;
   cursor: pointer;
+}
+
+.load-more-button {
+  position: relative;
+  left: 550px;
+  margin-bottom: 20px;
+  border: 1.5px solid #19baa4;
+  background-color: #19baa4;
+  cursor: pointer;
+  border-radius: 30px;
+  font-size: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #fff;
+}
+
+.load-more-button:hover {
+  background: #fff;
+  color: #000;
 }

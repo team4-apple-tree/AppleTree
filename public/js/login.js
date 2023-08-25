@@ -1,4 +1,4 @@
-$(document).on('click', '#loginbtn', async (e) => {
+$(document).on('click', '#loginBtn', async (e) => {
   e.preventDefault();
 
   const email = $('#loginId').val();
