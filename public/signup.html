@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- axios -->
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
+    />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/user.css" />
+
+    <!-- axios -->
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>회원가입</title>
+  </head>
+  <header id="header">
+    <div class="container">
+      <h1 class="logo">사과나무</h1>
+    </div>
+  </header>
+
+  <body>
+    <div id="wrap">
+      <form class="login">
+        <h2>회원가입(Signup)</h2>
+        <div class="login login_id">
+          <h4>이메일</h4>
+          <input
+            type="text"
+            name="loginId"
+            id="signloginId"
+            placeholder="ex) test@test.com"
+          />
+        </div>
+        <div class="login login_nickname">
+          <h4>이름</h4>
+          <input
+            type="text"
+            name="nickname"
+            id="signnickname"
+            placeholder="이름을 입력해주세요."
+          />
+        </div>
+        <div class="login login_pw">
+          <h4>비밀번호</h4>
+          <input
+            type="password"
+            name="password"
+            id="signpassword"
+            placeholder="대문자,소문자,숫자를 조합하여 설정해주세요."
+          />
+        </div>
+        <div class="login login_confirm">
+          <h4>비밀번호 확인</h4>
+          <input
+            type="password"
+            name="password"
+            id="signpasswordConfirm"
+            placeholder="비밀번호 재입력해주세요"
+          />
+        </div>
+        <div class="line"></div>
+        <div class="submit">
+          <input
+            id="signinbtn"
+            type="button"
+            class="btn"
+            value="회원가입 완료"
+          />
+        </div>
+      </form>
+    </div>
+
+    <!-- script part -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="js/signup.js"></script>
+  </body>
+</html>

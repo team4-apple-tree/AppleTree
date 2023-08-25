@@ -14,7 +14,7 @@ import { GroupModule } from './group/group.module';
 import { RoomModule } from './room/room.module';
 import { SeatModule } from './seat/seat.module';
 import { CardModule } from './card/card.module';
-import { MemberModule } from './member/member.module';
+// import { MemberModule } from './member/member.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -22,6 +22,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthMiddleware } from './middleware/auth';
 import { JwtConfigService } from './config/jwt.config.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ChatGateway } from './chat/chat.gateway';
+import { S3Service } from './aws.service';
+import { UploadService } from './upload.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Module({
   imports: [
@@ -36,6 +41,20 @@ import { JwtModule } from '@nestjs/jwt';
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
+    MulterModule.register({
+      storage: diskStorage({
+        destination: (req, res, cb) => {
+          cb(null, './upload/');
+        },
+        filename: (req, file, cb) => {
+          const fileName = Buffer.from(file.originalname, 'latin1').toString(
+            'utf8',
+          );
+
+          cb(null, Date.now() + '-' + fileName);
+        },
+      }),
+    }),
     BoardModule,
     CommentModule,
     PostModule,
@@ -44,21 +63,22 @@ import { JwtModule } from '@nestjs/jwt';
     RoomModule,
     SeatModule,
     CardModule,
-    MemberModule,
+    // MemberModule,
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway, S3Service, UploadService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .exclude(
-        // 예외 url 지정
-        { path: 'user/sign', method: RequestMethod.POST },
-        { path: 'user/login', method: RequestMethod.POST }
-      )
-      .forRoutes('*'); // middleware를 모든 경로에 적용
-  }
-}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(AuthMiddleware)
+//       .exclude(
+//         // 예외 url 지정
+//         { path: 'user/sign', method: RequestMethod.POST },
+//         { path: 'user/login', method: RequestMethod.POST },
+//       )
+//       .forRoutes('*'); // middleware를 모든 경로에 적용
+//   }
+// }
+export class AppModule {}

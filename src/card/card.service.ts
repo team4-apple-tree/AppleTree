@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from '../entity/card.entity';
 import { CreateCardDto } from '../dto/card/create-card-dto';
+import { UpdateCardDto } from '../dto/card/update-card.dto';
 
 @Injectable()
 export class CardService {
@@ -15,24 +20,42 @@ export class CardService {
     return this.cardRepository.find();
   }
 
+  async getCardById(cardId: number): Promise<Card> {
+    const card = await this.cardRepository.findOne({
+      where: { cardId },
+    });
+    if (!card) {
+      throw new NotFoundException(`해당 카드 ID ${cardId}를 찾을 수 없습니다.`);
+    }
+    return card;
+  }
+
   async createCard(createCardDto: CreateCardDto): Promise<Card> {
+    if (!createCardDto.title || !createCardDto.desc) {
+      throw new BadRequestException('제목 또는 내용을 입력해주세요.');
+    }
+
     const card = this.cardRepository.create(createCardDto);
     return this.cardRepository.save(card);
   }
 
   async updateCard(
     cardId: number,
-    createCardDto: CreateCardDto,
+    updateCardDto: UpdateCardDto,
   ): Promise<Card> {
+    if (!updateCardDto.title || !updateCardDto.desc) {
+      throw new BadRequestException('제목 또는 내용을 입력해주세요.');
+    }
+
     const cardToUpdate = await this.cardRepository.findOne({
       where: { cardId },
     });
     if (!cardToUpdate) {
-      throw new NotFoundException('Card not found');
+      throw new NotFoundException(`해당 카드 ID ${cardId}를 찾을 수 없습니다.`);
     }
 
-    cardToUpdate.title = createCardDto.title;
-    cardToUpdate.desc = createCardDto.desc;
+    cardToUpdate.title = updateCardDto.title;
+    cardToUpdate.desc = updateCardDto.desc;
 
     return this.cardRepository.save(cardToUpdate);
   }
@@ -42,9 +65,9 @@ export class CardService {
       where: { cardId },
     });
     if (!cardToDelete) {
-      throw new NotFoundException('Card not found');
+      throw new NotFoundException(`해당 카드 ID ${cardId}를 찾을 수 없습니다.`);
     }
 
-    await this.cardRepository.remove(cardToDelete);
+    await this.cardRepository.softDelete(cardToDelete);
   }
 }

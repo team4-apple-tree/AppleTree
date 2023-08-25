@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
+    />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/user.css" />
+
+    <!-- axios -->
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>로그인</title>
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo">사과나무</h1>
+      </div>
+    </header>
+    <div id="wrap">
+      <form class="login">
+        <h2>로그인(Login)</h2>
+        <div class="login login_id">
+          <h4>이메일</h4>
+          <input
+            type="text"
+            name="loginId"
+            id="loginId"
+            placeholder="ex) test@test.com"
+          />
+        </div>
+        <div class="login login_pw">
+          <h4>비밀번호</h4>
+          <input
+            type="password"
+            name="pw"
+            id="password"
+            placeholder="비밀번호를 입력해주세요."
+          />
+        </div>
+        <div class="submit">
+          <input type="button" id="loginbtn" class="btn" value="로그인하기" />
+        </div>
+        <div class="line"></div>
+        <p>아직 회원이 아니신가요?</p>
+        <div class="submit">
+          <input
+            type="button"
+            class="Gobtn"
+            value="회원가입하러 Go Go"
+            onclick="location.href=`signup.html`"
+          />
+        </div>
+      </form>
+    </div>
+
+    <!-- script part -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/login.js"></script>
+  </body>
+</html>

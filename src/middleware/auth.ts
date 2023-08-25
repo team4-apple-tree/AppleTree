@@ -41,12 +41,12 @@ export class AuthMiddleware implements NestMiddleware {
       const token = authHeader.split(' ')[1];
       try {
         const payload = await this.jwtService.verify(token);
-        req.user = payload;
+
+        res.locals.user = payload;
       } catch (err) {
         console.error(`JWT 만료 됐거나 유효하지 않음: ${token}`);
       }
     }
-
     next(); // 미들웨어 통과
   }
 }

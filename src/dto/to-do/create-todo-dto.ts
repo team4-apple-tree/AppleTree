@@ -1,8 +1,6 @@
-import { IsNotEmpty, IsEnum } from 'class-validator';
-import { ToDoState } from 'src/entity/to-do.entity';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateToDoDto {
   @IsNotEmpty()
-  @IsEnum(ToDoState)
-  state: ToDoState;
+  state: number;
 }

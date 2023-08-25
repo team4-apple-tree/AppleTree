@@ -3,6 +3,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
+  OneToOne,
+  Index,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -23,9 +25,10 @@ export class Todo {
   todoId: number;
 
   @OneToMany(() => Card, (card) => card.toDos)
-  cards: Card;
-  @ManyToOne(() => Member, (member) => member.toDos)
-  members: Member;
+  cards: Card[];
+
+  // @ManyToOne(() => Member, (member) => member.toDos)
+  // members: Member;
 
   @CreateDateColumn()
   createdAt: Date;
