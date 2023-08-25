@@ -6,6 +6,8 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  HttpException,
+  HttpStatus,
   InternalServerErrorException,
   NotFoundException,
   Param,
@@ -28,6 +30,7 @@ import { Access } from 'src/entity/access.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from 'src/aws.service';
 import { JwtAuthGuard } from 'src/user/jwt.guard';
+import { validate } from 'class-validator';
 
 @Controller('group')
 export class GroupController {
@@ -50,8 +53,6 @@ export class GroupController {
       // const user = res.locals.user;
 
       const user = await req.user;
-
-      console.log(user);
 
       const folderName = 'image';
       const fileName = `${Date.now()}_${Buffer.from(
