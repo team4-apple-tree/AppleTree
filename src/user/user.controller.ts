@@ -30,6 +30,7 @@ export class UserController {
       data.password,
       data.confirm,
       data.role,
+      // data.desc
     );
   }
 
@@ -48,7 +49,7 @@ export class UserController {
 
   @Put('/:userId')
   async update(@Param('userId') userId: number, @Body() data: UpdateUserDto) {
-    return await this.userService.update(userId, data.password, data.role);
+    return await this.userService.update(userId, data.password, data.role, data.desc, data.newPassword);
   }
 
   @Delete('/:userId')

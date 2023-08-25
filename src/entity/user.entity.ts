@@ -44,6 +44,9 @@ export class User {
   @Column('varchar')
   email: string;
 
+  @Column('varchar')
+  desc: string;
+
   @Column('varchar', { select: false })
   password: string;
 

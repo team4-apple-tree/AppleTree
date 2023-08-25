@@ -25,8 +25,11 @@ import {
     @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])/)
     readonly confirm : string
 
-    @IsString()
-    readonly name : string
+  @IsString()
+  readonly name: string;
+
+  @IsString()
+  readonly desc: string | null
 
     @IsEnum(roleEnum)
     @IsOptional()
