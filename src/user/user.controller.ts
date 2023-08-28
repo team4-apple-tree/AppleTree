@@ -9,6 +9,7 @@ import {
   Res,
   Patch,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dto/user/create-user-dto';
@@ -17,6 +18,7 @@ import { UpdateUserDto } from '../dto/user/update-user-dto';
 import { DeleteUserDto } from '../dto/user/delete-user-dto';
 import * as cookieParser from 'cookie-parser';
 import { Request, Response, response } from 'express';
+import { JwtAuthGuard } from './jwt.guard';
 
 @Controller('user')
 export class UserController {
@@ -49,7 +51,13 @@ export class UserController {
 
   @Put('/:userId')
   async update(@Param('userId') userId: number, @Body() data: UpdateUserDto) {
-    return await this.userService.update(userId, data.password, data.role, data.desc, data.newPassword);
+    return await this.userService.update(
+      userId,
+      data.password,
+      data.role,
+      data.desc,
+      data.newPassword,
+    );
   }
 
   @Delete('/:userId')
@@ -61,14 +69,23 @@ export class UserController {
   }
 
   @Get('/out')
-  async logout(@Res() response: Response){
-    response.clearCookie('Authorization')
-    response.status(200).send('로그아웃 완료')
+  async logout(@Res() response: Response) {
+    response.clearCookie('Authorization');
+    response.status(200).send('로그아웃 완료');
+  }
+
+  // 로그인 여부 확인
+  @Get('/isLogin')
+  @UseGuards(JwtAuthGuard)
+  async isLogin() {
+    console.log('aaa');
+    return true;
   }
 
   @Get('/:userId')
-  async getCustomRepositoryToken(@Param('userId') userId:number){
-    return await this.userService.getUser(userId)
+  async getCustomRepositoryToken(@Param('userId') userId: number) {
+    return await this.userService.getUser(userId);
   }
+
   //Get user로 얻어올 정보 이름, 이메일, 한마디
 }

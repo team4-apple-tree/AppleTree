@@ -62,6 +62,22 @@ $(document).ready(async () => {
     publicStudies.sort((a, b) => b.id - a.id); // 아이디 높은 순으로 정렬
     displayPage(publicStudies, currentPage);
   });
+
+  $(document).on('click', '#createStudy', async () => {
+    await axios('http://localhost:4444/user/isLogin', {
+      headers: {
+        Authorization: getCookie(),
+      },
+    })
+      .then(() => {
+        window.location.href = 'createstudygroup.html';
+      })
+      .catch((response) => {
+        if (response.response.data.error === 'Forbidden') {
+          alert('로그인이 필요한 기능입니다.');
+        }
+      });
+  });
 });
 
 function postingPublicStudies(publicStudy, studyBody) {
@@ -97,4 +113,11 @@ function postingPublicStudies(publicStudy, studyBody) {
   `;
 
   studyBody.appendChild(tempDiv);
+}
+
+// 쿠키 값 가져오는 함수
+function getCookie() {
+  const cookie = decodeURIComponent(document.cookie);
+  const [name, value] = cookie.split('=');
+  return value;
 }
