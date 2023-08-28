@@ -6,8 +6,11 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { MongoClient, MongoClientOptions } from 'mongodb';
+import { Injectable } from '@nestjs/common';
 
 @WebSocketGateway()
+@Injectable()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -15,6 +18,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   connectedClients: { [socketId: string]: boolean } = {};
   clientNickname: { [socketId: string]: string } = {};
   roomUsers: { [key: string]: string[] } = {};
+
+  private mongoClient: MongoClient;
+
+  constructor() {
+    const mongoOptions: MongoClientOptions = {};
+
+    this.mongoClient = new MongoClient(
+      'mongodb://localhost:27017/chat_log',
+      mongoOptions,
+    );
+    this.mongoClient.connect();
+  }
 
   handleConnection(client: Socket): void {
     if (this.connectedClients[client.id]) {
@@ -59,7 +74,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('setUserName')
-  handlesetUserName(client: Socket, nick: string): void {
+  handleSetUserName(client: Socket, nick: string): void {
     this.clientNickname[client.id] = nick;
   }
 
@@ -130,6 +145,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .to(room)
       .emit('userList', { room, userList: this.roomUsers[room] });
   }
+
   @SubscribeMessage('chatMessage')
   handleChatMessage(
     client: Socket,
@@ -141,5 +157,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       message: data.message,
       room: data.room,
     });
+
+    // MongoDB에 채팅 데이터 저장
+    const chatCollection = this.mongoClient.db('chat_logs').collection('chats');
+    const chatData = {
+      user: this.clientNickname[client.id],
+      message: data.message,
+      timestamp: new Date(),
+    };
+    chatCollection.insertOne(chatData);
   }
 }
