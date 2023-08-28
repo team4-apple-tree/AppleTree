@@ -1,9 +1,11 @@
 /* header */
-#header {
+header {
   background-color: #19baa4;
   color: #fff;
   padding: 10px 0;
   text-align: center;
+  margin-bottom: 30px;
+  height: 40px;
 }
 
 /* main */
@@ -25,7 +27,7 @@
   margin-bottom: 15px;
 }
 
-.main .mainSection {
+.mainSection {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;
@@ -33,7 +35,7 @@
 /* todo */
 .main .todo-section {
 }
-.main .todo-section .todo-input {
+.todo-section .todo-input {
   border: 1px solid #ccc;
   padding: 7px;
   border-radius: 8px;
@@ -41,34 +43,41 @@
 }
 
 /* user-management */
-.main .user-management-section {
+.user-management-section {
+  margin-top: 20px;
 }
 
 /* chat */
 .main .chat-section {
 }
-.main .chat-section .chatMember {
+.chat-section .chatMember {
   border: 1px solid #ccc;
   border-radius: 8px;
   height: 150px;
   margin-bottom: 20px;
   padding: 7px;
-
+  margin-right: 10px;
   font-size: 12px;
 }
-.main .chat-section .chat-messages {
+.chat-section .chat-messages {
   border: 1px solid #ccc;
   border-radius: 8px;
   height: 350px;
   margin-bottom: 20px;
   padding: 7px;
-
   font-size: 12px;
+  overflow-y: scroll;
+  width: 300px;
+  padding-right: 10px;
+  margin-right: 10px;
 }
-.main .chat-section .chat-input {
-  border: 1px solid #ccc;
+.chat-section .chat-input {
   padding: 7px;
-  border-radius: 8px;
+}
+
+#room1-messageInput {
+  width: 260px;
+  height: 20px;
 }
 
 .main .btn {

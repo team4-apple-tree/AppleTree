@@ -6,7 +6,10 @@
     <title>Study Room</title>
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/room.css" />
-
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
+    />
     <!-- jquery & axios -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
@@ -45,14 +48,33 @@
           <!-- 실시간 채팅방 -->
           <div class="mainSection chat-section">
             <h2>실시간 채팅방</h2>
+            <div class="rooms">
+              <div class="room" id="room1">
+                <div class="users" id="room1Users"></div>
+                <div class="chat-container" id="room1-chat-container">
+                  <ul class="chat-list" id="room1-chat-list"></ul>
+                </div>
+              </div>
+            </div>
             <div class="chatMember">채팅방참여자 목록</div>
+            <p>내 이름: <span id="UserName"></span></p>
             <div class="chat-messages">
               <!-- 채팅 메시지 출력 영역 -->
-              <div class="messageBox">채팅</div>
+              <ul id="room1-chat-list" class="chat-list"></ul>
             </div>
             <div class="chat-input">
-              <input type="text" placeholder="메시지 입력" />
-              <button class="btn">전송</button>
+              <input
+                id="room1-messageInput"
+                type="text"
+                placeholder="메시지 입력"
+              />
+              <button class="btn" onclick="sendRoomMessage('room1')">
+                전송
+              </button>
+              <div class="button-container">
+                <button onclick="joinRoom('room1')">Join</button>
+                <button onclick="exitRoom('room1')">Exit</button>
+              </div>
             </div>
           </div>
         </section>
@@ -60,5 +82,7 @@
     </div>
 
     <!-- script part -->
+    <script src="./js/chat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
   </body>
 </html>

@@ -8,7 +8,8 @@
       href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
     />
     <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" href="./css/chat.css" />
+
+    <link rel="stylesheet" href="./css/room.css" />
 
     <!-- axios -->
     <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
@@ -18,46 +19,64 @@
     <title>채팅</title>
   </head>
   <body>
-    <div class="container">
-      <h1>사과나무</h1>
-      <p>내 이름: <span id="UserName"></span></p>
-      <div class="rooms">
-        <div class="room" id="room1">
-          <h2>스터디그룹</h2>
-          <div class="button-container">
-            <button onclick="joinRoom('room1')">Join</button>
-            <button onclick="exitRoom('room1')">Exit</button>
-          </div>
-          <div class="users" id="room1Users"></div>
-          <div class="chat-container" id="room1-chat-container">
-            <ul class="chat-list" id="room1-chat-list"></ul>
-          </div>
-          <div class="chat-input">
-            <input type="text" id="room1-messageInput" />
-            <button onclick="sendRoomMessage('room1')">Send</button>
-          </div>
-        </div>
-        <div class="room" id="room2">
-          <h2>스터디그룹</h2>
-          <div class="button-container">
-            <button onclick="joinRoom('room2')">Join</button>
-            <button onclick="exitRoom('room2')">Exit</button>
-          </div>
-          <div class="users" id="room2Users"></div>
-          <div class="chat-container" id="room2-chat-container">
-            <ul class="chat-list" id="room2-chat-list"></ul>
-          </div>
-          <div class="chat-input">
-            <input
-              type="text"
-              id="room2-messageInput"
-              placeholder="Type a message..."
-            />
-            <button onclick="sendRoomMessage('room2')">Send</button>
-          </div>
+    <header>
+      <h1><a href="#">사과나무</a>Study Room</h1>
+    </header>
+    <section id="content">
+      <!-- todo관리 -->
+      <div class="mainSection todo-section">
+        <h2>Todo 관리</h2>
+        <ul class="todo-list">
+          <!-- Todo 항목 출력 -->
+          <li>할 일 들어가는 공간</li>
+        </ul>
+        <div class="todo-input">
+          <input type="text" placeholder="새로운 Todo 추가" />
+          <button class="btn">추가</button>
         </div>
       </div>
-    </div>
+
+      <!-- 화상 채팅 -->
+      <div class="mainSection user-management-section">
+        <h2>화상 채팅</h2>
+        <ul class="user-list">
+          <!-- 유저 목록 출력 -->
+        </ul>
+      </div>
+
+      <!-- 실시간 채팅방 -->
+      <div class="mainSection chat-section">
+        <h2>실시간 채팅방</h2>
+        <div class="button-container">
+          <button onclick="joinRoom('room1')">Join</button>
+          <button onclick="exitRoom('room1')">Exit</button>
+        </div>
+        <div class="chatMember">
+          <p>채팅방참여자 목록</p>
+          <p>내 이름: <span id="UserName"></span></p>
+        </div>
+        <div class="chat-messages">
+          <div class="rooms">
+            <div class="room" id="room1">
+              <div class="users" id="room1Users"></div>
+              <div class="chat-container" id="room1-chat-container">
+                <ul class="chat-list" id="room1-chat-list"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <input
+            id="room1-messageInput"
+            type="text"
+            placeholder="메시지 입력"
+          />
+          <button class="btn" onclick="sendRoomMessage('room1')">전송</button>
+        </div>
+      </div>
+    </section>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
     <script src="./js/chat.js"></script>
   </body>
