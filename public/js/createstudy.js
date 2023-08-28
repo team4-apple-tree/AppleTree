@@ -62,111 +62,92 @@ $(document).ready(function () {
     }
   });
 
-  // 스터디 만들기 버튼 클릭 시 미리보기 모달 열기
-  $('.createRoomBtn').click(function () {
-    // 미리보기 컨텐츠 생성
-    var previewContent = createPreviewContent();
-    // 모달에 미리보기 컨텐츠 추가
-    $('#previewContent').html(previewContent);
-
-    // 이미지 미리보기 업데이트
-    var selectedImage = document.getElementById('roomImage');
-    var previewImage = document.getElementById('previewImage');
-    previewImage.src = selectedImage.src;
-
-    // 모달 열기
-    $('#previewModal').show();
-  });
-
   // 모달 닫기 버튼 클릭 시 모달 닫기
   $('#closeModal').click(function () {
     $('#previewModal').hide();
   });
 
-  // 스터디 생성 버튼 클릭 이벤트
-  $(document).on('click', '#createStudyBtn', async () => {
-    const isPublic = $(`input[name='publicOption']:checked`).val();
-    const max = $('#max').val();
-    const name = $("input[name='title']").val();
-    const image = $('#imageUpload')[0].files[0];
-    const startDate = $('#startDate').val();
-    const endDate = $('#endDate').val();
-    const isPassword = $('#passwordToggle').prop('checked');
-    const password = $("input[name='password']").val();
-    const desc = $('#studyEtiquette').val();
+  // 스터디 만들기 버튼 클릭 이벤트
+  $(document).on('click', '#createBtn', async () => {
+    await axios('http://localhost:4444/user/isLogin', {
+      headers: {
+        Authorization: getCookie(),
+      },
+    })
+      .then(() => {
+        const isPublic = $(`input[name='publicOption']:checked`).val();
+        const max = $('#max').val();
+        const name = $("input[name='title']").val();
+        const image = $('#imageUpload')[0].files[0];
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        const isPassword = $('#passwordToggle').prop('checked');
+        const password = $("input[name='password']").val();
+        const desc = $('#studyEtiquette').val();
 
-    if (!isPublic) {
-      alert('공개 여부를 선택해주세요.');
+        console.log(isPublic);
+        if (!isPublic) {
+          alert('공개 여부를 선택해주세요.');
 
-      $('#previewModal').hide();
-    } else if (!max) {
-      alert('최대 인원수를 선택해주세요.');
+          $('#previewModal').hide();
+        } else if (!max) {
+          alert('최대 인원수를 선택해주세요.');
 
-      $('#previewModal').hide();
-    } else if (!name) {
-      alert('스터디 이름을 입력해주세요.');
+          $('#previewModal').hide();
+        } else if (!name) {
+          alert('스터디 이름을 입력해주세요.');
 
-      $('#previewModal').hide();
-    } else if (!image) {
-      alert('대표 이미지를 삽입해주세요.');
+          $('#previewModal').hide();
+        } else if (!image) {
+          alert('대표 이미지를 삽입해주세요.');
 
-      $('#previewModal').hide();
-    } else if (!startDate || !endDate) {
-      alert('스터디 이용 기간을 선택해주세요.');
+          $('#previewModal').hide();
+        } else if (!startDate || !endDate) {
+          alert('스터디 이용 기간을 선택해주세요.');
 
-      $('#previewModal').hide();
-    } else if (isPassword && !password) {
-      alert('비밀번호를 입력해주세요.');
+          $('#previewModal').hide();
+        } else if (isPassword && !password) {
+          alert('비밀번호를 입력해주세요.');
 
-      $('#previewModal').hide();
-    } else if (!desc) {
-      alert('스터디 에티켓을 입력해주세요.');
+          $('#previewModal').hide();
+        } else if (!desc) {
+          alert('스터디 에티켓을 입력해주세요.');
 
-      $('#previewModal').hide();
-    } else {
-      const formData = new FormData();
+          $('#previewModal').hide();
+        } else {
+          // 미리보기 컨텐츠 생성
+          var previewContent = createPreviewContent();
+          // 모달에 미리보기 컨텐츠 추가
+          $('#previewContent').html(previewContent);
 
-      formData.append('isPublic', isPublic);
-      formData.append('max', max);
-      formData.append('name', name);
-      formData.append('image', image);
-      formData.append('startDate', startDate);
-      formData.append('endDate', endDate);
-      formData.append('isPassword', isPassword);
-      formData.append('desc', desc);
-      if (isPassword) {
-        formData.append('password', password);
-      }
+          // 이미지 미리보기 업데이트
+          var selectedImage = document.getElementById('roomImage');
+          var previewImage = document.getElementById('previewImage');
+          previewImage.src = selectedImage.src;
 
-      await axios
-        .post('http://localhost:4444/group', formData, {
-          headers: {
-            Authorization: getCookie(),
-          },
-        })
-        .then(() => {
-          alert('스터디가 생성되었습니다.');
+          // 모달 열기
+          $('#previewModal').show();
 
-          window.location.href = 'index.html';
-        })
-        .catch((response) => {
-          if (response.response.data.error === 'Forbidden') {
-            // alert('로그인이 필요한 기능입니다.');
-            console.log(response);
-            alert(response.response.data.message);
+          createStudy(
+            isPublic,
+            max,
+            name,
+            image,
+            startDate,
+            endDate,
+            isPassword,
+            desc,
+            password,
+          );
+        }
+      })
+      .catch((response) => {
+        if (response.response.data.error === 'Forbidden') {
+          alert('로그인이 필요한 기능입니다.');
 
-            // window.location.href = 'login.html';
-          } else if (response.response.data.error === 'Internal Server Error') {
-            alert('서버 오류');
-
-            window.location.href = 'index.html';
-          } else {
-            alert('스터디 생성에 실패하였습니다.');
-
-            window.location.href = 'index.html';
-          }
-        });
-    }
+          window.location.href = 'login.html';
+        }
+      });
   });
 });
 
@@ -224,6 +205,62 @@ function createPreviewContent() {
   `;
 
   return content;
+}
+
+// 스터디 생성 버튼 클릭 이벤트
+function createStudy(
+  isPublic,
+  max,
+  name,
+  image,
+  startDate,
+  endDate,
+  isPassword,
+  desc,
+  password,
+) {
+  $(document).on('click', '#createStudyBtn', async () => {
+    const formData = new FormData();
+
+    formData.append('isPublic', isPublic);
+    formData.append('max', max);
+    formData.append('name', name);
+    formData.append('image', image);
+    formData.append('startDate', startDate);
+    formData.append('endDate', endDate);
+    formData.append('isPassword', isPassword);
+    formData.append('desc', desc);
+    if (isPassword) {
+      formData.append('password', password);
+    }
+
+    await axios
+      .post('http://localhost:4444/group', formData, {
+        headers: {
+          Authorization: getCookie(),
+        },
+      })
+      .then(() => {
+        alert('스터디가 생성되었습니다.');
+
+        window.location.href = 'index.html';
+      })
+      .catch((response) => {
+        if (response.response.data.error === 'Forbidden') {
+          alert('로그인이 필요한 기능입니다.');
+
+          window.location.href = 'login.html';
+        } else if (response.response.data.error === 'Internal Server Error') {
+          alert('서버 오류');
+
+          window.location.href = 'index.html';
+        } else {
+          alert('스터디 생성에 실패하였습니다.');
+
+          window.location.href = 'index.html';
+        }
+      });
+  });
 }
 
 // 쿠키 값 가져오는 함수

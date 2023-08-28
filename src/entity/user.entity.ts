@@ -53,7 +53,7 @@ export class User {
   @Column('varchar')
   email: string;
 
-  @Column('varchar')
+  @Column('varchar', { default: null })
   desc: string;
 
   @Column('varchar', { select: false })

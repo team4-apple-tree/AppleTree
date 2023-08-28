@@ -25,7 +25,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const mongoOptions: MongoClientOptions = {};
 
     this.mongoClient = new MongoClient(
-      'mongodb://localhost:27017/chat_log',
+      'mongodb://127.0.0.1:27017/chat_log',
       mongoOptions,
     );
     this.mongoClient.connect();

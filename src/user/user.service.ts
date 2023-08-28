@@ -87,6 +87,7 @@ export class UserService {
       role,
       // desc
     });
+
     const payload = {
       id: insertUser.identifiers[0].id,
       name: insertUser.identifiers[0].name,
@@ -94,13 +95,23 @@ export class UserService {
     const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;
   }
-// 패스워드 수정 부분이 누락되어있다.
-// 이 부분 추가
-  async update(userId: number, password: string, newRole: roleEnum, desc:string, newPassword : string) {
+  // 패스워드 수정 부분이 누락되어있다.
+  // 이 부분 추가
+  async update(
+    userId: number,
+    password: string,
+    newRole: roleEnum,
+    desc: string,
+    newPassword: string,
+  ) {
     await this.checkPassword(userId, password);
-        const hash = await bcrypt.hash(newPassword, 10);
-        newPassword = hash
-    return this.userRepository.update(userId, { role: newRole, desc, password:newPassword });
+    const hash = await bcrypt.hash(newPassword, 10);
+    newPassword = hash;
+    return this.userRepository.update(userId, {
+      role: newRole,
+      desc,
+      password: newPassword,
+    });
   }
 
   async deleteUser(userId: number, password: string) {
@@ -108,15 +119,15 @@ export class UserService {
     return this.userRepository.softDelete(userId);
   }
 
-  async getUser(userId:number){
+  async getUser(userId: number) {
     const user = await this.userRepository.findOne({
-      where : { deleteAt:null, id:userId },
-      select : ['name', 'email', 'role']
-    })
-    if (_.isNil(user)){
-      throw new NotFoundException('해당 유저의 정보가 존재하지 않습니다.')
+      where: { deleteAt: null, id: userId },
+      select: ['name', 'email', 'role'],
+    });
+    if (_.isNil(user)) {
+      throw new NotFoundException('해당 유저의 정보가 존재하지 않습니다.');
     }
-    return user
+    return user;
   }
 
   // 밑 로직 userId를 통해 password찾기
@@ -147,5 +158,4 @@ export class UserService {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }
-  
 }
