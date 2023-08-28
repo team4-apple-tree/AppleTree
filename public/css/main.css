@@ -640,3 +640,10 @@ ul {
   background: #fff;
   color: #000;
 }
+
+.horizontal-line {
+  position: relative;
+  bottom: 46px;
+  border-color: #19baa4;
+  z-index: -1;
+}

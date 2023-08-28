@@ -14,6 +14,9 @@ $(document).on('click', '#loginBtn', async (e) => {
     .then((response) => {
       console.log(response);
       alert('로그인 성공');
+
+      // 로그인 성공 후 페이지 이동
+      window.location.href = 'http://localhost:4444/';
     })
     .catch((error) => {
       console.error(error);
