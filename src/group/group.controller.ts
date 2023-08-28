@@ -176,12 +176,14 @@ export class GroupController {
 
   // 스터디그룹 입장
   @Post(':groupId/enter')
+  @UseGuards(JwtAuthGuard)
   async enterGroup(
     @Param('groupId') groupId: number,
     @Res({ passthrough: true }) res: Response,
+    @Req() req: any,
   ): Promise<any> {
     try {
-      const user = res.locals.user;
+      const user = await req.user;
 
       await this.groupService.enterGroup(groupId, user);
 

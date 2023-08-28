@@ -64,11 +64,12 @@ $(document).ready(async () => {
   });
 
   $(document).on('click', '#createStudy', async () => {
-    await axios('http://localhost:4444/user/isLogin', {
-      headers: {
-        Authorization: getCookie(),
-      },
-    })
+    await axios
+      .get('http://localhost:4444/user/isLogin', {
+        headers: {
+          Authorization: getCookie(),
+        },
+      })
       .then(() => {
         window.location.href = 'createstudygroup.html';
       })
@@ -78,6 +79,23 @@ $(document).ready(async () => {
         }
       });
   });
+
+  // 스터디 클릭 시 이벤트
+  $(document).on('click', '.study-item-img-wrap', async (e) => {
+    const studyId = e.target.parentNode.id;
+
+    console.log(getCookie());
+
+    await axios
+      .post(`http://localhost:4444/group/${studyId}/enter`, null, {
+        headers: {
+          Authorization: getCookie(),
+        },
+      })
+      .then(() => {
+        window.location.href = `room.html?id=${studyId}`;
+      });
+  });
 });
 
 function postingPublicStudies(publicStudy, studyBody) {
@@ -85,7 +103,7 @@ function postingPublicStudies(publicStudy, studyBody) {
 
   tempDiv.className = 'study-item-list flex-wrap';
   tempDiv.innerHTML = `
-        <div class="study-item-img-wrap">
+        <div class="study-item-img-wrap" id="${publicStudy.id}">
             <img
             src="${publicStudy.image}"
             alt="study-img"
