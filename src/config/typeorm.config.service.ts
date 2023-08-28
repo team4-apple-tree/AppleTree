@@ -11,6 +11,7 @@ import { Seat } from '../entity/seat.entity';
 import { Todo } from '../entity/to-do.entity';
 import { Point } from '../entity/point.entity';
 import { Group } from '../entity/group.entity';
+import { Payment } from '../entity/payment.entity';
 
 import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
@@ -40,6 +41,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Point,
         Group,
         Access,
+        Payment,
       ],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'),
     };

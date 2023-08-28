@@ -27,6 +27,10 @@ import { S3Service } from './aws.service';
 import { UploadService } from './upload.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { PaymentService } from './payment/payment.service';
+import { PaymentController } from './payment/payment.controller';
+import { PaymentGateway } from './payment/payment.gateway';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -65,9 +69,10 @@ import { diskStorage } from 'multer';
     CardModule,
     // MemberModule,
     UserModule,
+    PaymentModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, ChatGateway, S3Service, UploadService],
+  controllers: [AppController, PaymentController],
+  providers: [AppService, ChatGateway, S3Service, UploadService, PaymentService, PaymentGateway],
 })
 // export class AppModule implements NestModule {
 //   configure(consumer: MiddlewareConsumer) {

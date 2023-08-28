@@ -1,62 +1,90 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-header {
+/* header */
+#header {
   background-color: #19baa4;
   color: #fff;
   padding: 10px 0;
   text-align: center;
 }
 
-main {
+/* main */
+.main {
   display: flex;
   justify-content: space-around;
   padding: 20px;
 }
 
-section {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 0 10px;
-  flex: 1;
-  height: 100px;
-  min-height: 700px;
+#content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
-h2 {
-  font-size: 1.5rem;
+.main h2 {
+  font-size: 20px;
+  font-weight: 600;
   margin-bottom: 15px;
 }
 
-.chat-input input,
-.todo-input input {
-  padding: 8px;
+.main .mainSection {
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 70%;
+  padding: 8px;
+}
+/* todo */
+.main .todo-section {
+}
+.main .todo-section .todo-input {
+  border: 1px solid #ccc;
+  padding: 7px;
+  border-radius: 8px;
+  margin-top: 20px;
 }
 
-.chat-input button,
-.todo-input button {
-  padding: 8px 12px;
+/* user-management */
+.main .user-management-section {
+}
+
+/* chat */
+.main .chat-section {
+}
+.main .chat-section .chatMember {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 150px;
+  margin-bottom: 20px;
+  padding: 7px;
+
+  font-size: 12px;
+}
+.main .chat-section .chat-messages {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 350px;
+  margin-bottom: 20px;
+  padding: 7px;
+
+  font-size: 12px;
+}
+.main .chat-section .chat-input {
+  border: 1px solid #ccc;
+  padding: 7px;
+  border-radius: 8px;
+}
+
+.main .btn {
+  padding: 6px 11px;
   background-color: #19baa4;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-left: 10px;
+  transition: 0.5s;
 }
-
-.user-list,
-.todo-list,
-.chat-messages {
-  list-style: none;
-  padding: 0;
+.main .btn:hover {
+  background: none;
+  color: #333;
+  border: 1px solid #ccc;
 }
 
 .user-list li,
@@ -67,7 +95,13 @@ h2 {
 }
 
 .user-management-section {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0 10px;
+  flex: 1;
   height: 100px;
+  min-height: 700px;
 }
 
 .main-section {
