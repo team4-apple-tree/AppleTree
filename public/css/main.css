@@ -1,65 +1,3 @@
-/* 헤더부분css */
-header {
-  background-color: #19baa4;
-  color: #fff;
-  padding: 10px 0;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  font-size: 24px;
-  margin-right: 20px;
-  cursor: pointer;
-}
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-}
-
-.navigation ul {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-}
-
-.navigation ul li {
-  margin-right: 80px;
-}
-
-.navigation ul li a {
-  text-decoration: none;
-  color: #fff;
-}
-
-.search-login {
-  display: flex;
-  align-items: center;
-}
-
-.search-login input[type='text'] {
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-}
-
-.login-button {
-  padding: 4px 16px;
-  background-color: #2acf30;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  margin-left: 10px;
-}
-/* 헤더부분css */
-
 /* mainVisual css */
 #mainVisual {
   padding: 64px 0;
@@ -357,10 +295,8 @@ header {
   font-size: 13px;
   line-height: 18px;
 }
-/* mainVisual css */
-
+/* ============================================== */
 /* main css */
-
 .content {
   padding-top: 66px;
   display: flex;
@@ -647,3 +583,54 @@ ul {
   border-color: #19baa4;
   z-index: -1;
 }
+
+
+/* footer */
+#footer {
+	bottom: 0;
+	background-color: #333;
+	padding: 30px;
+	cursor: default;
+}
+#footer .inner {
+	height: 100%;
+}
+#footer .footerGnb {
+	display: flex;
+	border-top: 1px solid #fff;
+	color: #fff;
+	justify-content: space-around;
+	padding-top: 20px;
+	
+}
+#footer .footerGnb li {
+	font-size: 10px;
+	font-weight: 300;
+	line-height: 1.9;
+}
+#footer .footerGnb li a {
+	font-size: 10px;
+	font-weight: 300;
+	color: #fff;
+}
+#footer .madeBy {}
+#footer .saLink {
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+#footer .language {
+	margin-bottom: 2px;
+}
+#footer select {
+    float: right;
+    width: 180px;
+    margin-top: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+/* ============================================ */
+
+/* profile css */
+

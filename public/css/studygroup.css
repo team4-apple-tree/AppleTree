@@ -1,14 +1,12 @@
 header {
-  background-color: #19baa4;
+  background-color: #19BAA4;
   color: #fff;
   padding: 10px 0;
 }
-
 .header-content {
   display: flex;
   align-items: center;
 }
-
 .logo {
   font-size: 24px;
   margin-right: 20px;
@@ -20,7 +18,6 @@ header {
   display: flex;
   justify-content: space-between;
 }
-
 /* 스터디룸생성css */
 * {
   box-sizing: border-box;
@@ -44,17 +41,15 @@ header {
   font-size: 24px;
   font-weight: 700;
   line-height: 36px;
-  color: #2a333c;
+  color: #2A333C;
   margin-top: 24px;
   margin-bottom: 36px;
   letter-spacing: -1px;
 }
-
 .formGroup {
   position: relative;
   padding: 20px 0;
 }
-
 .formLabel {
   position: absolute;
   top: 20px;
@@ -68,16 +63,24 @@ header {
   letter-spacing: -0.6px;
   display: inline-block;
 }
-
+.passwordtitle {
+  position: relative;
+  top: 35px;
+}
+.dateboard {
+  top: 30px;
+}
+#name {
+  position: relative;
+  bottom: 10px;
+}
 .formContent {
   position: relative;
   padding-left: 140px;
 }
-
 .formContent .formContentLabel:first-child {
   margin: 0 !important;
 }
-
 .formContent .formContentLabel.half {
   width: 30%;
 }
@@ -85,13 +88,12 @@ header {
   float: left;
   cursor: pointer;
   font-size: 15px;
-  color: #3e4345;
+  color: #3E4345;
   letter-spacing: -0.6px;
 }
 .formContent .checkbox:checked {
-  background-color: #19baa4;
+  background-color: #19BAA4;
 }
-
 .formContent .checkbox {
   float: left;
   width: 18px;
@@ -113,20 +115,16 @@ header {
   color: #666;
   line-height: 18px;
 }
-
 .formContent {
   position: relative;
   padding-left: 140px;
 }
-
 .container.createRoom {
   width: 720px;
 }
-
 img {
   min-width: 100%;
 }
-
 .create-room-img-area {
   position: relative;
   width: 240px;
@@ -142,7 +140,6 @@ img {
   height: 100%;
   width: 100%;
 }
-
 .imgEditBtnRec {
   position: absolute;
   left: 0;
@@ -172,14 +169,12 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
-
 .formContent .inputDate {
   width: 47%;
   color: #333;
   line-height: 14px !important;
   padding: 14px px 16px !important;
 }
-
 .formContent .inputField,
 .formContent .inputDate,
 .formContent .dateDivision,
@@ -189,7 +184,7 @@ a {
 }
 .form-control.rounded {
   border-radius: 8px;
-  border-color: #e1e6ea !important;
+  border-color: #E1E6EA !important;
   padding: 14px 16px;
   width: 47%;
 }
@@ -199,37 +194,30 @@ a {
 .text-center {
   text-align: center !important;
 }
-
 .flatpickr-input[readonly] {
   cursor: pointer;
 }
-
 .flatpickr-input[readonly] {
   cursor: pointer;
 }
-
 .formContent .dateDivision {
   width: 6%;
   text-align: center;
   line-height: 44px;
 }
-
 .formContent .dateNotice {
   margin-top: 12px;
   font-size: 14px;
   line-height: 24px;
   font-weight: 400;
-  color: #788da1;
+  color: #788DA1;
 }
-
 p {
   margin: 0;
 }
-
 .formGroup:first-child {
   border: 0;
 }
-
 .password-container {
   display: flex;
   align-items: center;
@@ -237,18 +225,16 @@ p {
 .formContent .toggleBtn.password {
   margin: 3px 20px 0 0;
 }
-
 .formContent .toggleBtn {
   display: block;
   position: relative;
   float: left;
   width: 36px;
   height: 12px;
-  background-color: #e1e6ea;
+  background-color: #E1E6EA;
   border-radius: 12px;
   cursor: inherit;
 }
-
 .formContent.textarea textarea {
   min-width: 100%;
   max-width: 100%;
@@ -260,7 +246,6 @@ p {
 .createForm textarea {
   border-color: #ccc;
 }
-
 textarea.form-control {
   height: auto;
 }
@@ -274,15 +259,13 @@ textarea.form-control {
 .btn-skin {
   border: none;
   color: white;
-  background-color: #19baa4;
+  background-color: #19BAA4;
 }
-
 .btn-lg {
   padding: 14px 50px;
   font-size: 1.1rem;
   font-weight: 500;
 }
-
 .btn {
   display: inline-block;
   text-align: center;
@@ -296,7 +279,6 @@ textarea.form-control {
   background-image: none;
   border: 1px solid transparent;
 }
-
 /* 모달 스타일 */
 .modal {
   display: none;
@@ -308,7 +290,6 @@ textarea.form-control {
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1000;
 }
-
 .modal-content {
   position: absolute;
   top: 50%;
@@ -324,7 +305,6 @@ textarea.form-control {
   width: 400px;
   height: 650px;
 }
-
 .close {
   position: absolute;
   top: 15px;
@@ -334,56 +314,56 @@ textarea.form-control {
   color: #fff;
   cursor: pointer;
 }
-
 #previewImage {
   width: 100%;
   min-width: 100%;
   height: 200px;
 }
-
 .modal #createStudyBtn {
   position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
 }
-
 #previewContent h1 {
   font-size: 30px;
   margin-left: 8px;
   margin-top: 10px;
   font-weight: 800;
 }
-
 #previewContent div {
   margin-top: 30px;
 }
-
 #previewContent strong {
   font-size: 18px;
 }
-
 #previewContent p {
   font-size: 20px;
   font-weight: 600;
 }
-
 .day {
   font-size: 14px !important;
   font-weight: 600 !important;
-  background: #d3ffce;
+  background: #D3FFCE;
   border-radius: 100px;
   width: 80px;
   text-align: center;
-  color: #19baa4;
+  color: #19BAA4;
   position: relative;
   bottom: 25px;
   left: 100px;
 }
-
 #previewContent .confirm {
   text-align: center;
   margin-top: 65px;
   font-size: 12px;
   color: #666;
+}
+#max {
+  position: relative;
+  bottom: 5px;
+}
+.maxParticipants {
+  position: relative;
+  top: 25px;
 }

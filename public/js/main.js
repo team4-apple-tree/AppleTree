@@ -98,3 +98,12 @@ function postingPublicStudies(publicStudy, studyBody) {
 
   studyBody.appendChild(tempDiv);
 }
+
+// footer familySite
+function changeLang() {
+  const langSelect = document.getElementById("lang");
+
+  let selectValue = langSelect.options[langSelect.selectedIndex].value;
+  let selecttext = langSelect.options[langSelect.selectedIndex].text;
+}
+
