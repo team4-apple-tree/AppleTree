@@ -18,6 +18,8 @@ $(document).on('click', '#signinbtn', async (e) => {
     .then((response) => {
       console.log(response);
       alert('회원가입 성공');
+
+      window.location.href = 'http://localhost:4444/login.html';
     })
     .catch((error) => {
       console.error(error);

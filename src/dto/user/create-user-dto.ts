@@ -28,7 +28,8 @@ export class CreateUserDto {
   readonly name: string;
 
   @IsString()
-  readonly desc: string | null
+  @IsOptional()
+  readonly desc: string | null;
 
   @IsEnum(roleEnum)
   @IsOptional()

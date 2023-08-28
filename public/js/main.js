@@ -1,17 +1,15 @@
 $(document).ready(async () => {
-  const pageSize = 15; // 한 페이지에 보여줄 데이터 개수
-  let currentPage = 1; // 현재 페이지 초기화
-  let publicStudies = []; // 모든 데이터를 저장할 배열
+  const pageSize = 15;
+  let currentPage = 1;
+  let publicStudies = [];
 
-  // 페이지에 따라 데이터를 표시하는 함수
-  const displayPage = (page) => {
+  const displayPage = (data, page) => {
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    const currentPageData = publicStudies.slice(startIndex, endIndex);
+    const currentPageData = data.slice(startIndex, endIndex);
 
     const studyBody = document.querySelector('.studies-body');
 
-    // 이전 데이터를 비우고 새로운 데이터만 추가하여 표시
     if (page === 1) {
       studyBody.innerHTML = '';
     }
@@ -21,13 +19,11 @@ $(document).ready(async () => {
     }
   };
 
-  // 데이터를 모두 가져와서 배열에 저장
   try {
     const response = await axios.get('http://localhost:4444/group/');
-    publicStudies = response.data.reverse(); // 최신 데이터가 맨 앞에 오도록 배열 뒤집기
+    publicStudies = response.data.sort((a, b) => a.id - b.id); // 기본은 아이디 낮은 순으로 정렬
 
-    // 초기 페이지 로드
-    displayPage(currentPage);
+    displayPage(publicStudies, currentPage);
   } catch (error) {
     console.log(error);
     alert('실패');
@@ -37,12 +33,35 @@ $(document).ready(async () => {
   loadMoreButton.textContent = ' 더보기 ';
   loadMoreButton.classList.add('load-more-button');
   loadMoreButton.onclick = () => {
-    currentPage++; // 다음 페이지로 이동
-    displayPage(currentPage); // 다음 페이지 데이터 추가로 표시
+    currentPage++;
+    displayPage(publicStudies, currentPage);
   };
 
   const studiesContent = document.querySelector('.studies-contents');
   studiesContent.appendChild(loadMoreButton);
+
+  const horizontalLine = document.createElement('hr');
+  horizontalLine.classList.add('horizontal-line');
+  studiesContent.appendChild(horizontalLine);
+
+  const allButton = document.querySelector(
+    '.studies-tab-btn[data-study-tab="all"]',
+  );
+  const newButton = document.querySelector(
+    '.studies-tab-btn[data-study-tab="new"]',
+  );
+
+  allButton.addEventListener('click', () => {
+    currentPage = 1;
+    publicStudies.sort((a, b) => a.id - b.id); // 아이디 낮은 순으로 정렬
+    displayPage(publicStudies, currentPage);
+  });
+
+  newButton.addEventListener('click', () => {
+    currentPage = 1;
+    publicStudies.sort((a, b) => b.id - a.id); // 아이디 높은 순으로 정렬
+    displayPage(publicStudies, currentPage);
+  });
 });
 
 function postingPublicStudies(publicStudy, studyBody) {
