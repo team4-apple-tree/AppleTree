@@ -3,48 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/room.css" />
     <title>Study Room</title>
+    <link rel="stylesheet" href="./css/reset.css"/>
+    <link rel="stylesheet" href="./css/room.css"/>
+
+    <!-- jquery & axios -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <header>
-      <h1>Study Room</h1>
-    </header>
+    <div id="wrap">
+      <!-- header -->
+      <header id="header">
+        <h1><a href="./index.html">사과나무</a>Study Room</h1>
+      </header>
 
-    <main>
-      <section class="todo-section">
-        <h2>Todo 관리</h2>
-        <ul class="todo-list">
-          <!-- Todo 항목 출력 -->
-        </ul>
-        <div class="todo-input">
-          <input type="text" placeholder="새로운 Todo 추가" />
-          <button>추가</button>
-        </div>
-      </section>
+      <!-- main -->
+      <main id="container" class="main">
+        <section id="content">
+          <!-- todo관리 -->
+          <div class="mainSection todo-section">
+            <h2>Todo 관리</h2>
+            <ul class="todo-list">
+              <!-- Todo 항목 출력 -->
+              <li>할 일 들어가는 공간</li>
+            </ul>
+            <div class="todo-input">
+              <input type="text" placeholder="새로운 Todo 추가" />
+              <button class="btn">추가</button>
+            </div>
+          </div>
+  
+          <!-- 화상 채팅 -->
+          <div class="mainSection user-management-section">
+            <h2>화상 채팅</h2>
+            <ul class="user-list">
+              <!-- 유저 목록 출력 -->
+              <li>li test</li>
+            </ul>
+          </div>
+  
+          <!-- 실시간 채팅방 -->
+          <div class="mainSection chat-section">
+            <h2>실시간 채팅방</h2>
+            <div class="chatMember">채팅방참여자 목록</div>
+            <div class="chat-messages">
+              <!-- 채팅 메시지 출력 영역 -->
+              <div class="messageBox">채팅</div>
+            </div>
+            <div class="chat-input">
+              <input type="text" placeholder="메시지 입력" />
+              <button class="btn">전송</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
 
-      <section class="user-management-section">
-        <h2>유저 관리</h2>
-        <ul class="user-list">
-          <!-- 유저 목록 출력 -->
-        </ul>
-      </section>
-      <section class="main-section">
-        <h2>메인 세션</h2>
-        <div class="chat-messages">
-          <!-- 채팅 메시지 출력 영역 -->
-        </div>
-      </section>
-      <section class="chat-section">
-        <h2>실시간 채팅방</h2>
-        <div class="chat-messages">
-          <!-- 채팅 메시지 출력 영역 -->
-        </div>
-        <div class="chat-input">
-          <input type="text" placeholder="메시지 입력" />
-          <button>전송</button>
-        </div>
-      </section>
-    </main>
+
+    <!-- script part -->
+    <script src="./js/main.js"></script>
   </body>
 </html>
