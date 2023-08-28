@@ -151,9 +151,11 @@ $(document).ready(function () {
         })
         .catch((response) => {
           if (response.response.data.error === 'Forbidden') {
-            alert('로그인이 필요한 기능입니다.');
+            // alert('로그인이 필요한 기능입니다.');
+            console.log(response);
+            alert(response.response.data.message);
 
-            window.location.href = 'login.html';
+            // window.location.href = 'login.html';
           } else if (response.response.data.error === 'Internal Server Error') {
             alert('서버 오류');
 

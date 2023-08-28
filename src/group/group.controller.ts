@@ -31,6 +31,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from 'src/aws.service';
 import { JwtAuthGuard } from 'src/user/jwt.guard';
 import { validate } from 'class-validator';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesGuard } from 'src/user/roles.guard';
+import { roleEnum } from 'src/enums/userRoles.enum';
 
 @Controller('group')
 export class GroupController {
