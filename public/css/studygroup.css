@@ -69,6 +69,20 @@ header {
   display: inline-block;
 }
 
+.passwordtitle {
+  position: relative;
+  top: 35px;
+}
+
+.dateboard {
+  top: 30px;
+}
+
+#name {
+  position: relative;
+  bottom: 10px;
+}
+
 .formContent {
   position: relative;
   padding-left: 140px;
@@ -386,4 +400,14 @@ textarea.form-control {
   margin-top: 65px;
   font-size: 12px;
   color: #666;
+}
+
+#max {
+  position: relative;
+  bottom: 5px;
+}
+
+.maxParticipants {
+  position: relative;
+  top: 25px;
 }
