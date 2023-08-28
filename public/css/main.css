@@ -444,6 +444,15 @@ ul {
   margin-left: 10px;
 }
 
+/* .studies-tab-btn:hover {
+  background-color: #19baa4;
+  color: #000;
+}
+
+.studies-tab-btn.active:hover {
+  background-color: #fff;
+} */
+
 .studies-filter-line {
   width: 100%;
   height: 1px;
