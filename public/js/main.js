@@ -51,16 +51,24 @@ $(document).ready(async () => {
     '.studies-tab-btn[data-study-tab="new"]',
   );
 
-  allButton.addEventListener('click', () => {
+  allButton.addEventListener('click', (event) => {
+    event.preventDefault();
     currentPage = 1;
     publicStudies.sort((a, b) => a.id - b.id); // 아이디 낮은 순으로 정렬
     displayPage(publicStudies, currentPage);
+
+    allButton.classList.add('active');
+    newButton.classList.remove('active');
   });
 
-  newButton.addEventListener('click', () => {
+  newButton.addEventListener('click', (event) => {
+    event.preventDefault();
     currentPage = 1;
     publicStudies.sort((a, b) => b.id - a.id); // 아이디 높은 순으로 정렬
     displayPage(publicStudies, currentPage);
+
+    allButton.classList.remove('active');
+    newButton.classList.add('active');
   });
 
   $(document).on('click', '#createStudy', async () => {
