@@ -47,6 +47,7 @@ export class CardService {
       ...createCardDto,
       group,
     });
+
     return this.cardRepository.save(card);
   }
 

@@ -16,7 +16,7 @@ import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
 import { UploadService } from 'src/upload.service';
-import {  EntityManager, DataSource } from 'typeorm';
+import { EntityManager, DataSource } from 'typeorm';
 @Injectable()
 export class GroupService {
   constructor(
@@ -26,7 +26,7 @@ export class GroupService {
     private readonly userService: UserService,
     private readonly uploadService: UploadService,
     private readonly entityManager: EntityManager,
-    private readonly dataSource : DataSource
+    private readonly dataSource: DataSource,
   ) {}
 
   // 스터디그룹 생성
@@ -68,12 +68,11 @@ export class GroupService {
       // 트랜잭션 롤백
       await queryRunner.rollbackTransaction();
       throw error;
-      } finally {
-     // 트랜잭션 릴리즈
-        await queryRunner.release();
-      }
+    } finally {
+      // 트랜잭션 릴리즈
+      await queryRunner.release();
     }
-  
+  }
 
   // 공개 스터디 전체 조회
   async findAllGroups(): Promise<Group[]> {
