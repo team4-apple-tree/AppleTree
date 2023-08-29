@@ -38,6 +38,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         isDropdownVisible = !isDropdownVisible;
         dropdown.classList.toggle('show', isDropdownVisible);
       });
+
+      // 바깥 영역 클릭 시 드롭다운 메뉴 닫기
+      document.addEventListener('click', (event) => {
+        if (!dropdown.contains(event.target) && isDropdownVisible) {
+          dropdown.classList.remove('show');
+          isDropdownVisible = false;
+        }
+      });
     } catch (error) {
       console.error('에러지롱:', error);
     }
