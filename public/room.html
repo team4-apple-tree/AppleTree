@@ -3,86 +3,122 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Study Room</title>
-    <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" href="./css/room.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css"
     />
-    <!-- jquery & axios -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/room.css" />
+
+    <!-- axios -->
     <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>Study Room</title>
   </head>
   <body>
-    <div id="wrap">
-      <!-- header -->
-      <header id="header">
-        <h1><a href="./index.html">사과나무</a>Study Room</h1>
-      </header>
+    <header>
+      <p id="groupName">사과나무</p>
+      <!-- 드롭다운 메뉴 -->
+      <div class="dropdown">
+        <button class="dropbtn" id="dropbtn">팀규칙을 확인해주세요!</button>
+        <div class="dropdown-content">
+          <p id="TeamRole">팀규칙 내용</p>
+        </div>
+      </div>
 
-      <!-- main -->
-      <main id="container" class="main">
-        <section id="content">
-          <!-- todo관리 -->
-          <div class="mainSection todo-section">
-            <h2>Todo 관리</h2>
-            <ul class="todo-list">
-              <!-- Todo 항목 출력 -->
-              <li>할 일 들어가는 공간</li>
-            </ul>
-            <div class="todo-input">
-              <input type="text" placeholder="새로운 Todo 추가" />
-              <button class="btn">추가</button>
-            </div>
+      <div class="date">
+        <p id="startdate"></p>
+
+        <p id="enddate"></p>
+      </div>
+    </header>
+    <section id="content">
+      <!-- todo관리 -->
+      <div class="mainSection todo-section">
+        <h2>Todo 관리 <button id="addCardBtn">카드추가</button></h2>
+        <!-- 모달 -->
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <input type="text" id="Title" placeholder="제목을 입력해주세요." />
+            <textarea
+              type="text"
+              id="Descript"
+              placeholder="학습내용을 입력해주세요."
+            ></textarea>
+            <button id="createCard">카드 추가</button>
           </div>
+        </div>
+        <div class="todo-list">
+          <p>TODO</p>
+          <div class="TODO"></div>
+          <p>IN_PROGRESS</p>
+          <div class="IN_PROGRESS"></div>
+          <p>COMPLETED</p>
+          <div class="COMPLETED"></div>
+        </div>
+      </div>
 
-          <!-- 화상 채팅 -->
-          <div class="mainSection user-management-section">
-            <h2>화상 채팅</h2>
-            <ul class="user-list">
-              <!-- 유저 목록 출력 -->
-            </ul>
+      <!-- 모달 -->
+      <div class="cardModal" id="cardModal">
+        <div class="cardModal-content">
+          <span class="cardModalclose" id="closeCardModalBtn">&times;</span>
+          <h2 class="cardModal-title"></h2>
+          <p class="cardModal-description"></p>
+          <div class="cardModal-buttons">
+            <button class="cardModal-delete-btn">삭제</button>
+            <button class="cardModal-edit-btn">수정</button>
           </div>
+        </div>
+      </div>
 
-          <!-- 실시간 채팅방 -->
-          <div class="mainSection chat-section">
-            <h2>실시간 채팅방</h2>
-            <div class="rooms">
-              <div class="room" id="room1">
-                <div class="users" id="room1Users"></div>
-                <div class="chat-container" id="room1-chat-container">
-                  <ul class="chat-list" id="room1-chat-list"></ul>
-                </div>
+      <!-- 화상 채팅 -->
+      <div class="mainSection user-management-section">
+        <h2>화상 채팅</h2>
+        <ul class="user-list">
+          <!-- 유저 목록 출력 -->
+        </ul>
+      </div>
+
+      <!-- 실시간 채팅방 -->
+      <div class="mainSection chat-section">
+        <h2>실시간 채팅방</h2>
+        <div class="button-container">
+          <button onclick="joinRoom('room1')">Join</button>
+          <button onclick="exitRoom('room1')">Exit</button>
+        </div>
+        <div class="chatMember">
+          <p>채팅방참여자 목록</p>
+          <p>내 이름: <span id="UserName"></span></p>
+        </div>
+        <div class="chat-messages">
+          <div class="rooms">
+            <div class="room" id="room1">
+              <div class="users" id="room1Users"></div>
+              <div class="chat-container" id="room1-chat-container">
+                <ul class="chat-list" id="room1-chat-list"></ul>
               </div>
             </div>
-            <div class="chatMember">채팅방참여자 목록</div>
-            <p>내 이름: <span id="UserName"></span></p>
-            <div class="chat-messages">
-              <!-- 채팅 메시지 출력 영역 -->
-              <ul id="room1-chat-list" class="chat-list"></ul>
-            </div>
-            <div class="chat-input">
-              <input
-                id="room1-messageInput"
-                type="text"
-                placeholder="메시지 입력"
-              />
-              <button class="btn" onclick="sendRoomMessage('room1')">
-                전송
-              </button>
-              <div class="button-container">
-                <button onclick="joinRoom('room1')">Join</button>
-                <button onclick="exitRoom('room1')">Exit</button>
-              </div>
-            </div>
           </div>
-        </section>
-      </main>
-    </div>
+        </div>
 
-    <!-- script part -->
+        <div class="chat-input">
+          <input
+            id="room1-messageInput"
+            type="text"
+            placeholder="메시지 입력"
+          />
+          <button class="btn" onclick="sendRoomMessage('room1')">전송</button>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
     <script src="./js/chat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="./js/card.js"></script>
+    <script src="./js/room.js"></script>
   </body>
 </html>

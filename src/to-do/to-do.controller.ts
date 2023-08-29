@@ -16,7 +16,7 @@ import { UpdateToDoDto } from '../dto/to-do/update-todo-dto';
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
-  @Get('/')
+  @Get('/:groupId')
   async getTodo(): Promise<Todo[]> {
     return this.todoService.getTodo();
   }

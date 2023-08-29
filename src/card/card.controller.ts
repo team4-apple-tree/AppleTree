@@ -20,9 +20,9 @@ export class CardController {
     private readonly todoService: TodoService,
   ) {}
 
-  @Get('/')
-  async getCards(): Promise<Card[]> {
-    return this.cardService.getCards();
+  @Get('/room/:groupId')
+  async getCards(@Param('groupId') groupId: number): Promise<Card[]> {
+    return this.cardService.getCards(groupId);
   }
 
   @Get('/:id')
@@ -31,16 +31,17 @@ export class CardController {
     return card;
   }
 
-  @Post('/todo/:todoId')
+  @Post('/room/:groupId')
   async createCardInTodo(
-    @Param('todoId') todoId: number,
+    @Param('groupId') groupId: number,
     @Body() createCardDto: CreateCardDto,
   ): Promise<Card> {
     // 먼저 해당 todoId의 Todo가 존재하는지 확인
-    const todo = await this.todoService.getTodoById(todoId);
+    // const todo = await this.todoService.getTodoById(groupId);
 
     // Todo에 Card 생성
-    return this.todoService.createCardInTodo(todo, createCardDto);
+    // return this.todoService.createCardInTodo(groupId, createCardDto);
+    return this.cardService.createCard(groupId, createCardDto);
   }
 
   @Put('/:id')

@@ -86,15 +86,15 @@ export class TodoService {
     await this.todoRepository.softDelete(todoToDelete);
   }
 
-  async createCardInTodo(
-    todo: Todo,
-    createCardDto: CreateCardDto,
-  ): Promise<Card> {
-    const newCard = new Card();
-    newCard.title = createCardDto.title;
-    newCard.desc = createCardDto.desc;
-    newCard.toDos = todo; // 연결된 Todo 객체 설정
+  // async createCardInTodo(
+  //   todo: number,
+  //   createCardDto: CreateCardDto,
+  // ): Promise<Card> {
+  //   const newCard = new Card();
+  //   newCard.title = createCardDto.title;
+  //   newCard.desc = createCardDto.desc;
+  //   newCard.toDos = todo; // 연결된 Todo 객체 설정
 
-    return this.cardRepository.save(newCard);
-  }
+  //   return this.cardRepository.save(newCard);
+  // }
 }

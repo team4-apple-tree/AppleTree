@@ -3,8 +3,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
-  OneToOne,
-  Index,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -12,6 +10,7 @@ import {
 } from 'typeorm';
 import { Card } from './card.entity';
 import { Member } from './member.entity';
+import { Group } from './group.entity';
 
 export enum ToDoState {
   TODO = 1,
@@ -41,4 +40,7 @@ export class Todo {
 
   @Column()
   state: ToDoState;
+
+  @ManyToOne(() => Group, (group) => group.todos) // Group과의 일대다 관계 설정
+  group: Group;
 }

@@ -3,9 +3,10 @@ header {
   background-color: #19baa4;
   color: #fff;
   padding: 10px 0;
-  text-align: center;
+  justify-content: center;
   margin-bottom: 30px;
   height: 40px;
+  display: flex;
 }
 
 /* main */
@@ -33,8 +34,7 @@ header {
   padding: 8px;
 }
 /* todo */
-.main .todo-section {
-}
+
 .todo-section .todo-input {
   border: 1px solid #ccc;
   padding: 7px;
@@ -48,8 +48,7 @@ header {
 }
 
 /* chat */
-.main .chat-section {
-}
+
 .chat-section .chatMember {
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -73,6 +72,10 @@ header {
 }
 .chat-section .chat-input {
   padding: 7px;
+}
+
+.chat-section .chat-messages::-webkit-scrollbar {
+  display: none;
 }
 
 #room1-messageInput {
@@ -119,4 +122,230 @@ header {
   bottom: 30px;
   width: 600px;
   z-index: -1;
+}
+
+.todo-list div {
+  width: 350px;
+  border: 1px solid #ccc;
+  margin-top: 15px;
+  height: 200px;
+  text-align: center;
+  overflow-y: scroll;
+}
+
+.todo-list div::-webkit-scrollbar {
+  display: none;
+}
+
+.card-title {
+  color: #fff;
+  background-color: #19baa4;
+  margin: 0 auto;
+  width: 80px;
+  height: 30px;
+  margin-top: 8px;
+  border-radius: 18px;
+  cursor: pointer;
+  min-width: 80px;
+  min-height: 30px;
+  overflow: hidden;
+  padding-top: 3px;
+}
+
+.card-title:hover {
+  color: #000;
+  border: 2px solid #19baa4;
+  background-color: #fff;
+}
+
+.TODO {
+  display: flex;
+  flex-wrap: wrap;
+  float: left;
+}
+
+.IN_PROGRESS {
+  display: flex;
+  flex-wrap: wrap;
+  float: left;
+}
+
+.COMPLETED {
+  display: flex;
+  flex-wrap: wrap;
+  float: left;
+}
+
+/* 모달 스타일 */
+.modal {
+  display: none; /* 모달 초기에는 숨김 */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* 배경 투명도 조절 */
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 500px;
+  height: 400px;
+  min-width: 500px;
+  position: relative;
+}
+
+.modal-content #Title {
+  width: 200px;
+}
+
+.modal-content #Descript {
+  width: 495px;
+  height: 280px;
+  overflow-y: scroll;
+  resize: none;
+}
+
+.modal-content #Descript::-webkit-scrollbar {
+  display: none;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal button {
+  background-color: #19baa4;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute;
+  top: 380px;
+  width: 150px;
+  right: 20px;
+}
+
+.modal button:hover {
+  background-color: #4caf50;
+}
+
+/* 카드모달 */
+.cardModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  overflow: auto;
+}
+
+.cardModal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 500px;
+  height: 450px;
+  min-width: 500px;
+  position: relative;
+  border-radius: 8px;
+}
+
+.cardModalclose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cardModal-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #000;
+  text-align: center;
+}
+
+.cardModal-description {
+  margin-bottom: 20px;
+  border: 2px solid #000;
+  height: 350px;
+  overflow-y: scroll;
+}
+
+.cardModal-description::-webkit-scrollbar {
+  display: none;
+}
+
+.cardModal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cardModal-delete-btn,
+.cardModal-edit-btn {
+  padding: 8px 16px;
+  margin-left: 10px;
+  border: none;
+  background-color: #f44336;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cardModal-edit-btn {
+  background-color: #4caf50;
+}
+
+/* 드롭다운 */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  padding: 10px;
+}
+
+.dropdown.show .dropdown-content {
+  display: block;
+}
+
+#TeamRole {
+  color: #000;
 }

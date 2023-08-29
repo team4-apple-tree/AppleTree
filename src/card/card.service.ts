@@ -8,16 +8,20 @@ import { Repository } from 'typeorm';
 import { Card } from '../entity/card.entity';
 import { CreateCardDto } from '../dto/card/create-card-dto';
 import { UpdateCardDto } from '../dto/card/update-card.dto';
+import { GroupService } from 'src/group/group.service';
 
 @Injectable()
 export class CardService {
   constructor(
     @InjectRepository(Card)
     private readonly cardRepository: Repository<Card>,
+    private readonly groupService: GroupService,
   ) {}
 
-  async getCards(): Promise<Card[]> {
-    return this.cardRepository.find();
+  async getCards(groupId: number): Promise<Card[]> {
+    return this.cardRepository.find({
+      where: { group: { id: groupId } },
+    });
   }
 
   async getCardById(cardId: number): Promise<Card> {
@@ -30,12 +34,19 @@ export class CardService {
     return card;
   }
 
-  async createCard(createCardDto: CreateCardDto): Promise<Card> {
-    if (!createCardDto.title || !createCardDto.desc) {
-      throw new BadRequestException('제목 또는 내용을 입력해주세요.');
-    }
+  async createCard(
+    groupId: number,
+    createCardDto: CreateCardDto,
+  ): Promise<Card> {
+    // if (!createCardDto.title || !createCardDto.desc) {
+    //   throw new BadRequestException('제목 또는 내용을 입력해주세요.');
+    // }
+    const group = await this.groupService.findGroup(groupId);
 
-    const card = this.cardRepository.create(createCardDto);
+    const card = this.cardRepository.create({
+      ...createCardDto,
+      group,
+    });
     return this.cardRepository.save(card);
   }
 
