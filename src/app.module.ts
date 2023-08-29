@@ -3,6 +3,7 @@ import {
   Module,
   NestModule,
   RequestMethod,
+  Logger,
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -31,7 +32,8 @@ import { PaymentService } from './payment/payment.service';
 import { PaymentController } from './payment/payment.controller';
 import { PaymentGateway } from './payment/payment.gateway';
 import { PaymentModule } from './payment/payment.module';
-
+import { MyLogger } from './utils/winston.util';
+import { LoggerMiddleware } from './middleware/logger';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -72,18 +74,19 @@ import { PaymentModule } from './payment/payment.module';
     PaymentModule,
   ],
   controllers: [AppController, PaymentController],
-  providers: [AppService, ChatGateway, S3Service, UploadService, PaymentService, PaymentGateway],
+  providers: [
+    AppService,
+    ChatGateway,
+    S3Service,
+    UploadService,
+    PaymentService,
+    PaymentGateway,
+    MyLogger,
+    Logger,
+  ],
 })
-// export class AppModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer
-//       .apply(AuthMiddleware)
-//       .exclude(
-//         // 예외 url 지정
-//         { path: 'user/sign', method: RequestMethod.POST },
-//         { path: 'user/login', method: RequestMethod.POST },
-//       )
-//       .forRoutes('*'); // middleware를 모든 경로에 적용
-//   }
-// }
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
