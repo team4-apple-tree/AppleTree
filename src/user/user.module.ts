@@ -8,6 +8,7 @@ import { JwtConfigService } from '../config/jwt.config.service';
 import { User } from '../entity/user.entity';
 import { JwtAuthGuard } from './jwt.guard';
 import { RolesGuard } from './roles.guard';
+import { SocketGuard } from './socket.guard';
 
 @Module({
   imports: [
@@ -18,8 +19,8 @@ import { RolesGuard } from './roles.guard';
       inject: [ConfigService],
     }),
   ],
-  providers: [UserService, JwtAuthGuard, RolesGuard],
+  providers: [UserService, JwtAuthGuard, RolesGuard, SocketGuard],
   controllers: [UserController],
-  exports: [UserService],
+  exports: [UserService, SocketGuard],
 })
 export class UserModule {}

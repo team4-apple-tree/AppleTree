@@ -31,6 +31,7 @@ import { PaymentService } from './payment/payment.service';
 import { PaymentController } from './payment/payment.controller';
 import { PaymentGateway } from './payment/payment.gateway';
 import { PaymentModule } from './payment/payment.module';
+import { SocketGuard } from './user/socket.guard';
 
 @Module({
   imports: [
@@ -72,7 +73,14 @@ import { PaymentModule } from './payment/payment.module';
     PaymentModule,
   ],
   controllers: [AppController, PaymentController],
-  providers: [AppService, ChatGateway, S3Service, UploadService, PaymentService, PaymentGateway],
+  providers: [
+    AppService,
+    ChatGateway,
+    S3Service,
+    UploadService,
+    PaymentService,
+    PaymentGateway,
+  ],
 })
 // export class AppModule implements NestModule {
 //   configure(consumer: MiddlewareConsumer) {

@@ -101,7 +101,7 @@ $(document).ready(async () => {
         },
       })
       .then(() => {
-        window.location.href = `room.html?id=${studyId}`;
+        window.location.href = `chat.html?id=${studyId}`;
       });
   });
 });

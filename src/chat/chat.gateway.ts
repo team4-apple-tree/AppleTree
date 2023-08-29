@@ -7,7 +7,8 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { MongoClient, MongoClientOptions } from 'mongodb';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
+import { SocketGuard } from 'src/user/socket.guard';
 
 @WebSocketGateway()
 @Injectable()
@@ -21,7 +22,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private mongoClient: MongoClient;
 
-  constructor() {
+  constructor(private readonly socketGuard: SocketGuard) {
     const mongoOptions: MongoClientOptions = {};
 
     this.mongoClient = new MongoClient(
@@ -31,13 +32,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.mongoClient.connect();
   }
 
-  handleConnection(client: Socket): void {
-    if (this.connectedClients[client.id]) {
-      client.disconnect(true);
-      return;
-    }
+  async handleConnection(client: any): Promise<void> {
+    const token = client.handshake.headers['authorization'];
 
-    this.connectedClients[client.id] = true;
+    try {
+      const user = await this.socketGuard.validateToken(token);
+      console.log(user);
+
+      if (this.connectedClients[client.id]) {
+        client.disconnect(true);
+        return;
+      }
+
+      this.connectedClients[client.id] = true;
+    } catch (error) {
+      console.error(error);
+
+      client.disconnect();
+    }
   }
 
   handleDisconnect(client: Socket): void {
