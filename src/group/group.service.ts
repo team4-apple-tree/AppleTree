@@ -16,7 +16,7 @@ import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
 import { UploadService } from 'src/upload.service';
-
+import {  EntityManager, DataSource } from 'typeorm';
 @Injectable()
 export class GroupService {
   constructor(
@@ -25,6 +25,8 @@ export class GroupService {
     @InjectRepository(Access) private accessRepository: Repository<Access>,
     private readonly userService: UserService,
     private readonly uploadService: UploadService,
+    private readonly entityManager: EntityManager,
+    private readonly dataSource : DataSource
   ) {}
 
   // 스터디그룹 생성
@@ -33,28 +35,45 @@ export class GroupService {
     image: string,
     user: User,
   ): Promise<void> {
-    // this.uploadService.createUploadFolder(image);
+    // const queryRunner = this.entityManager.queryRunner;
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      //여기에 트라이-캐치 문
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      // this.uploadService.createUploadFolder(image);
 
-    const isPublic = String(data.isPublic) === 'true';
-    const isPassword = String(data.isPassword) === 'true';
+      const isPublic = String(data.isPublic) === 'true';
+      const isPassword = String(data.isPassword) === 'true';
 
-    const createGroup = this.groupRepository.create({
-      ...data,
-      isPublic,
-      isPassword,
-      image,
-      user,
-    });
+      const createGroup = this.groupRepository.create({
+        ...data,
+        isPublic,
+        isPassword,
+        image,
+        user,
+      });
 
-    const group = await this.groupRepository.save(createGroup);
+      const group = await this.entityManager.save(Group, createGroup);
 
-    const member = new Member();
-    member.user = user;
-    member.group = group;
-    member.role = 1;
+      const member = new Member();
+      member.user = user;
+      member.group = group;
+      member.role = 1;
 
-    await this.memberRepository.save(member);
-  }
+      await this.entityManager.save(Member, member);
+      // 트랜잭션 커밋
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      // 트랜잭션 롤백
+      await queryRunner.rollbackTransaction();
+      throw error;
+      } finally {
+     // 트랜잭션 릴리즈
+        await queryRunner.release();
+      }
+    }
+  
 
   // 공개 스터디 전체 조회
   async findAllGroups(): Promise<Group[]> {
