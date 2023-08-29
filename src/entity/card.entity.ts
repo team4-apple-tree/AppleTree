@@ -30,9 +30,9 @@ export class Card {
   @Column({ type: 'enum', enum: ToDoState, default: ToDoState.TODO })
   selectToDo: ToDoState;
 
-  @ManyToOne(() => Todo, (todo) => todo.cards)
-  @JoinColumn({ name: 'todoId' })
-  toDos: Todo;
+  // @ManyToOne(() => Todo, (todo) => todo.cards)
+  // @JoinColumn({ name: 'todoId' })
+  // toDos: Todo;
 
   @CreateDateColumn()
   createdAt: Date;

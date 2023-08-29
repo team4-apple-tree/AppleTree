@@ -23,8 +23,8 @@ export class Todo {
   @PrimaryGeneratedColumn()
   todoId: number;
 
-  @OneToMany(() => Card, (card) => card.toDos)
-  cards: Card[];
+  // @OneToMany(() => Card, (card) => card.toDos)
+  // cards: Card[];
 
   // @ManyToOne(() => Member, (member) => member.toDos)
   // members: Member;

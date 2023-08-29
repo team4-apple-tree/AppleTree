@@ -69,7 +69,10 @@ $(document).on('click', '#createCard', async () => {
   await axios
     .post(`http://localhost:4444/card/room/${groupId}`, data)
     .then((response) => {
+      console.log(response);
       alert('카드 생성 성공');
+
+      modal.style.display = 'none'; // 모달 닫기
     })
     .catch((response) => {
       console.log(response);
@@ -92,27 +95,27 @@ closeBtn.addEventListener('click', () => {
 });
 
 // 카드 추가 버튼 클릭 시
-const addCardBtn = document.getElementById('createCard');
-addCardBtn.addEventListener('click', async () => {
-  const title = document.getElementById('Title').value;
-  const description = document.getElementById('Descript').value;
+// const addCardBtn = document.getElementById('createCard');
+// addCardBtn.addEventListener('click', async () => {
+//   const title = document.getElementById('Title').value;
+//   const description = document.getElementById('Descript').value;
 
-  if (title && description) {
-    try {
-      const groupId = getQueryParam('groupId');
-      await axios.post('http://localhost:4444/card/room/${groupId}', {
-        title,
-        desc: description,
-      });
+//   if (title && description) {
+//     try {
+//       const groupId = getQueryParam('groupId');
+//       await axios.post('http://localhost:4444/card/room/${groupId}', {
+//         title,
+//         desc: description,
+//       });
 
-      // 카드 추가 성공한 경우의 처리
-      modal.style.display = 'none'; // 모달 닫기
-      // 다시 카드 정보를 가져와서 화면에 추가하는 로직
-    } catch (error) {
-      console.error('Error adding card:', error);
-    }
-  }
-});
+//       // 카드 추가 성공한 경우의 처리
+//       modal.style.display = 'none'; // 모달 닫기
+//       // 다시 카드 정보를 가져와서 화면에 추가하는 로직
+//     } catch (error) {
+//       console.error('Error adding card:', error);
+//     }
+//   }
+// });
 
 // 현재 페이지의 쿼리 스트링 파싱 함수
 function getQueryParam(id) {

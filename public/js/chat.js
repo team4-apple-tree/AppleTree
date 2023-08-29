@@ -1,5 +1,9 @@
-// 실시간 채팅기능
-const socket = io();
+const token = getCookie();
+const socket = io({
+  extraHeaders: {
+    authorization: token,
+  },
+});
 
 const userNames = ['장시훈', '배찬용', '김태진'];
 
@@ -93,4 +97,10 @@ inputMessageRoom1.addEventListener('keyup', function (event) {
     sendRoomMessage('room1');
   }
 });
-// 실시간 채팅기능
+
+// 쿠키 값 가져오는 함수
+function getCookie() {
+  const cookie = decodeURIComponent(document.cookie);
+  const [name, value] = cookie.split('=');
+  return value;
+}
