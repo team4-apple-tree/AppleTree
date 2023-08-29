@@ -175,7 +175,7 @@ export class GroupController {
   }
 
   // 스터디그룹 입장
-  @Post(':groupId/enter')
+  @Post('/enter/:groupId')
   @UseGuards(JwtAuthGuard)
   async enterGroup(
     @Param('groupId') groupId: number,

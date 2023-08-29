@@ -95,7 +95,7 @@ $(document).ready(async () => {
     console.log(getCookie());
 
     await axios
-      .post(`http://localhost:4444/group/${studyId}/enter`, null, {
+      .post(`http://localhost:4444/group/enter/${studyId}`, null, {
         headers: {
           Authorization: getCookie(),
         },
