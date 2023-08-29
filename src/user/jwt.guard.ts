@@ -50,7 +50,6 @@ export class JwtAuthGuard implements CanActivate {
     secretKey: string,
   ): number | null {
     try {
-      console.log(token);
       const payload: any = jwt.verify(token, secretKey);
 
       const userId = payload.id;

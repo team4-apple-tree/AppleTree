@@ -12,7 +12,7 @@ import { User } from './user.entity';
 import { Group } from './group.entity';
 
 @Entity({ schema: 'apple', name: 'access' })
-@Unique(['user', 'group'])
+// @Unique(['user', 'group'])
 export class Access {
   @PrimaryGeneratedColumn()
   id: number;

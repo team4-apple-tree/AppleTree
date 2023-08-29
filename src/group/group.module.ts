@@ -19,5 +19,6 @@ import { UploadService } from 'src/upload.service';
   ],
   controllers: [GroupController],
   providers: [GroupService, S3Service, UploadService],
+  exports: [GroupService],
 })
 export class GroupModule {}

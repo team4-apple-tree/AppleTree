@@ -1,3 +1,4 @@
+// 실시간 채팅기능
 const socket = io();
 
 const userNames = ['장시훈', '배찬용', '김태진'];
@@ -12,23 +13,18 @@ socket.emit('setUserName', randomUserName);
 
 const roomUsers = {
   room1: document.getElementById('room1Users'),
-  room2: document.getElementById('room2Users'),
 };
 const roomChatList = {
   room1: document.getElementById('room1-chat-list'),
-  room2: document.getElementById('room2-chat-list'),
 };
 const roomChatContainer = {
   room1: document.getElementById('room1-chat-container'),
-  room2: document.getElementById('room2-chat-container'),
 };
 const roomMessageInput = {
   room1: document.getElementById('room1-messageInput'),
-  room2: document.getElementById('room2-messageInput'),
 };
 
 const inputMessageRoom1 = document.getElementById('room1-messageInput');
-const inputMessageRoom2 = document.getElementById('room2-messageInput');
 
 function joinRoom(room) {
   socket.emit('join', room);
@@ -97,9 +93,4 @@ inputMessageRoom1.addEventListener('keyup', function (event) {
     sendRoomMessage('room1');
   }
 });
-
-inputMessageRoom2.addEventListener('keyup', function (event) {
-  if (event.key === 'Enter') {
-    sendRoomMessage('room2');
-  }
-});
+// 실시간 채팅기능
