@@ -28,7 +28,11 @@
     border: 1px solid #333;
     color: #333;
 }
+.reservation .mapWrap .imgWrap {}
+.reservation .mapWrap .imgWrap img {
+    margin-top: 20px;
+}
 .reservation .mapWrap .root_daum_roughmap {
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 50px;
 }
