@@ -28,33 +28,7 @@ $(document).ready(async () => {
     console.log(error);
     alert('실패');
   }
-
-  // 내가 속한 스터디그룹 리스트
-
-  axios
-    .get(`http://localhost:4444/group/my`, {
-      headers: {
-        Authorization: getCookie(),
-      },
-    })
-    .then((response) => {
-      const groupData = response.data;
-      const groupNamePlaceholder = document.getElementById('mystudygroup');
-      groupNamePlaceholder.innerHTML = '';
-      groupData.forEach((element) => {
-        const p = document.createElement('div');
-        p.innerText = element.name;
-        groupNamePlaceholder.append(p);
-        console.log(groupNamePlaceholder);
-        console.log(element.name);
-        //        groupNamePlaceholder.textContent = groupData.name;
-      });
-      // group-name-placeholder 요소에 데이터 삽입
-    })
-    .catch((error) => {
-      console.log('데이터를 가져오는 중 오류 발생:', error);
-    });
-
+  // 기본 메인페이지 구동 스크립트
   const loadMoreButton = document.createElement('button');
   loadMoreButton.textContent = ' 더보기 ';
   loadMoreButton.classList.add('load-more-button');
@@ -96,47 +70,81 @@ $(document).ready(async () => {
     allButton.classList.remove('active');
     newButton.classList.add('active');
   });
+  // 기본 메인페이지 구동 스크립트
 
-  $(document).on('click', '#createStudy', async () => {
-    await axios
-      .get('http://localhost:4444/user/isLogin', {
-        headers: {
-          Authorization: getCookie(),
-        },
-      })
-      .then(() => {
-        window.location.href = 'createstudygroup.html';
-      })
-      .catch((response) => {
-        if (response.response.data.error === 'Forbidden') {
-          alert('로그인이 필요한 기능입니다.');
-        }
+  // 내가 속한 스터디그룹 리스트
+
+  axios
+    .get(`http://localhost:4444/group/my`, {
+      headers: {
+        Authorization: getCookie(),
+      },
+    })
+    .then((response) => {
+      //   const groupData = response.data;
+      //   const groupNamePlaceholder = document.getElementById('아이디');
+      //   groupNamePlaceholder.innerHTML = '';
+      //   groupData.forEach((element) => {
+      //     const p = document.createElement('p');
+      //     p.innerText = element.name;
+      //     groupNamePlaceholder.append(p);
+      //   });
+      // })
+      const groupData = response.data;
+      const groupNamePlaceholder = document.getElementById('mystudygroup');
+      groupNamePlaceholder.innerHTML = ''; //
+      groupData.forEach((element) => {
+        const p = document.createElement('div');
+        p.innerText = element.name; //
+        groupNamePlaceholder.append(p); //
       });
-  });
+      const p = document.createElement('p');
+      p.innerText = groupData[0].name;
+      console.log(groupData);
+      // .catch((error) => {
+      //   console.log('데이터를 가져오는 중 오류 발생:', error);
+      // });
 
-  // 스터디 클릭 시 이벤트
-  $(document).on('click', '.study-item-img-wrap', async (e) => {
-    const studyId = e.target.parentNode.id;
-
-    console.log(getCookie());
-
-    await axios
-      .post(`http://localhost:4444/group/${studyId}/enter`, null, {
-        headers: {
-          Authorization: getCookie(),
-        },
-      })
-      .then(() => {
-        window.location.href = `room.html?id=${studyId}`;
+      $(document).on('click', '#createStudy', async () => {
+        await axios
+          .get('http://localhost:4444/user/isLogin', {
+            headers: {
+              Authorization: getCookie(),
+            },
+          })
+          .then(() => {
+            window.location.href = 'createstudygroup.html';
+          })
+          .catch((response) => {
+            if (response.response.data.error === 'Forbidden') {
+              alert('로그인이 필요한 기능입니다.');
+            }
+          });
       });
-  });
-});
 
-function postingPublicStudies(publicStudy, studyBody) {
-  const tempDiv = document.createElement('div');
+      // 스터디 클릭 시 이벤트
+      $(document).on('click', '.study-item-img-wrap', async (e) => {
+        const studyId = e.target.parentNode.id;
 
-  tempDiv.className = 'study-item-list flex-wrap';
-  tempDiv.innerHTML = `
+        console.log(getCookie());
+
+        await axios
+          .post(`http://localhost:4444/group/${studyId}/enter`, null, {
+            headers: {
+              Authorization: getCookie(),
+            },
+          })
+          .then(() => {
+            window.location.href = `room.html?id=${studyId}`;
+          });
+      });
+    });
+
+  function postingPublicStudies(publicStudy, studyBody) {
+    const tempDiv = document.createElement('div');
+
+    tempDiv.className = 'study-item-list flex-wrap';
+    tempDiv.innerHTML = `
         <div class="study-item-img-wrap" id="${publicStudy.id}">
             <img
             src="${publicStudy.image}"
@@ -164,12 +172,13 @@ function postingPublicStudies(publicStudy, studyBody) {
         </div>
   `;
 
-  studyBody.appendChild(tempDiv);
-}
+    studyBody.appendChild(tempDiv);
+  }
 
-// 쿠키 값 가져오는 함수
-function getCookie() {
-  const cookie = decodeURIComponent(document.cookie);
-  const [name, value] = cookie.split('=');
-  return value;
-}
+  // 쿠키 값 가져오는 함수
+  function getCookie() {
+    const cookie = decodeURIComponent(document.cookie);
+    const [name, value] = cookie.split('=');
+    return value;
+  }
+});
