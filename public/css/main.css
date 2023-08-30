@@ -716,3 +716,13 @@ ul {
   color: #000;
   font-weight: 900;
 }
+
+/* mystudygroup */
+
+#mystudygroup div {
+  color: red;
+  background-color: #fff;
+  margin-top: 3px;
+  border: 1px solid #000;
+  display: flex;
+}

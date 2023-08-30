@@ -39,10 +39,10 @@ $(document).ready(async () => {
     })
     .then((response) => {
       const groupData = response.data;
-      const groupNamePlaceholder = document.getElementById('아이디');
+      const groupNamePlaceholder = document.getElementById('mystudygroup');
       groupNamePlaceholder.innerHTML = '';
       groupData.forEach((element) => {
-        const p = document.createElement('p');
+        const p = document.createElement('div');
         p.innerText = element.name;
         groupNamePlaceholder.append(p);
         console.log(groupNamePlaceholder);
