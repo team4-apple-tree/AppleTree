@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀번호 변경 팝업창</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/profile.css">
+
+    <!-- jquery & axios -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <!-- 팝업창 -->
+    <div class="popup_box">
+        <div class="popup_cont">
+            <div class="password currentpw">
+                <h3>현재 비밀번호</h3>
+                <input type="text" name="password" id="currentpw" placeholder="현재 비밀번호를 입력해주세요"/>
+            </div>
+            <div class="password newpw">
+                <h3>변경할 비밀번호</h3>
+                <input type="text" name="password" id="newpw" placeholder="바꿀 비밀번호를 입력해주세요"/>
+            </div>
+            <div class="password newpw">
+                <h3>비밀번호 확인</h3>
+                <input type="text" name="password" id="newpw" placeholder="바꿀 비밀번호를 입력해주세요"/>
+            </div>
+        </div>
+        <div class="popup_check">
+            <input type="button" class="btn_check" value="변경완료"/>
+        </div>
+    </div>
+
+    <!-- script part -->
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"
+    ></script>
+    <script src="./js/profilePopup.js"></script>
+</body>
+</html>

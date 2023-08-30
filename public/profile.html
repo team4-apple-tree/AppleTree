@@ -3,29 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>개인정보</title>
+    <title>내 개인정보</title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/profile.css">
+
+    <!-- jquery & axios -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <!-- header -->
     <header id="header">
-        <h1><a href="./index.html">사과나무</a>Study Room</h1>
+        <div class="inner">
+            <h1><a href="./index.html">사과나무</a></h1>
+        </div>
     </header>
 
-    <!-- profile -->
-    <main id="container" class="main">
-        <section id="content">
-            <ul class="profile">
-                <!-- profile:img -->
-                <li>
-                    <img src="" alt=""/>
-                </li>
-                <li></li>
-            </ul>
-        </section>
-    </main>
+    <!-- main -->
+    <div id="wrap">
+        <div class="profileCard">
+            <!-- 카드 상단 -->
+            <div class="profileTop">
+                <img src="./images/pngwing.com.png" alt="개인이미지"/>
+                <div class="myProfile email">
+                    <h3>Email : <span>내 이메일</span></h3>
+                </div>
+                <div class="myProfile name">
+                    <h3>Name : <span>내 이름</span></h3>
+                </div>
+            </div>
     
+            <!-- 카드 중간부 -->
+            <div class="profileMiddle">
+                <div class="oneWord">
+                    <h3>나의 한마디 : </h3>
+                    <p>오늘도 화이팅!</p>
+                </div>
+            </div>
     
+            <!-- 카드 하단 -->
+            <div class="profileBottom">
+                <ul class="profileNav">
+                    <li><a href="./myProfile.html">내 프로필</a></li>
+                    <li><a href="#">로그아웃</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- script part -->
+
 </body>
 </html>
