@@ -656,3 +656,63 @@ ul {
   border-color: #19baa4;
   z-index: -1;
 }
+
+/* footer */
+#footer {
+  bottom: 0;
+  background-color: #19baa4;
+  padding: 30px;
+  cursor: default;
+}
+#footer .inner {
+  height: 100%;
+}
+#footer .footerGnb {
+  display: flex;
+  border-top: 1.5px solid #fff;
+  color: #fff;
+  padding-top: 20px;
+}
+#footer .footerGnb li {
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1.9;
+}
+#footer .footerGnb li a {
+  font-size: 10px;
+  font-weight: 300;
+  color: #fff;
+}
+
+#footer .saLink {
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* #footer .language {
+  margin-bottom: 2px;
+}
+#footer select {
+  float: right;
+  width: 180px;
+  margin-top: 10px;
+  margin-right: 10px;
+  font-size: 14px;
+} */
+
+.gitLinkWrap {
+  display: flex;
+  position: absolute;
+  bottom: 3px;
+  right: 10px;
+  text-align: center;
+}
+
+.gitLinkWrap p {
+  margin-left: 15px;
+}
+
+.git {
+  color: #000;
+  font-weight: 900;
+}
