@@ -20,19 +20,29 @@
   </head>
   <body>
     <header>
-      <p id="groupName">사과나무</p>
-      <!-- 드롭다운 메뉴 -->
-      <div class="dropdown">
-        <button class="dropbtn" id="dropbtn">팀규칙을 확인해주세요!</button>
-        <div class="dropdown-content">
-          <p id="TeamRole">팀규칙 내용</p>
+      <div class="left">
+        <div class="date">
+          <button id="remainingDays">
+            남은 기간: <span id="tooltip"></span>
+          </button>
+        </div>
+        <div id="remaindate">
+          <p id="startdate">시작일: 2023-08-16</p>
+          <p id="enddate">종료일: 2023-08-30</p>
         </div>
       </div>
 
-      <div class="date">
-        <p id="startdate"></p>
-
-        <p id="enddate"></p>
+      <div class="center">
+        <p id="groupName">사과나무</p>
+      </div>
+      <div class="right">
+        <!-- 드롭다운 메뉴 -->
+        <div class="dropdown">
+          <button class="dropbtn" id="dropbtn">팀규칙을 확인해주세요!</button>
+          <div class="dropdown-content">
+            <p id="TeamRole">팀규칙 내용</p>
+          </div>
+        </div>
       </div>
     </header>
     <section id="content">

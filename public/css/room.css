@@ -2,11 +2,32 @@
 header {
   background-color: #19baa4;
   color: #fff;
-  padding: 10px 0;
-  justify-content: center;
-  margin-bottom: 30px;
-  height: 40px;
+  padding: 10px 20px;
+  justify-content: space-around;
+  align-items: center;
   display: flex;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+#groupName {
+  margin: 0;
 }
 
 /* main */
@@ -329,17 +350,21 @@ input {
 
 .dropdown {
   position: relative;
-  display: inline-block;
+}
+
+.dropbtn {
+  background-color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 200px;
+  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  padding: 10px;
 }
 
 .dropdown.show .dropdown-content {
@@ -348,4 +373,35 @@ input {
 
 #TeamRole {
   color: #000;
+}
+
+.date {
+  text-align: left;
+}
+
+#startdate,
+#enddate {
+  margin: 0;
+}
+
+.remaindate {
+  display: flex;
+}
+
+#remainingDays {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* 시작일과 종료일 스타일 */
+.remaindate {
+  display: none; /* 기본적으로 숨김 처리 */
+  margin-top: 10px;
+}
+
+.remaindate p {
+  margin: 5px 0;
 }
