@@ -16,7 +16,7 @@ import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
 import { UploadService } from 'src/upload.service';
-import { EntityManager, DataSource } from 'typeorm';
+import {  EntityManager, DataSource } from 'typeorm';
 @Injectable()
 export class GroupService {
   constructor(
@@ -26,7 +26,7 @@ export class GroupService {
     private readonly userService: UserService,
     private readonly uploadService: UploadService,
     private readonly entityManager: EntityManager,
-    private readonly dataSource: DataSource,
+    private readonly dataSource : DataSource
   ) {}
 
   // 스터디그룹 생성
@@ -68,11 +68,12 @@ export class GroupService {
       // 트랜잭션 롤백
       await queryRunner.rollbackTransaction();
       throw error;
-    } finally {
-      // 트랜잭션 릴리즈
-      await queryRunner.release();
+      } finally {
+     // 트랜잭션 릴리즈
+        await queryRunner.release();
+      }
     }
-  }
+  
 
   // 공개 스터디 전체 조회
   async findAllGroups(): Promise<Group[]> {
@@ -92,6 +93,7 @@ export class GroupService {
     });
   }
 
+
   // 스터디그룹 정보 조회
   async findGroupInfo(groupId: number): Promise<Group> {
     const group = await this.groupRepository.findOne({
@@ -104,6 +106,18 @@ export class GroupService {
     }
 
     return group;
+  }
+
+  //내가 속한 그룹 조회 하기
+  async findMyGroup( userId : number ): Promise<Group[]> {
+    const group = await this.groupRepository.find({
+      where: {id:userId},
+      select : ['name']
+    })
+    if(_.isNil(group)){
+      throw new NotFoundException('스터디그룹에 먼저 가입하시쥬?쿠쿠루삥뽕')
+    }
+    return group
   }
 
   // 스터디그룹 상세 조회

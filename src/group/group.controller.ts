@@ -91,6 +91,20 @@ export class GroupController {
     }
   }
 
+  //내가 속한 스터디 조회
+  @Get('/my')
+  @UseGuards(JwtAuthGuard)
+  async findMyGroups(
+  @Req() req: any, userId : number): Promise<Group[]>{
+    try{
+      const userId = await req.user.id
+      return await this.groupService.findMyGroup(userId)
+    } catch(error){
+      console.error(error)
+      throw new InternalServerErrorException('내가 속한 스터디 조회 실패했지롱?쿠쿠루삥뽕빵뿡빵뽕?ㅋㅋ킹받지?')
+    }
+  }
+  
   // 스터디그룹 정보 조히
   @Get(':groupId/info')
   async findGroupInfo(@Param('groupId') groupId: number): Promise<Group> {

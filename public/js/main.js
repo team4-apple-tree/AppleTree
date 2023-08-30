@@ -29,6 +29,32 @@ $(document).ready(async () => {
     alert('실패');
   }
 
+  // 내가 속한 스터디그룹 리스트
+
+  axios
+    .get(`http://localhost:4444/group/my`, {
+      headers: {
+        Authorization: getCookie(),
+      },
+    })
+    .then((response) => {
+      const groupData = response.data;
+      const groupNamePlaceholder = document.getElementById('아이디');
+      groupNamePlaceholder.innerHTML = '';
+      groupData.forEach((element) => {
+        const p = document.createElement('p');
+        p.innerText = element.name;
+        groupNamePlaceholder.append(p);
+        console.log(groupNamePlaceholder);
+        console.log(element.name);
+        //        groupNamePlaceholder.textContent = groupData.name;
+      });
+      // group-name-placeholder 요소에 데이터 삽입
+    })
+    .catch((error) => {
+      console.log('데이터를 가져오는 중 오류 발생:', error);
+    });
+
   const loadMoreButton = document.createElement('button');
   loadMoreButton.textContent = ' 더보기 ';
   loadMoreButton.classList.add('load-more-button');
