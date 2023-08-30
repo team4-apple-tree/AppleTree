@@ -188,6 +188,7 @@ $(document).ready(async () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
     const logoutButton = document.getElementById('logoutButton');
+    const profileButton = document.getElementById('profileButton');
 
     // 로그인 상태를 확인하는 로직 (예시: 로그인이 되었다고 가정)
 
@@ -197,10 +198,12 @@ $(document).ready(async () => {
       loginButton.style.display = 'none'; // 로그인 버튼 숨김
       signupButton.style.display = 'none'; // 회원가입 버튼 숨김
       logoutButton.style.display = 'block'; // 로그아웃 버튼 표시
+      profileButton.style.display = 'block';
     } else {
       loginButton.style.display = 'block'; // 로그인 버튼 숨김
       signupButton.style.display = 'block'; // 회원가입 버튼 숨김
       logoutButton.style.display = 'none'; // 로그아웃 버튼 표시
+      profileButton.style.display = 'none';
     }
     logoutButton.addEventListener('click', async function () {
       await axios
