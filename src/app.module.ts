@@ -35,6 +35,7 @@ import { PaymentModule } from './payment/payment.module';
 import { SocketGuard } from './user/socket.guard';
 import { MyLogger } from './utils/winston.util';
 import { LoggerMiddleware } from './middleware/logger';
+import { ChatModule } from './chat/chat.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -73,11 +74,11 @@ import { LoggerMiddleware } from './middleware/logger';
     // MemberModule,
     UserModule,
     PaymentModule,
+    ChatModule,
   ],
   controllers: [AppController, PaymentController],
   providers: [
     AppService,
-    ChatGateway,
     S3Service,
     UploadService,
     PaymentService,

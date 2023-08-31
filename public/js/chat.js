@@ -1,100 +1,68 @@
 const token = getCookie();
+const roomId = getQueryParam('id');
+
 const socket = io({
   extraHeaders: {
     authorization: token,
+    roomId,
   },
 });
 
-const userNames = ['장시훈', '배찬용', '김태진'];
+$(document).on('click', '#sendRoomMessage', () => {
+  sendRoomMessage();
+});
 
-const randomUserName =
-  userNames[Math.floor(Math.random() * userNames.length)] +
-  Math.floor(Math.random() * 100).toString();
-
-document.getElementById('UserName').innerHTML = randomUserName;
-
-socket.emit('setUserName', randomUserName);
-
-const roomUsers = {
-  room1: document.getElementById('room1Users'),
-};
-const roomChatList = {
-  room1: document.getElementById('room1-chat-list'),
-};
-const roomChatContainer = {
-  room1: document.getElementById('room1-chat-container'),
-};
-const roomMessageInput = {
-  room1: document.getElementById('room1-messageInput'),
-};
-
-const inputMessageRoom1 = document.getElementById('room1-messageInput');
-
-function joinRoom(room) {
-  socket.emit('join', room);
-}
-
-function exitRoom(room) {
-  if (!room) return;
-
-  roomUsers[room].innerHTML = '';
-  roomChatList[room].innerHTML = '';
-  socket.emit('exit', room);
-}
-
-function sendRoomMessage(room) {
-  const message = roomMessageInput[room].value;
+function sendRoomMessage() {
+  const message = $('#messageInput').val();
 
   if (message.trim() !== '') {
-    socket.emit('chatMessage', { message, room });
-    roomMessageInput[room].value = '';
+    socket.emit('chatMessage', message);
+    $('#messageInput').val('');
   }
 }
 
-socket.on('userList', ({ room, userList }) => {
-  if (!room) return;
+socket.on('userList', (names) => {
+  const chatMember = $('.chatMember');
 
-  const usersElement = roomUsers[room];
-  usersElement.innerHTML = '';
+  chatMember.empty();
 
-  console.log({ room, userList });
-  userList.forEach((userId) => {
+  names.forEach((name) => {
     const p = document.createElement('p');
-    p.textContent = userId;
-    usersElement.appendChild(p);
+
+    p.className = 'UserName';
+    p.innerText = name;
+
+    chatMember.append(p);
   });
 });
 
-socket.on('userJoined', ({ userId, room }) => {
-  const message = `${userId} joined the room.`;
-  appendMessage(room, message);
+socket.on('chatMessage', (messages) => {
+  appendMessage(messages);
 });
 
-socket.on('userLeft', ({ userId, room }) => {
-  const message = `${userId} left the room.`;
-  appendMessage(room, message);
-});
+function appendMessage({ userName, message }) {
+  const chatList = document.querySelector('#room-chat-list');
+  const chatContainer = document.querySelector('#room-chat-container');
 
-socket.on('chatMessage', ({ userId, message, room }) => {
-  appendMessage(room, `${userId} : ${message}`);
-});
-
-function appendMessage(room, message) {
-  const chatList = roomChatList[room];
   const li = document.createElement('li');
+  const name = document.createElement('p');
+  const chat = document.createElement('p');
+
   li.className = 'chat-item';
-  const p = document.createElement('p');
-  p.textContent = message;
-  li.appendChild(p);
+  name.textContent = userName;
+  chat.textContent = message;
+
+  li.appendChild(name);
+  li.appendChild(chat);
   chatList.appendChild(li);
 
-  // 스크롤 아래로 이동
-  roomChatContainer[room].scrollTop = roomChatContainer[room].scrollHeight;
+  // // 스크롤 아래로 이동
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-inputMessageRoom1.addEventListener('keyup', function (event) {
-  if (event.key === 'Enter') {
-    sendRoomMessage('room1');
+$(document).on('keyup', '#messageInput', (e) => {
+  if (e.key === 'Enter') {
+    sendRoomMessage();
   }
 });
 
@@ -103,4 +71,10 @@ function getCookie() {
   const cookie = decodeURIComponent(document.cookie);
   const [name, value] = cookie.split('=');
   return value;
+}
+
+// 현재 페이지의 쿼리 스트링 파싱 함수
+function getQueryParam(key) {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  return urlSearchParams.get(key);
 }

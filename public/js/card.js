@@ -118,7 +118,7 @@ closeBtn.addEventListener('click', () => {
 // });
 
 // 현재 페이지의 쿼리 스트링 파싱 함수
-function getQueryParam(id) {
+function getQueryParam(key) {
   const urlSearchParams = new URLSearchParams(window.location.search);
-  return urlSearchParams.get(id);
+  return urlSearchParams.get(key);
 }
