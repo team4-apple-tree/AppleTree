@@ -58,6 +58,18 @@ header {
   cursor: pointer;
   margin-left: 10px;
 }
+
+.logout-button,
+.profile-button {
+  padding: 4px 16px;
+  background-color: #2acf30;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
 /* 헤더부분css */
 
 /* mainVisual css */

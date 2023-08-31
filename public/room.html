@@ -21,14 +21,13 @@
   <body>
     <header>
       <div class="left">
-        <div class="date">
-          <button id="remainingDays">
-            남은 기간: <span id="tooltip"></span>
-          </button>
-        </div>
         <div id="remaindate">
           <p id="startdate">시작일: 2023-08-16</p>
+          <p>~</p>
           <p id="enddate">종료일: 2023-08-30</p>
+        </div>
+        <div class="date">
+          <p id="remainingDays">남은 기간: <span id="tooltip"></span></p>
         </div>
       </div>
 
@@ -48,7 +47,7 @@
     <section id="content">
       <!-- todo관리 -->
       <div class="mainSection todo-section">
-        <h2>Todo 관리 <button id="addCardBtn">카드추가</button></h2>
+        <button id="addCardBtn">카드추가</button>
         <!-- 모달 -->
         <div id="myModal" class="modal">
           <div class="modal-content">

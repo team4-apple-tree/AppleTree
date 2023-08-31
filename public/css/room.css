@@ -8,11 +8,6 @@ header {
   display: flex;
 }
 
-.left {
-  display: flex;
-  align-items: center;
-}
-
 .center {
   display: flex;
   align-items: center;
@@ -125,6 +120,12 @@ header {
 .chat-messages li {
   padding: 5px 0;
   border-bottom: 1px solid #ccc;
+}
+
+.todo-list p {
+  text-align: center;
+  font-weight: 700;
+  font-size: 21px;
 }
 
 .user-management-section {
@@ -311,13 +312,14 @@ input {
 .cardModal-title {
   font-size: 24px;
   margin-bottom: 10px;
-  border-bottom: 2px solid #000;
+  border-bottom: 1.5px solid #ccc;
   text-align: center;
+  font-weight: 700;
 }
 
 .cardModal-description {
   margin-bottom: 20px;
-  border: 2px solid #000;
+  border: 1px solid #ccc;
   height: 350px;
   overflow-y: scroll;
 }
@@ -384,24 +386,23 @@ input {
   margin: 0;
 }
 
-.remaindate {
+#remaindate {
   display: flex;
 }
 
 #remainingDays {
-  background-color: #007bff;
+  background-color: #dc7b80;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  text-align: center;
+}
+
+#addCardBtn {
+  position: relative;
+  left: 280px;
+  top: 8px;
+  background-color: #19baa4;
+  color: #fff;
+  border-color: #19baa4;
   cursor: pointer;
-}
-
-/* 시작일과 종료일 스타일 */
-.remaindate {
-  display: none; /* 기본적으로 숨김 처리 */
-  margin-top: 10px;
-}
-
-.remaindate p {
-  margin: 5px 0;
 }

@@ -58,6 +58,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 });
-RemainingDaysElement.addEventListener('click', () => {
-  startdate.style.display = 'block';
-});
