@@ -126,15 +126,17 @@ $(document).ready(async () => {
       $(document).on('click', '.study-item-img-wrap', async (e) => {
         const studyId = e.target.parentNode.id;
 
-        await axios
-          .post(`http://localhost:4444/group/enter/${studyId}`, null, {
-            headers: {
-              Authorization: getCookie(),
-            },
-          })
-          .then(() => {
-            window.location.href = `room.html?id=${studyId}`;
-          });
+        window.location.href = `room.html?id=${studyId}`;
+
+        // await axios
+        //   .post(`http://localhost:4444/group/enter/${studyId}`, null, {
+        //     headers: {
+        //       Authorization: getCookie(),
+        //     },
+        //   })
+        //   .then(() => {
+        //     window.location.href = `room.html?id=${studyId}`;
+        //   });
       });
     });
 
