@@ -406,3 +406,8 @@ input {
   border-color: #19baa4;
   cursor: pointer;
 }
+
+.cardModal-title-input {
+  background-color: red;
+  width: 100%;
+}

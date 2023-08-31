@@ -80,6 +80,6 @@ export class CardService {
       throw new NotFoundException(`해당 카드 ID ${cardId}를 찾을 수 없습니다.`);
     }
 
-    await this.cardRepository.softDelete(cardToDelete);
+    await this.cardRepository.softDelete(cardId);
   }
 }

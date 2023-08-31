@@ -75,11 +75,18 @@
       <div class="cardModal" id="cardModal">
         <div class="cardModal-content">
           <span class="cardModalclose" id="closeCardModalBtn">&times;</span>
-          <h2 class="cardModal-title"></h2>
-          <p class="cardModal-description"></p>
+
+          <input type="text" id="titleInput" class="cardModal-title" readonly />
+
+          <textarea
+            id="descInput"
+            class="cardModal-description"
+            readonly
+          ></textarea>
+
           <div class="cardModal-buttons">
-            <button class="cardModal-delete-btn">삭제</button>
-            <button class="cardModal-edit-btn">수정</button>
+            <button id="updateCard" class="cardModal-edit-btn">수정</button>
+            <button id="deleteCard" class="cardModal-delete-btn">삭제</button>
           </div>
         </div>
       </div>

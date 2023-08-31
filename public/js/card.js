@@ -10,7 +10,7 @@ $(document).ready(async () => {
       const cards = response.data;
 
       cards.forEach((card) => {
-        const { title, selectToDo } = card;
+        const { title, selectToDo, cardId } = card;
 
         const p = document.createElement('h1');
 
@@ -25,10 +25,12 @@ $(document).ready(async () => {
             '.cardModal-description',
           );
           const cardModal = document.getElementById('cardModal');
+          const cardModalButton = document.querySelector('.cardModal-buttons');
 
-          modalTitle.innerText = title;
+          modalTitle.value = title;
           modalDescription.innerText = card.desc;
           cardModal.style.display = 'block';
+          cardModalButton.id = cardId;
 
           // 모달 닫기 버튼 클릭 시 모달 닫기
           const closeCardModalBtn =
@@ -80,6 +82,77 @@ $(document).on('click', '#createCard', async () => {
       alert('카드 생성 실패');
     });
 });
+
+// 카드 수정
+let checkUpdateBtn = true;
+$(document).on('click', '#updateCard', async (e) => {
+  if (checkUpdateBtn) {
+    checkUpdateBtn = false;
+
+    const updatedTitle = $('#titleInput');
+    const updatedDesc = $('#descInput');
+
+    updatedTitle.removeAttr('readonly');
+    updatedTitle.select();
+
+    updatedDesc.removeAttr('readonly');
+  } else {
+    const cardId = e.target.parentNode.id;
+    const updatedTitle = $('#titleInput').val();
+    const updatedDescription = $('#descInput').val();
+
+    console.log(updatedTitle);
+    console.log(updatedDescription);
+
+    const updatedData = {
+      title: updatedTitle,
+      desc: updatedDescription,
+    };
+    await axios
+      .put(`http://localhost:4444/card/${cardId}`, updatedData)
+      .then(() => {
+        alert('수정 성공');
+
+        window.location.reload();
+      })
+      .catch((response) => {
+        console.log(response);
+
+        alert('수정 실패');
+      });
+  }
+});
+
+// 카드 삭제
+$(document).on('click', '#deleteCard', async (e) => {
+  const cardId = e.target.parentNode.id;
+
+  await axios
+    .delete(`http://localhost:4444/card/${cardId}`)
+    .then(() => {
+      alert('삭제 성공');
+
+      window.location.reload();
+    })
+    .catch((response) => {
+      console.log(response);
+
+      alert('삭제 실패');
+    });
+});
+
+// let checkUpdateBtn = true;
+// $(document).on('clicK', '#updateCard', () => {
+//   console.log('aaa');
+// });
+// checkUpdateBtn = false;
+// const editButton = document.querySelector('.cardModal-edit-btn');
+
+// $(document).on('clicK', '#updateCard', () => {
+//   console.log('aaa');
+//   // const updatedTitle = $('#cardModal-title-input');
+//   // console.log(updatedTitle);
+// });
 
 // 모달 열기
 const createCardBtn = document.getElementById('addCardBtn');
