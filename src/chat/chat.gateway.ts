@@ -10,10 +10,10 @@ import { MongoClient, MongoClientOptions } from 'mongodb';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { SocketGuard } from 'src/user/socket.guard';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Access } from 'src/entity/access.entity';
-import { Repository, getRepository } from 'typeorm';
 import { GroupService } from 'src/group/group.service';
 import * as _ from 'lodash';
+import { Repository, getRepository } from 'typeorm';
+import { Access } from 'src/entity/access.entity';
 
 @WebSocketGateway()
 @Injectable()
@@ -22,6 +22,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   private mongoClient: MongoClient;
+  private messageCache: { [room: string]: any[] } = {};
 
   constructor(
     @InjectRepository(Access) private accessRepository: Repository<Access>,
@@ -34,7 +35,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       'mongodb://127.0.0.1:27017/chat_log',
       mongoOptions,
     );
-    this.mongoClient.connect();
+    this.mongoClient.connect().then(() => {
+      this.setUpScheduler();
+      this.flushCacheToMongoDB();
+    });
+    this.setUpScheduler();
   }
 
   async handleConnection(client: any): Promise<void> {
@@ -75,7 +80,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.disconnect();
     }
   }
-
   async handleDisconnect(client: Socket): Promise<void> {
     await this.accessRepository.softDelete({ clientId: client.id });
 
@@ -105,10 +109,52 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       message: message,
       timestamp: new Date(),
     };
-    chatCollection.insertOne(chatData);
+    // chatCollection.insertOne(chatData);
 
     this.server
       .to(roomId)
       .emit('chatMessage', { userName: user.name, message });
+
+    this.cacheMessage(+roomId, chatData); // 캐시에 채팅 데이터 추가
+  }
+
+  // 메시지를 캐시에 저장하는 메서드
+  private cacheMessage(roomId: number, message: any): void {
+    if (!this.messageCache[roomId]) {
+      this.messageCache[roomId] = [];
+    }
+    this.messageCache[roomId].push(message);
+  }
+
+  // MongoDB에 채팅 데이터 저장
+  private async flushCacheToMongoDB() {
+    try {
+      // MongoDB에 연결
+      const chatCollection = this.mongoClient
+        .db('chat_logs')
+        .collection('chats');
+      // 모든 방의 메시지를 캐시에서 가져와서 MongoDB에 저장
+      for (const room of Object.keys(this.messageCache)) {
+        const messages = this.messageCache[room];
+
+        if (messages.length > 0) {
+          // 캐시된 메시지를 MongoDB에 저장
+          await chatCollection.insertMany(messages);
+          // 캐시를 비웁니다.
+          this.messageCache[room] = [];
+          console.log(`Cache flushed to MongoDB for room: ${room}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error flushing cache to MongoDB:', error);
+    }
+  }
+
+  // 스케줄러 설정 메서드
+  private setUpScheduler() {
+    // 30분마다 flushCacheToMongoDB 메서드를 호출하도록 스케줄러 설정
+    setInterval(() => {
+      this.flushCacheToMongoDB();
+    }, 60 * 1000); // 10분 간격으로 실행 (밀리초 단위)
   }
 }
