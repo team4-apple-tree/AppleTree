@@ -40,12 +40,28 @@
         </div>
         <div class="search-login">
           <input type="text" placeholder="검색" />
-          <button class="login-button" onclick="location.href='./login.html'">
+          <button
+            class="login-button"
+            id="loginButton"
+            onclick="location.href='./login.html'"
+          >
             로그인
           </button>
-          <button class="login-button" onclick="location.href='./signup.html'">
+          <button
+            class="login-button"
+            id="signupButton"
+            onclick="location.href='./signup.html'"
+          >
             회원가입
           </button>
+          <button
+            class="profile-button"
+            id="profileButton"
+            onclick="location.href='http://localhost:4444/myprofile.html'"
+          >
+            내 정보
+          </button>
+          <button class="logout-button" id="logoutButton">로그아웃</button>
         </div>
       </div>
     </header>
@@ -58,7 +74,7 @@
             <h3 class="mine-study-title">내 스터디</h3>
           </div>
           <div class="mine-study-body">
-            <div class="study-item-list-cover active">
+            <div id="mystudygroup" class="study-item-list-cover active">
               <p class="study-item-tx cover-title active">
                 내 스터디는 내가 만든 스터디 또는 <br />
                 초대 받은 스터디가 등록됩니다.
@@ -151,6 +167,59 @@
       </section>
     </main>
     <!-- script part -->
+
+    <!-- footer -->
+    <footer id="footer">
+      <div class="inner">
+        <ul class="footerGnb">
+          <li>
+            <h5>팀명 : 스피노자</h5>
+            <p class="madeBy">made by 장시훈, 배찬용, 김태진, 김재혁</p>
+            <p
+              class="saLink"
+              onclick="location.href='https://jh-healing-place.tistory.com/128'"
+            >
+              Spinoza SA Link
+            </p>
+          </li>
+          <li class="gitinfo">
+            <ul class="gitLinkWrap">
+              <p class="git">GitHub</p>
+              <p>
+                장시훈&nbsp&nbsp
+                <a href="https://github.com/sihunjang225">
+                  https://github.com/sihunjang225</a
+                >
+              </p>
+              <p>
+                배찬용&nbsp&nbsp
+                <a href="https://github.com/baechanyong1">
+                  https://github.com/baechanyong1</a
+                >
+              </p>
+              <p>
+                김태진&nbsp&nbsp
+                <a href="https://github.com/ktj0"> https://github.com/ktj0</a>
+              </p>
+              <p>
+                김재혁&nbsp&nbsp
+                <a href="http://github.com/tuy112"> http://github.com/tuy112</a>
+              </p>
+            </ul>
+          </li>
+          <!-- <li>
+            <p class="language">Language</p>
+            <select name="sitelist" id="lang" onchange="changeLang();">
+              <option value="" selected disabled>언어선택</option>
+              <option value="ko">한국어</option>
+              <option value="en">영어</option>
+              <option value="jp">일본어</option>
+              <option value="cn">중국어</option>
+            </select>
+          </li> -->
+        </ul>
+      </div>
+    </footer>
     <script src="./js/main.js"></script>
   </body>
 </html>

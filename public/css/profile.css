@@ -1,0 +1,256 @@
+header {
+  background-color: #19baa4;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+/*  */
+
+.container.profile {
+  justify-content: center;
+}
+.container.verticalCenter {
+  display: flex;
+  min-height: calc(100vh - 64px);
+  align-items: center;
+}
+
+.container {
+  position: relative;
+  margin: 0 auto;
+  max-width: 1280px;
+}
+
+.profile-container {
+  display: inline-block;
+  width: 600px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.text-lg-left {
+  text-align: left !important;
+}
+
+.col-md-3 {
+  width: 25%;
+}
+
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12 {
+  float: left;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.profile_photo_area {
+  display: inline-block;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.profile_photo_area > img {
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.profile-email {
+  margin: 10px 0 30px;
+}
+
+.profile-email .emailAddress {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.emailAddress {
+  padding: 0;
+}
+
+.emailAddress-tx {
+  margin: 0;
+  padding-right: 110px;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.pass-chg-btn {
+  position: absolute;
+  right: 0;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #1f90ff;
+  font-size: 12px;
+  color: #1f90ff;
+  outline: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-group.nicknameArea {
+  position: relative;
+}
+.m-b-2,
+.m-y-2 {
+  margin-bottom: 20px !important;
+}
+
+.profileLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #3e4345;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 5px;
+  letter-spacing: -0.6px;
+}
+
+.input-h44 {
+  height: 20px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  border-radius: 4px;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+}
+
+select,
+textarea,
+.form-control {
+  border: 1px solid #9fa6ad;
+  color: #666;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  background: white;
+  transition: all 200ms ease-in;
+}
+
+.text-area-field {
+  position: relative;
+}
+
+.profileLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #3e4345;
+}
+
+.profileTxarea {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  resize: none;
+}
+
+.text-length {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  font-size: 12px;
+  color: #999;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+p {
+  margin: 0;
+}
+
+.createBtnRec {
+  padding: 0;
+}
+.text-left {
+  text-align: left !important;
+}
+
+.createBtnRec .createRoomBtn {
+  width: 110%;
+  height: 58px;
+  line-height: 30px;
+  margin: 0;
+  border-radius: 8px;
+}
+.btn-skin {
+  border-color: #19baa4;
+  color: white;
+  background-color: #19baa4;
+}
+
+.btn-lg {
+  padding: 14px 50px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-align: center;
+}
+
+.withdrawal-btn-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.withdrawalBtn {
+  background-color: transparent;
+  margin-top: 45px;
+  margin-bottom: 44px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #b4c0ca;
+}
+
+button,
+a {
+  padding: 0;
+  border: 0;
+  outline: 0;
+  text-decoration: none;
+  cursor: pointer;
+}

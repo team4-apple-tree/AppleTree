@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 정보</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/profile.css" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo" onclick="location.href='http://localhost:4444/'">
+          사과나무
+        </h1>
+      </div>
+    </header>
+    <div class="container profile verticalCenter">
+      <div class="profile-container">
+        <div
+          class="col-md-3 col-sm-3 text-lg-left text-md-left text-sm-left text-xs-center m-543-pd-00"
+        >
+          <span class="profile_photo_area position-relative"
+            ><img src="./images/pngwing.com.png"
+          /></span>
+          <!---->
+        </div>
+
+        <div class="col-md-9 col-sm-8 valign-middle m-543-pd-00">
+          <div class="row profile-email">
+            <div class="emailAddress">
+              <h3 class="emailAddress-tx">test@naver.com</h3>
+              <button class="pass-chg-btn">비밀번호 변경</button>
+            </div>
+            <!---->
+          </div>
+          <div class="form-group nicknameArea m-b-2">
+            <label class="profileLabel">이름</label>
+            <input
+              autocomplete="off"
+              name="userNickname"
+              type="text"
+              maxlength="25"
+              placeholder="asd"
+              title="이름"
+              class="form-control input-h44"
+              aria-required="true"
+              aria-invalid="false"
+            />
+            <!---->
+          </div>
+
+          <div class="form-group text-area-field m-b-2">
+            <label for="birth" class="profileLabel">내 각오</label>
+            <textarea
+              autocomplete="off"
+              maxlength="1000"
+              placeholder="asd"
+              class="profileTxarea"
+            ></textarea>
+            <p class="text-length"><span>0</span>/1000</p>
+          </div>
+
+          <div class="createBtnRec text-left">
+            <button class="btn btn-lg btn-skin createRoomBtn">
+              프로필 설정 완료
+            </button>
+          </div>
+          <div class="withdrawal-btn-wrapper">
+            <button class="withdrawalBtn">회원 탈퇴</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
