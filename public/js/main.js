@@ -105,7 +105,6 @@ $(document).ready(async () => {
       // .catch((error) => {
       //   console.log('데이터를 가져오는 중 오류 발생:', error);
       // });
-
       $(document).on('click', '#createStudy', async () => {
         await axios
           .get('http://localhost:4444/user/isLogin', {
@@ -127,15 +126,17 @@ $(document).ready(async () => {
       $(document).on('click', '.study-item-img-wrap', async (e) => {
         const studyId = e.target.parentNode.id;
 
-        await axios
-          .post(`http://localhost:4444/group/${studyId}/enter`, null, {
-            headers: {
-              Authorization: getCookie(),
-            },
-          })
-          .then(() => {
-            window.location.href = `room.html?id=${studyId}`;
-          });
+        window.location.href = `room.html?id=${studyId}`;
+
+        // await axios
+        //   .post(`http://localhost:4444/group/enter/${studyId}`, null, {
+        //     headers: {
+        //       Authorization: getCookie(),
+        //     },
+        //   })
+        //   .then(() => {
+        //     window.location.href = `room.html?id=${studyId}`;
+        //   });
       });
     });
 

@@ -9,6 +9,11 @@ import { Server, Socket } from 'socket.io';
 import { MongoClient, MongoClientOptions } from 'mongodb';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { SocketGuard } from 'src/user/socket.guard';
+import { InjectRepository } from '@nestjs/typeorm';
+import { GroupService } from 'src/group/group.service';
+import * as _ from 'lodash';
+import { Repository, getRepository } from 'typeorm';
+import { Access } from 'src/entity/access.entity';
 
 @WebSocketGateway()
 @Injectable()
@@ -16,167 +21,140 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  connectedClients: { [socketId: string]: boolean } = {};
-  clientNickname: { [socketId: string]: string } = {};
-  roomUsers: { [key: string]: string[] } = {};
-
   private mongoClient: MongoClient;
+  private messageCache: { [room: string]: any[] } = {};
 
-  constructor(private readonly socketGuard: SocketGuard) {
+  constructor(
+    @InjectRepository(Access) private accessRepository: Repository<Access>,
+    private readonly socketGuard: SocketGuard,
+    private readonly groupService: GroupService,
+  ) {
     const mongoOptions: MongoClientOptions = {};
 
     this.mongoClient = new MongoClient(
       'mongodb://127.0.0.1:27017/chat_log',
       mongoOptions,
     );
-    this.mongoClient.connect();
+    this.mongoClient.connect().then(() => {
+      this.setUpScheduler();
+      this.flushCacheToMongoDB();
+    });
+    this.setUpScheduler();
   }
 
   async handleConnection(client: any): Promise<void> {
-    const token = client.handshake.headers['authorization'];
-
     try {
+      const token = client.handshake.headers['authorization'];
+      const roomId = client.handshake.headers['roomid'];
       const user = await this.socketGuard.validateToken(token);
-      console.log(user);
 
-      if (this.connectedClients[client.id]) {
-        client.disconnect(true);
-        return;
+      client.join(roomId);
+
+      const group = await this.groupService.findGroup(roomId);
+
+      const roomUser = await this.accessRepository.findOne({
+        where: { group: { id: roomId }, user: { id: user.id } },
+      });
+
+      if (_.isNil(roomUser)) {
+        const access = new Access();
+
+        access.user = user;
+        access.group = group;
+        access.clientId = client.id;
+        access.deletedAt = null;
+        await this.accessRepository.save(access);
       }
 
-      this.connectedClients[client.id] = true;
+      const roomUsers = await this.accessRepository.find({
+        relations: ['user'],
+        where: { group: { id: roomId } },
+      });
+
+      const roomUsersName = roomUsers.map((client) => client.user.name);
+
+      this.server.to(roomId).emit('userList', roomUsersName);
     } catch (error) {
       console.error(error);
 
       client.disconnect();
     }
   }
+  async handleDisconnect(client: Socket): Promise<void> {
+    await this.accessRepository.softDelete({ clientId: client.id });
 
-  handleDisconnect(client: Socket): void {
-    delete this.connectedClients[client.id];
+    const roomId = client.handshake.headers['roomid'];
 
-    // 클라이언트 연결이 종료되면 해당 클라이언트가 속한 모든 방에서 유저를 제거
-    Object.keys(this.roomUsers).forEach((room) => {
-      const index = this.roomUsers[room]?.indexOf(
-        this.clientNickname[client.id],
-      );
-      if (index !== -1) {
-        this.roomUsers[room].splice(index, 1);
-        this.server
-          .to(room)
-          .emit('userLeft', { userId: this.clientNickname[client.id], room });
-        this.server
-          .to(room)
-          .emit('userList', { room, userList: this.roomUsers[room] });
-      }
+    const roomUsers = await this.accessRepository.find({
+      relations: ['user'],
+      where: { group: { id: +roomId } },
     });
 
-    // 모든 방의 유저 목록을 업데이트하여 emit
-    Object.keys(this.roomUsers).forEach((room) => {
-      this.server
-        .to(room)
-        .emit('userList', { room, userList: this.roomUsers[room] });
-    });
+    const roomUsersName = roomUsers.map((client) => client.user.name);
 
-    // 연결된 클라이언트 목록을 업데이트하여 emit
-    this.server.emit('userList', {
-      room: null,
-      userList: Object.keys(this.connectedClients),
-    });
-  }
-
-  @SubscribeMessage('setUserName')
-  handleSetUserName(client: Socket, nick: string): void {
-    this.clientNickname[client.id] = nick;
-  }
-
-  @SubscribeMessage('join')
-  handleJoin(client: Socket, room: string): void {
-    // 이미 접속한 방인지 확인
-    if (client.rooms.has(room)) {
-      return;
-    }
-
-    client.join(room);
-
-    if (!this.roomUsers[room]) {
-      this.roomUsers[room] = [];
-    }
-
-    this.roomUsers[room].push(this.clientNickname[client.id]);
-    this.server
-      .to(room)
-      .emit('userJoined', { userId: this.clientNickname[client.id], room });
-    this.server
-      .to(room)
-      .emit('userList', { room, userList: this.roomUsers[room] });
-
-    this.server.emit('userList', {
-      room: null,
-      userList: Object.keys(this.connectedClients),
-    });
-  }
-
-  @SubscribeMessage('exit')
-  handleExit(client: Socket, room: string): void {
-    // 방에 접속되어 있지 않은 경우는 무시
-    if (!client.rooms.has(room)) {
-      return;
-    }
-
-    client.leave(room);
-
-    const index = this.roomUsers[room]?.indexOf(this.clientNickname[client.id]);
-    if (index !== -1) {
-      this.roomUsers[room].splice(index, 1);
-      this.server
-        .to(room)
-        .emit('userLeft', { userId: this.clientNickname[client.id], room });
-      this.server
-        .to(room)
-        .emit('userList', { room, userList: this.roomUsers[room] });
-    }
-
-    // 모든 방의 유저 목록을 업데이트하여 emit
-    Object.keys(this.roomUsers).forEach((room) => {
-      this.server
-        .to(room)
-        .emit('userList', { room, userList: this.roomUsers[room] });
-    });
-
-    // 연결된 클라이언트 목록을 업데이트하여 emit
-    this.server.emit('userList', {
-      room: null,
-      userList: Object.keys(this.connectedClients),
-    });
-  }
-
-  @SubscribeMessage('getUserList')
-  handleGetUserList(client: Socket, room: string): void {
-    this.server
-      .to(room)
-      .emit('userList', { room, userList: this.roomUsers[room] });
+    this.server.to(roomId).emit('userList', roomUsersName);
   }
 
   @SubscribeMessage('chatMessage')
-  handleChatMessage(
-    client: Socket,
-    data: { message: string; room: string },
-  ): void {
-    // 클라이언트가 보낸 채팅 메시지를 해당 방으로 전달
-    this.server.to(data.room).emit('chatMessage', {
-      userId: this.clientNickname[client.id],
-      message: data.message,
-      room: data.room,
-    });
+  async handleChatMessage(client: Socket, message: string): Promise<void> {
+    const token = client.handshake.headers['authorization'];
+    const roomId = client.handshake.headers['roomid'];
+    const user = await this.socketGuard.validateToken(token);
 
     // MongoDB에 채팅 데이터 저장
     const chatCollection = this.mongoClient.db('chat_logs').collection('chats');
     const chatData = {
-      user: this.clientNickname[client.id],
-      message: data.message,
+      roomId: roomId,
+      name: user.name,
+      message: message,
       timestamp: new Date(),
     };
-    chatCollection.insertOne(chatData);
+    // chatCollection.insertOne(chatData);
+
+    this.server
+      .to(roomId)
+      .emit('chatMessage', { userName: user.name, message });
+
+    this.cacheMessage(+roomId, chatData); // 캐시에 채팅 데이터 추가
+  }
+
+  // 메시지를 캐시에 저장하는 메서드
+  private cacheMessage(roomId: number, message: any): void {
+    if (!this.messageCache[roomId]) {
+      this.messageCache[roomId] = [];
+    }
+    this.messageCache[roomId].push(message);
+  }
+
+  // MongoDB에 채팅 데이터 저장
+  private async flushCacheToMongoDB() {
+    try {
+      // MongoDB에 연결
+      const chatCollection = this.mongoClient
+        .db('chat_logs')
+        .collection('chats');
+      // 모든 방의 메시지를 캐시에서 가져와서 MongoDB에 저장
+      for (const room of Object.keys(this.messageCache)) {
+        const messages = this.messageCache[room];
+
+        if (messages.length > 0) {
+          // 캐시된 메시지를 MongoDB에 저장
+          await chatCollection.insertMany(messages);
+          // 캐시를 비웁니다.
+          this.messageCache[room] = [];
+          console.log(`Cache flushed to MongoDB for room: ${room}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error flushing cache to MongoDB:', error);
+    }
+  }
+
+  // 스케줄러 설정 메서드
+  private setUpScheduler() {
+    // 30분마다 flushCacheToMongoDB 메서드를 호출하도록 스케줄러 설정
+    setInterval(() => {
+      this.flushCacheToMongoDB();
+    }, 60 * 1000); // 10분 간격으로 실행 (밀리초 단위)
   }
 }

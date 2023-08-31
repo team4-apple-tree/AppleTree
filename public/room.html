@@ -95,32 +95,23 @@
       <!-- 실시간 채팅방 -->
       <div class="mainSection chat-section">
         <h2>실시간 채팅방</h2>
-        <div class="button-container">
-          <button onclick="joinRoom('room1')">Join</button>
-          <button onclick="exitRoom('room1')">Exit</button>
-        </div>
         <div class="chatMember">
-          <p>채팅방참여자 목록</p>
-          <p>내 이름: <span id="UserName"></span></p>
+          <p>접속자 목록</p>
         </div>
         <div class="chat-messages">
           <div class="rooms">
-            <div class="room" id="room1">
-              <div class="users" id="room1Users"></div>
-              <div class="chat-container" id="room1-chat-container">
-                <ul class="chat-list" id="room1-chat-list"></ul>
+            <div class="room" id="room">
+              <div class="users" id="roomUsers"></div>
+              <div class="chat-container" id="room-chat-container">
+                <ul class="chat-list" id="room-chat-list"></ul>
               </div>
             </div>
           </div>
         </div>
 
         <div class="chat-input">
-          <input
-            id="room1-messageInput"
-            type="text"
-            placeholder="메시지 입력"
-          />
-          <button class="btn" onclick="sendRoomMessage('room1')">전송</button>
+          <input id="messageInput" type="text" placeholder="메시지 입력" />
+          <button class="btn" id="sendRoomMessage">전송</button>
         </div>
       </div>
     </section>

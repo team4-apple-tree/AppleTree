@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
@@ -16,6 +17,9 @@ import { Group } from './group.entity';
 export class Access {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  clientId: string;
 
   @CreateDateColumn()
   createdAt: Date;
