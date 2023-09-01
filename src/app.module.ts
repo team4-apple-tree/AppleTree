@@ -7,8 +7,6 @@ import {
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { BoardModule } from './board/board.module';
-import { CommentModule } from './comment/comment.module';
 import { PostModule } from './post/post.module';
 import { ToDoModule } from './to-do/to-do.module';
 import { GroupModule } from './group/group.module';
@@ -63,8 +61,6 @@ import { ChatModule } from './chat/chat.module';
         },
       }),
     }),
-    BoardModule,
-    CommentModule,
     PostModule,
     ToDoModule,
     GroupModule,
