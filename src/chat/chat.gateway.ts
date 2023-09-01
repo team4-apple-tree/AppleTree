@@ -14,6 +14,7 @@ import { GroupService } from 'src/group/group.service';
 import * as _ from 'lodash';
 import { Repository, getRepository } from 'typeorm';
 import { Access } from 'src/entity/access.entity';
+import { ConfigService } from '@nestjs/config';
 
 @WebSocketGateway()
 @Injectable()
@@ -28,11 +29,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @InjectRepository(Access) private accessRepository: Repository<Access>,
     private readonly socketGuard: SocketGuard,
     private readonly groupService: GroupService,
+    private readonly configService: ConfigService,
   ) {
     const mongoOptions: MongoClientOptions = {};
 
     this.mongoClient = new MongoClient(
-      'mongodb://127.0.0.1:27017/chat_log',
+      this.configService.get<string>('MONGODB_ATLAS'),
       mongoOptions,
     );
     this.mongoClient.connect().then(() => {

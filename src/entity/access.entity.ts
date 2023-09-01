@@ -15,10 +15,10 @@ import { Group } from './group.entity';
 @Entity({ schema: 'apple', name: 'access' })
 // @Unique(['user', 'group'])
 export class Access {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  // id: number;
 
-  @Column()
+  @PrimaryColumn()
   clientId: string;
 
   @CreateDateColumn()
