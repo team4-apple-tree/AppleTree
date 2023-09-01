@@ -33,7 +33,7 @@
 
 ## Service Architecture
 
-![Alt text](./사과나무ERD.png)
+![Alt text](./Service%20Architecture.png)
 
 ### 중요로직
 
@@ -52,7 +52,7 @@
 
 ### ERD
 
-![Alt text](./Service%20Architecture.png)
+![Alt text](./사과나무ERD.png)
 
 **[ Commit Message Convention ]**
 
