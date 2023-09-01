@@ -100,19 +100,29 @@ $(document).on('click', '#updateCard', async (e) => {
     const cardId = e.target.parentNode.id;
     const updatedTitle = $('#titleInput').val();
     const updatedDescription = $('#descInput').val();
+    const selectedStatus = $('#statusSelect').val();
 
     console.log(updatedTitle);
     console.log(updatedDescription);
+    console.log(selectedStatus);
+
+    // selectedStatus가 유효한 숫자로 변환 가능한지 확인하고, 그렇지 않다면 기본값으로 처리합니다.
+    const selectToDo =
+      !isNaN(parseInt(selectedStatus)) &&
+      [1, 2, 3].includes(parseInt(selectedStatus))
+        ? parseInt(selectedStatus)
+        : 1;
 
     const updatedData = {
       title: updatedTitle,
       desc: updatedDescription,
+      selectToDo: selectToDo, // selectToDo를 숫자로 설정합니다.
     };
+    console.log(updatedData);
     await axios
       .put(`http://localhost:4444/card/${cardId}`, updatedData)
       .then(() => {
         alert('수정 성공');
-
         window.location.reload();
       })
       .catch((response) => {

@@ -8,7 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Todo } from './to-do.entity';
+
 import { Group } from './group.entity';
 
 export enum ToDoState {

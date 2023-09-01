@@ -68,6 +68,7 @@ export class CardService {
 
     cardToUpdate.title = updateCardDto.title;
     cardToUpdate.desc = updateCardDto.desc;
+    cardToUpdate.selectToDo = updateCardDto.selectToDo; // selectToDo를 업데이트합니다.
 
     return this.cardRepository.save(cardToUpdate);
   }
