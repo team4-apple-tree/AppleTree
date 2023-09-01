@@ -77,7 +77,7 @@ header {
 .chat-section .chat-messages {
   border: 1px solid #ccc;
   border-radius: 8px;
-  height: 350px;
+  height: 480px;
   margin-bottom: 20px;
   padding: 7px;
   font-size: 12px;
@@ -94,9 +94,16 @@ header {
   display: none;
 }
 
-#room1-messageInput {
-  width: 260px;
-  height: 20px;
+#messageInput {
+  width: 240px;
+  height: 15px;
+}
+
+#sendRoomMessage {
+  background-color: #19baa4;
+  border-color: #19baa4;
+  color: #fff;
+  height: 38px;
 }
 
 .main .btn {
@@ -116,8 +123,7 @@ header {
 }
 
 .user-list li,
-.todo-list li,
-.chat-messages li {
+.todo-list li {
   padding: 5px 0;
   border-bottom: 1px solid #ccc;
 }
@@ -126,6 +132,20 @@ header {
   text-align: center;
   font-weight: 700;
   font-size: 21px;
+}
+
+.myname {
+  background-color: #19baa4;
+  width: 50px;
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 10px;
+  color: #fff;
+}
+
+.chatlog {
+  padding-left: 15px;
+  padding-top: 10px;
 }
 
 .user-management-section {
@@ -294,7 +314,7 @@ input {
   padding: 20px;
   border: 1px solid #888;
   width: 500px;
-  height: 450px;
+  height: 480px;
   min-width: 500px;
   position: relative;
   border-radius: 8px;
@@ -302,8 +322,8 @@ input {
 
 .cardModalclose {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  bottom: 490px;
+  right: 3px;
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
@@ -311,10 +331,11 @@ input {
 
 .cardModal-title {
   font-size: 24px;
-  margin-bottom: 10px;
-  border-bottom: 1.5px solid #ccc;
+  /* margin-bottom: 10px;
+  border-bottom: 1.5px solid #ccc; */
   text-align: center;
   font-weight: 700;
+  outline: none;
 }
 
 .cardModal-description {
@@ -322,6 +343,13 @@ input {
   border: 1px solid #ccc;
   height: 350px;
   overflow-y: scroll;
+  width: 98%;
+  outline: none;
+}
+
+.cardmodal-title #titleInput {
+  display: flexbox;
+  width: 95%;
 }
 
 .cardModal-description::-webkit-scrollbar {
@@ -410,4 +438,15 @@ input {
 .cardModal-title-input {
   background-color: red;
   width: 100%;
+}
+
+.cardModal-content label {
+  position: absolute;
+  bottom: 50px;
+}
+
+#statusSelect {
+  position: absolute;
+  bottom: 54px;
+  left: 95px;
 }

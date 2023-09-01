@@ -75,9 +75,14 @@
       <div class="cardModal" id="cardModal">
         <div class="cardModal-content">
           <span class="cardModalclose" id="closeCardModalBtn">&times;</span>
-
-          <input type="text" id="titleInput" class="cardModal-title" readonly />
-
+          <div class="cardmodal-title">
+            <input
+              type="text"
+              id="titleInput"
+              class="cardModal-title"
+              readonly
+            />
+          </div>
           <textarea
             id="descInput"
             class="cardModal-description"
@@ -88,6 +93,12 @@
             <button id="updateCard" class="cardModal-edit-btn">수정</button>
             <button id="deleteCard" class="cardModal-delete-btn">삭제</button>
           </div>
+          <label for="statusSelect">상태 선택:</label>
+          <select id="statusSelect">
+            <option value="1">TODO</option>
+            <option value="2">IN_PROGRESS</option>
+            <option value="3">COMPLETED</option>
+          </select>
         </div>
       </div>
 

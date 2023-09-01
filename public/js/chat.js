@@ -46,7 +46,9 @@ function appendMessage({ userName, message }) {
 
   const li = document.createElement('li');
   const name = document.createElement('p');
+  name.classList.add('myname');
   const chat = document.createElement('p');
+  chat.classList.add('chatlog');
 
   li.className = 'chat-item';
   name.textContent = userName;
