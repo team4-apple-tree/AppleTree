@@ -15,6 +15,8 @@ import { Payment } from '../entity/payment.entity';
 
 import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
+import { Stopwatch } from 'src/entity/stopwatch.entity';
+import { Invitation } from 'src/entity/invite.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -42,6 +44,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Group,
         Access,
         Payment,
+        Stopwatch,
+        Invitation,
       ],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'),
     };

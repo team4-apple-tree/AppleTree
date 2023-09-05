@@ -92,6 +92,7 @@ $(document).ready(async () => {
       //   });
       // })
       const groupData = response.data;
+      console.log(groupData);
       const groupNamePlaceholder = document.getElementById('mystudygroup');
       groupNamePlaceholder.innerHTML = ''; //
       groupData.forEach((element) => {
@@ -100,7 +101,7 @@ $(document).ready(async () => {
         groupNamePlaceholder.append(p); //
       });
       const p = document.createElement('p');
-      p.innerText = groupData[0].name;
+      // p.innerText = groupData[0].name;
 
       // .catch((error) => {
       //   console.log('데이터를 가져오는 중 오류 발생:', error);
