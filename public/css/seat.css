@@ -1,0 +1,13 @@
+.seat {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  background-color: #e0e0e0;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.seat.selected {
+  background-color: #ff0000;
+}

@@ -1,4 +1,4 @@
-import { Post, Body, Param, Get } from '@nestjs/common';
+import { Post, Body, Param, Get, NotFoundException } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { SeatService } from './seat.service';
 import { createSeatDto } from '../dto/seat/create-seat-dto';
@@ -25,6 +25,19 @@ export class SeatController {
 
   @Get('/:roomId')
   async seatInfo(@Param('roomId') roomId: number) {
-    return await this.seatService.seatInfo(roomId);
+    const seatDetail = await this.seatService.seatInfo(roomId);
+    if (!seatDetail.length) {
+      throw new NotFoundException('해당 방의 좌석 정보가 없습니다.');
+    }
+
+    const seatShape = await this.seatService.fetchSeatShape(seatDetail[0].type);
+    if (!seatShape) {
+      throw new NotFoundException('해당 좌석의 모양 정보가 없습니다.');
+    }
+
+    return {
+      seatShape,
+      seatDetail,
+    };
   }
 }

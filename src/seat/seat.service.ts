@@ -77,4 +77,24 @@ export class SeatService {
     });
     return seat;
   }
+
+  async fetchSeatShape(type: number): Promise<number[][] | null> {
+    try {
+      await this.client.connect();
+      const db: Db = this.client.db('seat');
+      const seatData = await db.collection('seatShapes').findOne({ type });
+      if (seatData && seatData.seatData) {
+        return seatData.seatData.seatShape;
+      }
+      return null;
+    } catch (error) {
+      console.error(
+        'MongoDB에서 좌석 모양을 불러오는 동안 오류가 발생했습니다:',
+        error,
+      );
+      return null;
+    } finally {
+      await this.client.close();
+    }
+  }
 }
