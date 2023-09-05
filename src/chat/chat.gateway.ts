@@ -95,6 +95,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const roomUsersName = roomUsers.map((client) => client.user.name);
 
     this.server.to(roomId).emit('userList', roomUsersName);
+
+    // client.leave(roomId);
   }
 
   @SubscribeMessage('chatMessage')
@@ -158,5 +160,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     setInterval(() => {
       this.flushCacheToMongoDB();
     }, 60 * 1000); // 10분 간격으로 실행 (밀리초 단위)
+  }
+
+  // 화상 채팅
+
+  @SubscribeMessage('join_room')
+  handleJoinRomm(client: Socket, roomId: string): void {
+    this.server.to(roomId).emit('welcome');
+  }
+
+  @SubscribeMessage('ice')
+  handleIce(client: Socket, data: any): void {
+    this.server.to(data.roomId).emit('ice', data.ice);
+  }
+
+  @SubscribeMessage('offer')
+  handleOffer(client: Socket, data: any): void {
+    this.server.to(data.roomId).emit('offer', data.offer);
+  }
+
+  @SubscribeMessage('answer')
+  handleAnswer(client: Socket, data: any): void {
+    this.server.to(data.roomId).emit('answer', data.answer);
   }
 }
