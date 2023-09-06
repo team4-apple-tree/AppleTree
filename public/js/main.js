@@ -216,6 +216,7 @@ $(document).ready(async () => {
           window.location.reload();
         })
         .catch((error) => {
+          console.log(error);
           alert('로그아웃이 실패 했을까?', error);
         });
     });

@@ -49,52 +49,91 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const token = client.handshake.headers['authorization'];
       const roomId = client.handshake.headers['roomid'];
       const user = await this.socketGuard.validateToken(token);
+      let members = [];
+
+      client.userName = user.name;
 
       client.join(roomId);
 
-      const group = await this.groupService.findGroup(roomId);
+      const ids = Array.from(this.server.sockets.adapter.rooms.get(roomId));
 
-      const roomUser = await this.accessRepository.findOne({
-        where: { group: { id: roomId }, user: { id: user.id } },
+      ids.forEach((id) => {
+        const name = this.server.sockets.sockets.get(id)['userName'];
+
+        members.push(name);
       });
 
-      if (_.isNil(roomUser)) {
-        const access = new Access();
+      members.sort();
 
-        access.user = user;
-        access.group = group;
-        access.clientId = client.id;
-        access.deletedAt = null;
-        await this.accessRepository.save(access);
-      }
+      this.server.to(roomId).emit('members', members);
 
-      const roomUsers = await this.accessRepository.find({
-        relations: ['user'],
-        where: { group: { id: roomId } },
-      });
+      // const group = await this.groupService.findGroup(roomId);
 
-      const roomUsersName = roomUsers.map((client) => client.user.name);
+      // const roomUser = await this.accessRepository.findOne({
+      //   where: { group: { id: roomId }, user: { id: user.id } },
+      // });
 
-      this.server.to(roomId).emit('userList', roomUsersName);
+      // if (_.isNil(roomUser)) {
+      //   const access = new Access();
+
+      //   access.user = user;
+      //   access.group = group;
+      //   access.clientId = client.id;
+      //   access.deletedAt = null;
+      //   await this.accessRepository.save(access);
+      // }
+
+      // const roomUsers = await this.accessRepository.find({
+      //   relations: ['user'],
+      //   where: { group: { id: roomId } },
+      // });
+
+      // const roomUsersName = roomUsers.map((client) => client.user.name);
+
+      // this.server.to(roomId).emit('userList', roomUsersName);
+      // this.server.to(roomId).emit('enter', user.name);
     } catch (error) {
       console.error(error);
 
       client.disconnect();
     }
   }
-  async handleDisconnect(client: Socket): Promise<void> {
-    await this.accessRepository.softDelete({ clientId: client.id });
-
+  async handleDisconnect(client: any): Promise<void> {
     const roomId = client.handshake.headers['roomid'];
 
-    const roomUsers = await this.accessRepository.find({
-      relations: ['user'],
-      where: { group: { id: +roomId } },
-    });
+    client.leave(roomId);
 
-    const roomUsersName = roomUsers.map((client) => client.user.name);
+    const isExistIds = this.server.sockets.adapter.rooms.get(roomId);
 
-    this.server.to(roomId).emit('userList', roomUsersName);
+    if (isExistIds) {
+      const ids = Array.from(isExistIds);
+
+      let members = [];
+
+      ids.forEach((id) => {
+        const name = this.server.sockets.sockets.get(id)['userName'];
+
+        members.push(name);
+      });
+
+      members.sort();
+
+      this.server.to(roomId).emit('members', members);
+      // const token = client.handshake.headers['authorization'];
+      // const user = await this.socketGuard.validateToken(token);
+
+      // await this.accessRepository.softDelete({ clientId: client.id });
+
+      // const roomUsers = await this.accessRepository.find({
+      //   relations: ['user'],
+      //   where: { group: { id: +roomId } },
+      // });
+
+      // const roomUsersName = roomUsers.map((client) => client.user.name);
+
+      // this.server.to(roomId).emit('userList', roomUsersName);
+      // this.server.to(roomId).emit('exit', user.name);
+    }
   }
 
   @SubscribeMessage('chatMessage')
@@ -158,5 +197,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     setInterval(() => {
       this.flushCacheToMongoDB();
     }, 60 * 1000); // 10분 간격으로 실행 (밀리초 단위)
+  }
+
+  @SubscribeMessage('members')
+  handelMembers(client: Socket, data: any): void {
+    this.server.to(data.roomId).emit('members', data.userList);
   }
 }

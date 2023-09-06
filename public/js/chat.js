@@ -8,6 +8,8 @@ const socket = io({
   },
 });
 
+let userList = new Set();
+
 $(document).on('click', '#sendRoomMessage', () => {
   sendRoomMessage();
 });
@@ -21,12 +23,30 @@ function sendRoomMessage() {
   }
 }
 
-socket.on('userList', (names) => {
+socket.on('enter', (name) => {
+  userList.add(name);
+
+  const ul = Array.from(userList);
+
+  socket.emit('members', { userList: ul, roomId });
+});
+
+socket.on('exit', (name) => {
+  userList.delete(name);
+
+  const ul = Array.from(userList);
+
+  socket.emit('members', { userList: ul, roomId });
+});
+
+socket.on('members', (members) => {
   const chatMember = $('.chatMember');
+
+  // userList.add(...members);
 
   chatMember.empty();
 
-  names.forEach((name) => {
+  members.forEach((name) => {
     const p = document.createElement('p');
 
     p.className = 'UserName';
@@ -34,6 +54,15 @@ socket.on('userList', (names) => {
 
     chatMember.append(p);
   });
+
+  // for (let name of userList) {
+  //   const p = document.createElement('p');
+
+  //   p.className = 'UserName';
+  //   p.innerText = name;
+
+  //   chatMember.append(p);
+  // }
 });
 
 socket.on('chatMessage', (messages) => {
