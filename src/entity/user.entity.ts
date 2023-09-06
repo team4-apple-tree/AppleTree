@@ -18,6 +18,7 @@ import { Comment } from './comment.entity';
 import { Post } from './post.entity';
 import { Group } from './group.entity';
 import { Access } from './access.entity';
+import { Stopwatch } from './stopwatch.entity';
 export enum roleEnum {
   유저 = 1,
   관리자 = 2,
@@ -70,4 +71,7 @@ export class User {
 
   @Column({ type: 'enum', enum: roleEnum, default: roleEnum.유저 })
   role: roleEnum;
+
+  @OneToMany(() => Stopwatch, (stopwatch) => stopwatch.user)
+  stopwatches: Stopwatch[];
 }

@@ -14,5 +14,5 @@ export class CreateCardDto {
 
   @IsOptional()
   @IsEnum(ToDoState) // ToDoState enum을 사용하여 유효성 검사
-  selectToDo: number;
+  selectToDo: number | null;
 }

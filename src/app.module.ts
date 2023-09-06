@@ -34,6 +34,16 @@ import { SocketGuard } from './user/socket.guard';
 import { MyLogger } from './utils/winston.util';
 import { LoggerMiddleware } from './middleware/logger';
 import { ChatModule } from './chat/chat.module';
+import { SeatPriceController } from './seat-price/seat-price.controller';
+import { SeatPriceModule } from './seat-price/seat-price.module';
+import { StopwatchService } from './stopwatch/stopwatch.service';
+import { StopwatchController } from './stopwatch/stopwatch.controller';
+import { StopwatchModule } from './stopwatch/stopwatch.module';
+import { InviteModule } from './invite/invite.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { RoomStructureModule } from './room-structure/room-structure.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -61,6 +71,32 @@ import { ChatModule } from './chat/chat.module';
         },
       }),
     }),
+    // MailerModule 설정 추가
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({
+        transport: {
+          host: process.env.SMTP_HOST,
+          port: 587,
+          secure: false,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        },
+        defaults: {
+          from: '"nest-modules" <modules@nestjs.com>',
+        },
+        template: {
+          dir: process.cwd() + '/template/',
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
+      inject: [ConfigService],
+    }),
     PostModule,
     ToDoModule,
     GroupModule,
@@ -71,6 +107,9 @@ import { ChatModule } from './chat/chat.module';
     UserModule,
     PaymentModule,
     ChatModule,
+    StopwatchModule,
+    InviteModule,
+    RoomStructureModule,
   ],
   controllers: [AppController, PaymentController],
   providers: [

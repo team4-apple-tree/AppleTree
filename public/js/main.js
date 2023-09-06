@@ -73,40 +73,6 @@ $(document).ready(async () => {
   });
   // 기본 메인페이지 구동 스크립트
 
-  // 내가 속한 스터디그룹 리스트
-
-  // await axios
-  //   .get(`http://localhost:4444/group/my`, {
-  //     headers: {
-  //       Authorization: getCookie(),
-  //     },
-  //   })
-  //   .then((response) => {
-  //     //   const groupData = response.data;
-  //     //   const groupNamePlaceholder = document.getElementById('아이디');
-  //     //   groupNamePlaceholder.innerHTML = '';
-  //     //   groupData.forEach((element) => {
-  //     //     const p = document.createElement('p');
-  //     //     p.innerText = element.name;
-  //     //     groupNamePlaceholder.append(p);
-  //     //   });
-  //     // })
-  //     // const groupData = response.data;
-  //     const groupNamePlaceholder = document.getElementById('mystudygroup');
-  //     groupNamePlaceholder.innerHTML = ''; //
-  //     // groupData.forEach((element) => {
-  //     //   const p = document.createElement('div');
-  //     //   p.innerText = element.name; //
-  //     //   groupNamePlaceholder.append(p); //
-  //     // });
-  //     const p = document.createElement('p');
-  //     // p.innerText = groupData[0].name;
-
-  //     // .catch((error) => {
-  //     //   console.log('데이터를 가져오는 중 오류 발생:', error);
-  //     // });
-  //   });
-
   $(document).on('click', '#createStudy', async () => {
     await axios
       .get('http://localhost:4444/user/isLogin', {
@@ -123,6 +89,36 @@ $(document).ready(async () => {
         }
       });
   });
+
+  // 내가 속한 스터디그룹 리스트
+  await axios
+    .get(`http://localhost:4444/group/my`, {
+      headers: {
+        Authorization: getCookie(),
+      },
+    })
+    .then((response) => {
+      //   const groupData = response.data;
+      //   const groupNamePlaceholder = document.getElementById('아이디');
+      //   groupNamePlaceholder.innerHTML = '';
+      //   groupData.forEach((element) => {
+      //     const p = document.createElement('p');
+      //     p.innerText = element.name;
+      //     groupNamePlaceholder.append(p);
+      //   });
+      // })
+      const groupData = response.data;
+      console.log(groupData);
+      const groupNamePlaceholder = document.getElementById('mystudygroup');
+      groupNamePlaceholder.innerHTML = ''; //
+      groupData.forEach((element) => {
+        const p = document.createElement('div');
+        p.innerText = element.name; //
+        groupNamePlaceholder.append(p); //
+      });
+      const p = document.createElement('p');
+      // p.innerText = groupData[0].name;
+    });
 
   // 스터디 클릭 시 이벤트
   $(document).on('click', '.study-item-img-wrap', async (e) => {

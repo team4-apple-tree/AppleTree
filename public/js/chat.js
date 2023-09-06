@@ -62,7 +62,7 @@ socket.on('chatMessage', (messages) => {
 
 function appendMessage({ userName, message }) {
   const chatList = document.querySelector('#room-chat-list');
-  const chatContainer = document.querySelector('#room-chat-container');
+  const chatContainer = document.querySelector('.chat-messages');
 
   const li = document.createElement('li');
   const name = document.createElement('p');
