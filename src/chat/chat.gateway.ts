@@ -198,9 +198,4 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.flushCacheToMongoDB();
     }, 60 * 1000); // 10분 간격으로 실행 (밀리초 단위)
   }
-
-  @SubscribeMessage('members')
-  handelMembers(client: Socket, data: any): void {
-    this.server.to(data.roomId).emit('members', data.userList);
-  }
 }

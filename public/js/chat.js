@@ -23,26 +23,8 @@ function sendRoomMessage() {
   }
 }
 
-socket.on('enter', (name) => {
-  userList.add(name);
-
-  const ul = Array.from(userList);
-
-  socket.emit('members', { userList: ul, roomId });
-});
-
-socket.on('exit', (name) => {
-  userList.delete(name);
-
-  const ul = Array.from(userList);
-
-  socket.emit('members', { userList: ul, roomId });
-});
-
 socket.on('members', (members) => {
   const chatMember = $('.chatMember');
-
-  // userList.add(...members);
 
   chatMember.empty();
 
@@ -54,15 +36,6 @@ socket.on('members', (members) => {
 
     chatMember.append(p);
   });
-
-  // for (let name of userList) {
-  //   const p = document.createElement('p');
-
-  //   p.className = 'UserName';
-  //   p.innerText = name;
-
-  //   chatMember.append(p);
-  // }
 });
 
 socket.on('chatMessage', (messages) => {
