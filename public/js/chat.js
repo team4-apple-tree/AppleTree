@@ -20,13 +20,11 @@ $(document).ready(async () => {
       messages.forEach((m) => {
         appendMessage({ userName: m.name, message: m.message });
       });
-
-      alert('성공');
     })
     .catch((response) => {
       console.log(response);
 
-      alert('실패');
+      alert('오류');
     });
 });
 
