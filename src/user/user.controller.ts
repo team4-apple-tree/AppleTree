@@ -19,6 +19,7 @@ import { DeleteUserDto } from '../dto/user/delete-user-dto';
 import * as cookieParser from 'cookie-parser';
 import { Request, Response, response } from 'express';
 import { JwtAuthGuard } from './jwt.guard';
+import { CheckEmailDto } from 'src/dto/user/checkEmail.dto';
 
 @Controller('user')
 export class UserController {
@@ -78,8 +79,14 @@ export class UserController {
   @Get('/isLogin')
   @UseGuards(JwtAuthGuard)
   async isLogin() {
-    console.log('aaa');
     return true;
+  }
+
+  // 존재하는 이메일인지 확인
+  @Post('checkEmail')
+  async checkEmail(@Body() data: CheckEmailDto): Promise<boolean> {
+    console.log(data);
+    return await this.userService.checkEmail(data);
   }
 
   @Get('/:userId')

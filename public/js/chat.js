@@ -9,8 +9,14 @@ const socket = io({
 });
 
 let userList = new Set();
+let inviteMembers = [];
+
+const inviteDiv = document.querySelector('#invite-div');
+const inviteUl = document.querySelector('#invite-ul');
+const inviteEmail = document.querySelector('#memberEmailInput');
 
 $(document).ready(async () => {
+  // 스터디 그룹에서 입력받은 모든 채팅 목록 조회
   await axios
     .get(`http://localhost:4444/chat/${roomId}`)
     .then((response) => {
@@ -28,10 +34,12 @@ $(document).ready(async () => {
     });
 });
 
+// 채팅 입력 시 이벤트
 $(document).on('click', '#sendRoomMessage', () => {
   sendRoomMessage();
 });
 
+// 채팅 입력 시 실행되는 함수
 function sendRoomMessage() {
   const message = $('#messageInput').val();
 
@@ -41,6 +49,7 @@ function sendRoomMessage() {
   }
 }
 
+// 스터디그룹에 접속한 멤버 목록
 socket.on('members', (members) => {
   const chatMember = $('.chatMember');
 
@@ -56,10 +65,12 @@ socket.on('members', (members) => {
   });
 });
 
+// 사용자가 입력한 채팅 받아오기
 socket.on('chatMessage', (messages) => {
   appendMessage(messages);
 });
 
+// 채팅 목록 화면에 보여주는 함수
 function appendMessage({ userName, message }) {
   const chatList = document.querySelector('#room-chat-list');
   const chatContainer = document.querySelector('.chat-messages');
@@ -82,10 +93,71 @@ function appendMessage({ userName, message }) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+// 채팅 입력 시 엔터 눌렀을 때 이벤트
 $(document).on('keyup', '#messageInput', (e) => {
   if (e.key === 'Enter') {
     sendRoomMessage();
   }
+});
+
+// 멤버 초대 할 수 있게 숨겨진 태그 보이게 하기
+$(document).on('click', '#invite', () => {
+  $('#memberEmailInput').css('display', 'block');
+  $('#checkEmailBtn').css('display', 'block');
+  $('#iniviteMembersBtn').css('display', 'block');
+});
+
+// 존재하는 사용자인지 확인
+$(document).on('click', '#checkEmailBtn', async () => {
+  const email = $('#memberEmailInput').val();
+
+  const data = { email };
+
+  await axios
+    .post('http://localhost:4444/user/checkEmail', data)
+    .then((response) => {
+      const isExistEmail = response.data;
+
+      if (!isExistEmail) {
+        alert('존재하지 않는 이메일입니다.');
+      } else {
+        const li = document.createElement('li');
+
+        li.innerText = email;
+
+        inviteUl.appendChild(li);
+
+        inviteMembers.push({ email });
+      }
+
+      inviteEmail.value = '';
+    })
+    .catch((response) => {
+      console.log(response);
+
+      alert('실패');
+    });
+});
+
+// 존재 여부 확인한 사용자들 초대
+$(document).on('click', '#iniviteMembersBtn', async () => {
+  console.log(inviteMembers);
+  await axios
+    .post(`http://localhost:4444/group/${roomId}`, inviteMembers)
+    .then((response) => {
+      alert(response.data.message);
+
+      inviteUl.innerHTML = '';
+
+      $('#memberEmailInput').css('display', 'none');
+      $('#checkEmailBtn').css('display', 'none');
+      $('#iniviteMembersBtn').css('display', 'none');
+    })
+    .catch((responst) => {
+      console.log(response);
+
+      alert('실패');
+    });
 });
 
 // 쿠키 값 가져오는 함수

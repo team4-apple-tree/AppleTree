@@ -11,7 +11,7 @@ import { Seat } from './seat.entity';
 import { seatEnum } from './seat.entity';
 import { IsEnum, IsOptional } from 'class-validator';
 
-@Entity({ schema: 'apple', name: 'seatPrice' })
+@Entity({ schema: 'apple', name: 'seatprice' })
 export class SeatPrice {
   @PrimaryGeneratedColumn()
   seatPriceId: number;

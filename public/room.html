@@ -114,7 +114,13 @@
       <!-- 실시간 채팅방 -->
       <div class="mainSection chat-section">
         <h2>실시간 채팅방</h2>
-        <button>초대</button>
+        <div id="invite-div">
+          <button id="invite">초대</button>
+          <input id="memberEmailInput" type="text" style="display: none" />
+          <button id="checkEmailBtn" style="display: none">초대</button>
+          <ul id="invite-ul"></ul>
+          <button id="iniviteMembersBtn" style="display: none">초대하기</button>
+        </div>
         <div class="chatMember">
           <p>접속자 목록</p>
         </div>

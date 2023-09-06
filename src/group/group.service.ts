@@ -2,6 +2,7 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,7 +17,8 @@ import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
 import { UploadService } from 'src/upload.service';
-import {  EntityManager, DataSource } from 'typeorm';
+import { EntityManager, DataSource } from 'typeorm';
+import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class GroupService {
   constructor(
@@ -26,7 +28,8 @@ export class GroupService {
     private readonly userService: UserService,
     private readonly uploadService: UploadService,
     private readonly entityManager: EntityManager,
-    private readonly dataSource : DataSource
+    private readonly dataSource: DataSource,
+    private readonly mailerService: MailerService,
   ) {}
 
   // 스터디그룹 생성
@@ -68,12 +71,11 @@ export class GroupService {
       // 트랜잭션 롤백
       await queryRunner.rollbackTransaction();
       throw error;
-      } finally {
-     // 트랜잭션 릴리즈
-        await queryRunner.release();
-      }
+    } finally {
+      // 트랜잭션 릴리즈
+      await queryRunner.release();
     }
-  
+  }
 
   // 공개 스터디 전체 조회
   async findAllGroups(): Promise<Group[]> {
@@ -93,7 +95,6 @@ export class GroupService {
     });
   }
 
-
   // 스터디그룹 정보 조회
   async findGroupInfo(groupId: number): Promise<Group> {
     const group = await this.groupRepository.findOne({
@@ -109,15 +110,15 @@ export class GroupService {
   }
 
   //내가 속한 그룹 조회 하기
-  async findMyGroup( userId : number ): Promise<Group[]> {
+  async findMyGroup(userId: number): Promise<Group[]> {
     const group = await this.groupRepository.find({
-      where: {id:userId},
-      select : ['name']
-    })
-    if(_.isNil(group)){
-      throw new NotFoundException('스터디그룹에 먼저 가입하시쥬?쿠쿠루삥뽕')
+      where: { id: userId },
+      select: ['name'],
+    });
+    if (_.isNil(group)) {
+      throw new NotFoundException('스터디그룹에 먼저 가입하시쥬?쿠쿠루삥뽕');
     }
-    return group
+    return group;
   }
 
   // 스터디그룹 상세 조회
@@ -224,8 +225,6 @@ export class GroupService {
   async inviteMember(data: InviteGroupDto[], groupId: number): Promise<void> {
     const group = await this.findGroup(groupId);
 
-    const member = new Member();
-
     for (const item of data) {
       const user = await this.userService.findByEmail(item.email);
 
@@ -235,6 +234,8 @@ export class GroupService {
         );
       }
 
+      const member = new Member();
+
       member.user = user;
       member.group = group;
 
@@ -243,6 +244,20 @@ export class GroupService {
       } catch (error) {
         throw new ConflictException(
           `${item.email}은 이미 해당 스터디그룹에 초대되었습니다.`,
+        );
+      }
+
+      try {
+        await this.mailerService.sendMail({
+          to: item.email,
+          from: process.env.SMTP_USER,
+          subject: '초대합니다!',
+          text: '스터디 그룹에 참여하세요!',
+          html: '<p>우리의 스터디 그룹에 초대합니다~</p>',
+        });
+      } catch (error) {
+        throw new InternalServerErrorException(
+          '초대 이메일을 보낼 수 없습니다.',
         );
       }
     }

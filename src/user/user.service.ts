@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { User, roleEnum } from 'src/entity/user.entity';
 import * as bcrypt from 'bcrypt';
+import { CheckEmailDto } from 'src/dto/user/checkEmail.dto';
 
 @Injectable()
 export class UserService {
@@ -157,5 +158,18 @@ export class UserService {
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');
     }
+  }
+
+  // 존재하는 이메일인지 확인
+  async checkEmail(data: CheckEmailDto): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: {email: data.email}
+    });
+
+    if (_.isNil(user)) {
+      return false;
+    }
+
+    return true;
   }
 }
