@@ -36,6 +36,8 @@ header {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .main h2 {
@@ -58,6 +60,10 @@ header {
   margin-top: 20px;
 }
 
+.todo-section {
+  height: 723px;
+}
+
 /* user-management */
 .user-management-section {
   margin-top: 20px;
@@ -68,7 +74,7 @@ header {
 .chat-section .chatMember {
   border: 1px solid #ccc;
   border-radius: 8px;
-  height: 150px;
+  height: 100px;
   margin-bottom: 20px;
   padding: 7px;
   margin-right: 10px;
@@ -88,6 +94,10 @@ header {
 }
 .chat-section .chat-input {
   padding: 7px;
+}
+
+.chat-section {
+  height: 723px;
 }
 
 .chat-section .chat-messages::-webkit-scrollbar {
@@ -170,7 +180,7 @@ header {
   width: 350px;
   border: 1px solid #ccc;
   margin-top: 15px;
-  height: 200px;
+  height: 180px;
   text-align: center;
   overflow-y: scroll;
 }
@@ -449,4 +459,9 @@ input {
   position: absolute;
   bottom: 54px;
   left: 95px;
+}
+
+#dailyIframe {
+  height: 680px;
+  width: 100%;
 }

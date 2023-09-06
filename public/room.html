@@ -100,10 +100,16 @@
           </select>
         </div>
       </div>
-
       <!-- 화상 채팅 -->
       <div class="mainSection user-management-section">
         <h2>화상 채팅</h2>
+        <iframe
+          id="dailyIframe"
+          allow="camera; microphone; autoplay"
+          src="
+          https://appletree.daily.co/ygBT0iXfBGvePMwoF00F"
+        >
+        </iframe>
         <ul class="user-list">
           <!-- 유저 목록 출력 -->
         </ul>
@@ -133,6 +139,7 @@
       </div>
     </section>
 
+    <script src="https://unpkg.com/@daily-co/daily-js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
     <script src="./js/chat.js"></script>
     <script src="./js/card.js"></script>

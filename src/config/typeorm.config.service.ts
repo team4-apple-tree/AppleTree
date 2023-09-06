@@ -12,7 +12,7 @@ import { Todo } from '../entity/to-do.entity';
 import { Point } from '../entity/point.entity';
 import { Group } from '../entity/group.entity';
 import { Payment } from '../entity/payment.entity';
-
+import { RoomStructure } from '../entity/roomStructure.entity';
 import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
 import { Stopwatch } from 'src/entity/stopwatch.entity';
@@ -46,6 +46,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Payment,
         Stopwatch,
         Invitation,
+        RoomStructure,
       ],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'),
     };

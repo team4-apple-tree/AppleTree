@@ -40,6 +40,8 @@ import { StopwatchModule } from './stopwatch/stopwatch.module';
 import { InviteModule } from './invite/invite.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { RoomStructureModule } from './room-structure/room-structure.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -105,6 +107,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     ChatModule,
     StopwatchModule,
     InviteModule,
+    RoomStructureModule,
   ],
   controllers: [AppController, PaymentController],
   providers: [

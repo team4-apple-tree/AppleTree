@@ -1,11 +1,12 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongoClient, MongoClientOptions, Db } from 'mongodb';
 import { Seat } from 'src/entity/seat.entity';
 import { createSeatDto } from 'src/dto/seat/create-seat-dto';
 import { Room, typeEnum } from '../entity/room.entity';
+import { UpdateSeatDto } from '../dto/seat/update-seat-dto';
 import { type } from 'os';
 
 @Injectable()
@@ -65,9 +66,9 @@ export class SeatService {
         seat.roomId = roomId;
         await this.seatRepository.save(seat);
       }
-      console.log('좌석정보생성 테스트', Seat);
+      console.log('좌석정보생성 완료');
     } catch (error) {
-      console.error('MySQL로 좌석 생성 중 에러가 났습니다', error);
+      console.error('MySQL로 좌석 생성 중 에러', error);
     }
   }
 
@@ -76,5 +77,50 @@ export class SeatService {
       where: { roomId },
     });
     return seat;
+  }
+
+  async fetchSeatShape(type: number): Promise<number[][] | null> {
+    try {
+      await this.client.connect();
+      const db: Db = this.client.db('seat');
+      const seatData = await db.collection('seatShapes').findOne({ type });
+      if (seatData && seatData.seatData) {
+        return seatData.seatData.seatShape;
+      }
+      return null;
+    } catch (error) {
+      console.error(
+        'MongoDB에서 좌석 모양을 불러오는 동안 오류가 발생했습니다:',
+        error,
+      );
+      return null;
+    } finally {
+      await this.client.close();
+    }
+  }
+
+  //업데이트 로직
+  async updateSeat(seatId: number, seatData: UpdateSeatDto): Promise<any> {
+    const seat = await this.seatRepository.findOne({
+      where: { seatId: seatId },
+    });
+
+    if (!seat) {
+      throw new NotFoundException('좌석 정보가 없습니다.');
+    }
+
+    if (seatData.price) {
+      seat.price = seatData.price;
+    }
+
+    if (seatData.reservationStatus !== undefined) {
+      seat.reservationStatus = seatData.reservationStatus;
+    }
+
+    if (seatData.type) {
+      seat.type = seatData.type;
+    }
+
+    return await this.seatRepository.save(seat);
   }
 }

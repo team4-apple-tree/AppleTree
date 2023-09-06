@@ -8,11 +8,14 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import { Room } from './room.entity';
+import { RoomStructure } from './roomStructure.entity';
+
 export enum seatEnum {
   일인석 = 1,
   사인석 = 2,
   회의실 = 3,
 }
+
 @Entity({ schema: 'apple', name: 'seat' })
 export class Seat {
   @PrimaryGeneratedColumn()
@@ -44,4 +47,10 @@ export class Seat {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @Column({ default: false })
+  reservationStatus: boolean;
+
+  @ManyToOne(() => RoomStructure)
+  roomStructure: RoomStructure;
 }
