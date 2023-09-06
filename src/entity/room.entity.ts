@@ -3,6 +3,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
+  OneToOne,
+  Index,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -10,7 +12,6 @@ import {
 } from 'typeorm';
 import { Seat } from './seat.entity';
 import { User } from './user.entity';
-// 몽고DB에서 좌석의 배열을 가져오기 위한 Enum
 export enum typeEnum {
   A25 = 1,
   A50 = 2,

@@ -1,12 +1,12 @@
-import { Repository } from 'typeorm';
+import { Repository, In, EntityManager } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongoClient, MongoClientOptions, Db } from 'mongodb';
-import { Seat } from 'src/entity/seat.entity';
+import { Seat, seatEnum } from 'src/entity/seat.entity';
 import { createSeatDto } from 'src/dto/seat/create-seat-dto';
-import { Room, typeEnum } from '../entity/room.entity';
-import { type } from 'os';
+import { Room } from '../entity/room.entity';
+import { SeatPrice } from 'src/entity/seatPrice.entity';
 
 @Injectable()
 export class SeatService {
@@ -15,7 +15,9 @@ export class SeatService {
 
   constructor(
     @InjectRepository(Seat) private seatRepository: Repository<Seat>,
-    // @InjectRepository(Room) private roomRepository: Repository<Room>,
+    @InjectRepository(Room) private roomRepository: Repository<Room>,
+    @InjectRepository(SeatPrice)
+    private seatPriceRepository: Repository<SeatPrice>,
     private readonly configService: ConfigService,
   ) {
     this.mongoUri = this.configService.get<string>('MONGODB_ATLAS');
@@ -72,29 +74,38 @@ export class SeatService {
   }
 
   async seatInfo(roomId: number) {
-    const seat = await this.seatRepository.find({
+    const seats = await this.seatRepository.find({
       where: { roomId },
     });
-    return seat;
-  }
+    // 3. seatIds 배열을 만듭니다.
+    const seatIds = seats.map((seat) => seat.seatId);
+    // 4. seatIds를 사용하여 해당 seat들에 대한 seatPrice 정보를 로드합니다.
+    const seatPrices = await this.seatPriceRepository.find({
+      where: { seatId: In(seatIds) }, // In을 사용하여 여러 seatId를 필터링합니다.
+      select: ['price', 'type', 'seatId'],
+    });
 
-  async fetchSeatShape(type: number): Promise<number[][] | null> {
-    try {
-      await this.client.connect();
-      const db: Db = this.client.db('seat');
-      const seatData = await db.collection('seatShapes').findOne({ type });
-      if (seatData && seatData.seatData) {
-        return seatData.seatData.seatShape;
-      }
-      return null;
-    } catch (error) {
-      console.error(
-        'MongoDB에서 좌석 모양을 불러오는 동안 오류가 발생했습니다:',
-        error,
-      );
-      return null;
-    } finally {
-      await this.client.close();
+    const seatPriceMap = new Map<string, number>(); // seatPrice를 type으로 매핑할 Map
+
+    for (const seatPrice of seatPrices) {
+      seatPriceMap.set(seatPrice.type.toString(), seatPrice.price);
     }
+    const seatInfo = {
+      seats,
+    };
+    // 비동기 작업을 수행할 Promise 배열 생성
+    const promises = seats.map(async (seat) => {
+      const price = seatPriceMap.get(seat.type.toString());
+      if (price !== undefined) {
+        seat.prices = price;
+      } else {
+        seat.prices = 0;
+      }
+    });
+    // 비동기 작업들을 병렬로 실행
+    await Promise.all(promises);
+
+    console.log(seatInfo);
+    return seatInfo;
   }
 }

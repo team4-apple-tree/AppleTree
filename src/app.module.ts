@@ -34,6 +34,8 @@ import { SocketGuard } from './user/socket.guard';
 import { MyLogger } from './utils/winston.util';
 import { LoggerMiddleware } from './middleware/logger';
 import { ChatModule } from './chat/chat.module';
+import { SeatPriceController } from './seat-price/seat-price.controller';
+import { SeatPriceModule } from './seat-price/seat-price.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -71,6 +73,7 @@ import { ChatModule } from './chat/chat.module';
     UserModule,
     PaymentModule,
     ChatModule,
+    SeatPriceModule,
   ],
   controllers: [AppController, PaymentController],
   providers: [

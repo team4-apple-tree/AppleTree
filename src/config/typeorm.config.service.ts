@@ -12,9 +12,9 @@ import { Todo } from '../entity/to-do.entity';
 import { Point } from '../entity/point.entity';
 import { Group } from '../entity/group.entity';
 import { Payment } from '../entity/payment.entity';
-
 import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
+import { SeatPrice } from 'src/entity/seatPrice.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -42,6 +42,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Group,
         Access,
         Payment,
+        SeatPrice,
       ],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'),
     };
