@@ -1,69 +1,30 @@
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { MongoClient, MongoClientOptions, Db } from 'mongodb';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Seat } from 'src/entity/seat.entity';
-import { createSeatDto } from 'src/dto/seat/create-seat-dto';
-import { Room, typeEnum } from '../entity/room.entity';
+import { Room } from '../entity/room.entity';
 import { UpdateSeatDto } from '../dto/seat/update-seat-dto';
-import { type } from 'os';
+import { SeatPrice } from '../entity/seatPrice.entity';
+import { createSeatDto } from 'src/dto/seat/create-seat-dto';
 
 @Injectable()
 export class SeatService {
-  private client: MongoClient;
-  private readonly mongoUri: string;
-
   constructor(
     @InjectRepository(Seat) private seatRepository: Repository<Seat>,
-    // @InjectRepository(Room) private roomRepository: Repository<Room>,
-    private readonly configService: ConfigService,
-  ) {
-    this.mongoUri = this.configService.get<string>('MONGODB_ATLAS');
-    const mongoOptions: MongoClientOptions = {};
+    @InjectRepository(Room) private roomRepository: Repository<Room>,
+    @InjectRepository(SeatPrice)
+    private seatPriceRepository: Repository<SeatPrice>,
+  ) {}
 
-    this.client = new MongoClient(this.mongoUri, mongoOptions);
-  }
-
-  async createSeat(type: number, row: number, column: number): Promise<void> {
+  async create(seats: createSeatDto[]): Promise<void> {
     try {
-      await this.client.connect();
-      console.log('MongoDB에 연결되었습니다.');
-
-      const db: Db = this.client.db('seat');
-
-      // 사각형 모양의 2차원 배열 생성
-      const seatShape: number[][] = Array.from({ length: row }, () =>
-        Array(column).fill(0),
-      );
-
-      // MongoDB에 좌석 모양 저장
-      const seatData = {
-        seatShape,
-      };
-      await db.collection('seatShapes').insertOne({ type, seatData });
-      console.log(seatData);
-      console.log('좌석 모양이 MongoDB에 저장되었습니다.');
-    } catch (error) {
-      console.error(
-        'MongoDB에 연결하거나 데이터를 저장하는 동안 오류가 발생했습니다:',
-        error,
-      );
-    } finally {
-      await this.client.close();
-      console.log('MongoDB 연결이 닫혔습니다.');
-    }
-  }
-
-  async create(data: createSeatDto[], roomId: number) {
-    try {
-      for (const seatData of data) {
+      for (const seatDto of seats) {
         const seat = new Seat();
-        seat.type = seatData.type;
-        seat.row = seatData.row;
-        seat.column = seatData.column;
-        seat.price = seatData.price;
-        seat.roomId = roomId;
+        seat.row = seatDto.row;
+        seat.column = seatDto.column;
+        seat.roomId = seatDto.roomId;
+        seat.price = seatDto.price;
+        seat.type = seatDto.type || 1;
         await this.seatRepository.save(seat);
       }
       console.log('좌석정보생성 완료');
@@ -73,33 +34,32 @@ export class SeatService {
   }
 
   async seatInfo(roomId: number) {
-    const seat = await this.seatRepository.find({
-      where: { roomId },
+    const seats = await this.seatRepository.find({ where: { roomId } });
+
+    const seatIds = seats.map((seat) => seat.seatId);
+    const seatPrices = await this.seatPriceRepository.find({
+      where: { seatId: In(seatIds) },
+      select: ['price', 'type', 'seatId'],
     });
-    return seat;
-  }
 
-  async fetchSeatShape(type: number): Promise<number[][] | null> {
-    try {
-      await this.client.connect();
-      const db: Db = this.client.db('seat');
-      const seatData = await db.collection('seatShapes').findOne({ type });
-      if (seatData && seatData.seatData) {
-        return seatData.seatData.seatShape;
-      }
-      return null;
-    } catch (error) {
-      console.error(
-        'MongoDB에서 좌석 모양을 불러오는 동안 오류가 발생했습니다:',
-        error,
-      );
-      return null;
-    } finally {
-      await this.client.close();
+    const seatPriceMap = new Map<string, number>();
+    for (const seatPrice of seatPrices) {
+      seatPriceMap.set(seatPrice.type.toString(), seatPrice.price);
     }
+
+    const promises = seats.map(async (seat) => {
+      const price = seatPriceMap.get(seat.type.toString());
+      if (price !== undefined) {
+        seat.prices = price;
+      } else {
+        seat.prices = 0;
+      }
+    });
+
+    await Promise.all(promises);
+    return { seats };
   }
 
-  //업데이트 로직
   async updateSeat(seatId: number, seatData: UpdateSeatDto): Promise<any> {
     const seat = await this.seatRepository.findOne({
       where: { seatId: seatId },
@@ -120,7 +80,6 @@ export class SeatService {
     if (seatData.type) {
       seat.type = seatData.type;
     }
-
     return await this.seatRepository.save(seat);
   }
 }

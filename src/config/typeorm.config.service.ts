@@ -17,6 +17,7 @@ import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
 import { Stopwatch } from 'src/entity/stopwatch.entity';
 import { Invitation } from 'src/entity/invite.entity';
+import { SeatPrice } from 'src/entity/seatPrice.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -47,6 +48,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Stopwatch,
         Invitation,
         RoomStructure,
+        SeatPrice,
       ],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'),
     };

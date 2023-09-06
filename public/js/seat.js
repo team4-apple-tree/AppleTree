@@ -1,5 +1,5 @@
 let selectedSeat = null;
-const roomId = 2;
+const roomId = 6;
 let modal,
   closeModal,
   seatNumberEl,

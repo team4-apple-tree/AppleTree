@@ -34,6 +34,8 @@ import { SocketGuard } from './user/socket.guard';
 import { MyLogger } from './utils/winston.util';
 import { LoggerMiddleware } from './middleware/logger';
 import { ChatModule } from './chat/chat.module';
+import { SeatPriceController } from './seat-price/seat-price.controller';
+import { SeatPriceModule } from './seat-price/seat-price.module';
 import { StopwatchService } from './stopwatch/stopwatch.service';
 import { StopwatchController } from './stopwatch/stopwatch.controller';
 import { StopwatchModule } from './stopwatch/stopwatch.module';
