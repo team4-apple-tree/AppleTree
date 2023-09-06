@@ -10,6 +10,26 @@ const socket = io({
 
 let userList = new Set();
 
+$(document).ready(async () => {
+  await axios
+    .get(`http://localhost:4444/chat/${roomId}`)
+    .then((response) => {
+      const messages = response.data;
+      console.log(messages);
+
+      messages.forEach((m) => {
+        appendMessage({ userName: m.name, message: m.message });
+      });
+
+      alert('성공');
+    })
+    .catch((response) => {
+      console.log(response);
+
+      alert('실패');
+    });
+});
+
 $(document).on('click', '#sendRoomMessage', () => {
   sendRoomMessage();
 });
