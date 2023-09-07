@@ -25,6 +25,7 @@ export class GroupService {
     @InjectRepository(Group) private groupRepository: Repository<Group>,
     @InjectRepository(Member) private memberRepository: Repository<Member>,
     @InjectRepository(Access) private accessRepository: Repository<Access>,
+
     private readonly userService: UserService,
     private readonly uploadService: UploadService,
     private readonly entityManager: EntityManager,
@@ -46,6 +47,7 @@ export class GroupService {
     data: Omit<CreateGroupDto, 'image'>,
     image: string,
     user: User,
+    videoChatURL: string,
   ): Promise<void> {
     if (data.isPassword && data.password) {
       data.isPassword = true;
@@ -66,6 +68,7 @@ export class GroupService {
         isPublic,
         image,
         user,
+        videoChatURL, // 여기에 videoChatURL을 추가
       });
 
       const group = await this.entityManager.save(Group, newGroup);

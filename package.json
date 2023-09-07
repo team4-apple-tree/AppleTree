@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.9.1",
+    "@nestjs/axios": "^3.0.0",
     "@nestjs/cache-manager": "^2.1.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
@@ -38,7 +39,7 @@
     "@socket.io/admin-ui": "^0.5.1",
     "@types/socket.io": "^3.0.2",
     "aws-sdk": "^2.1442.0",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "bcrypt": "^5.1.0",
     "cache-manager": "^5.2.3",
     "class-transformer": "^0.5.1",

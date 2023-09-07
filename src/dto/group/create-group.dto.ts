@@ -36,7 +36,7 @@ export class CreateGroupDto {
   @IsBoolean()
   isPassword: boolean;
 
-  @IsNotEmpty({ message: 'Password should not be empty' })
+  @IsNotEmpty({ message: '암호는 비워 둘 수 없습니다' })
   @ValidateIf((o) => o.isPassword === true)
   @IsString()
   password: string;
@@ -46,4 +46,8 @@ export class CreateGroupDto {
 
   @IsDate()
   endDate: Date;
+
+  @IsString({ message: 'Video Chat URL은 문자열이어야 합니다' })
+  @IsOptional()
+  videoChatURL?: string;
 }

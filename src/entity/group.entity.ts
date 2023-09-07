@@ -71,4 +71,7 @@ export class Group {
 
   @OneToMany(() => Card, (todo) => todo.group) // Todo와의 일대다 관계 설정
   todos: Todo[];
+
+  @Column({ nullable: true })
+  videoChatURL: string | null;
 }
