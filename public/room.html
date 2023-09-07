@@ -33,16 +33,6 @@
       <div class="right">
         <!-- 드롭다운 메뉴 -->
         <div class="dropdown">
-          <button id="mdfBtn">수정</button>
-          <input id="mdfInput" style="display: none" type="text" />
-          <textarea
-            name=""
-            id="mdfTextArea"
-            cols="30"
-            rows="10"
-            style="display: none"
-          ></textarea>
-          <button id="groupMdfBtn" style="display: none">수정하기</button>
           <button class="dropbtn" id="dropbtn">팀규칙을 확인해주세요!</button>
           <div class="dropdown-content">
             <p id="TeamRole">팀규칙 내용</p>
@@ -129,6 +119,14 @@
       <!-- 실시간 채팅방 -->
       <div class="mainSection chat-section">
         <h2>실시간 채팅방</h2>
+        <button id="mdfBtn">수정</button>
+        <div class="modify-overlay" id="modifyModalOverlay"></div>
+        <div class="modify-modal-content" id="modifyModalContent">
+          <input id="mdfInput" type="text" />
+          <textarea name="" id="mdfTextArea" cols="30" rows="10"></textarea>
+          <button id="groupMdfBtn">수정하기</button>
+        </div>
+        <!--  -->
         <div id="overlay"></div>
         <button id="invite">초대</button>
         <div id="invite-div">

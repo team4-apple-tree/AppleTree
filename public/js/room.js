@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const RemainingDaysElement = document.getElementById('remainingDays');
   const iframeElement = document.getElementById('dailyIframe');
 
+  const toggleEditElements = (show) => {
+    const display = show ? 'block' : 'none';
+    $('#mdfInput, #mdfTextArea, #groupMdfBtn').css('display', display);
+    if (!show) {
+      $('#mdfInput, #mdfTextArea').val('');
+    }
+  };
+
   if (groupId) {
     try {
       const response = await axios.get(
@@ -40,17 +48,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       TeamRoleElement.innerText = TeamRole;
       StartDateElement.innerText = Startdate;
       EndDateElement.innerText = Enddate;
-
       iframeElement.src = videoChatURL;
 
-      // 드롭다운 메뉴 클릭 이벤트 처리
       let isDropdownVisible = false;
       dropbtn.addEventListener('click', () => {
         isDropdownVisible = !isDropdownVisible;
         dropdown.classList.toggle('show', isDropdownVisible);
       });
 
-      // 바깥 영역 클릭 시 드롭다운 메뉴 닫기
       document.addEventListener('click', (event) => {
         if (!dropdown.contains(event.target) && isDropdownVisible) {
           dropdown.classList.remove('show');
@@ -67,25 +72,69 @@ document.addEventListener('DOMContentLoaded', async () => {
   const overlay = document.getElementById('overlay');
 
   inviteBtn.addEventListener('click', function () {
-    // 모달 및 오버레이 활성화
     inviteDiv.style.display = 'block';
     overlay.style.display = 'block';
-
-    // 초대 버튼 비활성화
     inviteBtn.disabled = true;
-
-    // 나머지 요소들 보이게 설정
     document.getElementById('memberEmailInput').style.display = 'block';
     document.getElementById('checkEmailBtn').style.display = 'block';
     document.getElementById('iniviteMembersBtn').style.display = 'block';
   });
 
-  // 오버레이 클릭 시 모달 및 오버레이 비활성화
   overlay.addEventListener('click', function () {
     inviteDiv.style.display = 'none';
     overlay.style.display = 'none';
-
-    // 초대 버튼 활성화
     inviteBtn.disabled = false;
   });
+
+  $(document).on('click', '#mdfBtn', () => {
+    const name = $('#groupName').text();
+    const desc = $('#TeamRole').text();
+
+    toggleEditElements(true);
+    $('#mdfInput').val(name);
+    $('#mdfTextArea').val(desc);
+  });
+
+  $(document).on('click', '#groupMdfBtn', async () => {
+    const name = $('#mdfInput').val();
+    const desc = $('#mdfTextArea').val();
+
+    try {
+      const response = await axios.put(
+        `http://localhost:4444/group/${groupId}`,
+        { name, desc },
+        {
+          headers: {
+            Authorization: getCookie('Authorization'),
+          },
+        },
+      );
+
+      alert('성공');
+
+      $('#groupName').text(response.data.name);
+      $('#TeamRole').text(response.data.desc);
+
+      toggleEditElements(false);
+
+      document.getElementById('modifyModalContent').style.display = 'none';
+      document.getElementById('modifyModalOverlay').style.display = 'none';
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+      toggleEditElements(false);
+    }
+  });
+
+  document.getElementById('mdfBtn').addEventListener('click', function () {
+    document.getElementById('modifyModalContent').style.display = 'block';
+    document.getElementById('modifyModalOverlay').style.display = 'block';
+  });
+
+  document
+    .getElementById('modifyModalOverlay')
+    .addEventListener('click', function () {
+      document.getElementById('modifyModalContent').style.display = 'none';
+      document.getElementById('modifyModalOverlay').style.display = 'none';
+    });
 });

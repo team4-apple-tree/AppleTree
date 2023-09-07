@@ -534,3 +534,55 @@ input {
 #memberEmailInput {
   width: 250px;
 }
+
+.modify-modal-content {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #888;
+  z-index: 1000;
+  height: 230px;
+}
+
+.modify-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+}
+
+#mdfBtn {
+  background-color: #19baa4;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #fff;
+  position: absolute;
+  right: 150px;
+  top: 96px;
+  font-size: 14px;
+}
+
+#mdfTextArea {
+  resize: none;
+  border: 1px solid #ccc;
+}
+
+#groupMdfBtn {
+  background-color: #19baa4;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #fff;
+  position: absolute;
+  right: 20px;
+  margin-top: 8px;
+}

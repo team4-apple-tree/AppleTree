@@ -162,64 +162,6 @@ $(document).ready(async () => {
         alert('실패');
       });
   });
-
-  // 스터디그룹 수정
-  $(document).on('click', '#mdfBtn', () => {
-    const name = $('#groupName').text();
-    const desc = $('#TeamRole').text();
-
-    $('#mdfInput').css('display', 'block');
-    $('#mdfTextArea').css('display', 'block');
-    $('#groupMdfBtn').css('display', 'block');
-
-    $('#mdfInput').val(name);
-    $('#mdfTextArea').val(desc);
-  });
-
-  $(document).on('click', '#groupMdfBtn', async () => {
-    const name = $('#mdfInput').val();
-    const desc = $('#mdfTextArea').val();
-
-    const data = {
-      name,
-      desc,
-    };
-
-    await axios
-      .put(`http://localhost:4444/group/${roomId}`, data, {
-        headers: {
-          Authorization: getCookie('Authorization'),
-        },
-      })
-      .then((response) => {
-        const name = response.data.name;
-        const desc = response.data.desc;
-
-        alert('성공');
-
-        $('#groupName').text(name);
-        $('#TeamRole').text(desc);
-
-        $('#mdfInput').css('display', 'none');
-        $('#mdfTextArea').css('display', 'none');
-        $('#groupMdfBtn').css('display', 'none');
-
-        $('#mdfInput').val();
-        $('#mdfTextArea').val();
-      })
-      .catch((response) => {
-        console.log(response);
-
-        alert(response.response.data.message);
-
-        $('#mdfInput').css('display', 'none');
-        $('#mdfTextArea').css('display', 'none');
-        $('#groupMdfBtn').css('display', 'none');
-
-        $('#mdfInput').val();
-        $('#mdfTextArea').val();
-      });
-  });
 });
 
 // 추방 버튼 클릭 시 이벤트
