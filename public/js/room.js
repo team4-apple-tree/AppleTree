@@ -61,4 +61,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error('에러발생:', error);
     }
   }
+
+  const inviteBtn = document.getElementById('invite');
+  const inviteDiv = document.getElementById('invite-div');
+  const overlay = document.getElementById('overlay');
+
+  inviteBtn.addEventListener('click', function () {
+    // 모달 및 오버레이 활성화
+    inviteDiv.style.display = 'block';
+    overlay.style.display = 'block';
+
+    // 초대 버튼 비활성화
+    inviteBtn.disabled = true;
+
+    // 나머지 요소들 보이게 설정
+    document.getElementById('memberEmailInput').style.display = 'block';
+    document.getElementById('checkEmailBtn').style.display = 'block';
+    document.getElementById('iniviteMembersBtn').style.display = 'block';
+  });
+
+  // 오버레이 클릭 시 모달 및 오버레이 비활성화
+  overlay.addEventListener('click', function () {
+    inviteDiv.style.display = 'none';
+    overlay.style.display = 'none';
+
+    // 초대 버튼 활성화
+    inviteBtn.disabled = false;
+  });
 });

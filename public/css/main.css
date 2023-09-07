@@ -730,9 +730,17 @@ ul {
 
 /* mystudygroup */
 
-#mystudygroup div {
+#mystudygroup {
+  overflow-y: scroll;
+}
+
+#mystudygroup::-webkit-scrollbar {
+  display: none;
+}
+
+#mystudygroup .study-item-img-wrap {
   color: #81a98ded;
-  background-color: #d3ffce;
+  background-color: #fff;
   margin-top: 10px;
   border: none;
   width: 80px;
@@ -746,8 +754,27 @@ ul {
   position: relative;
   bottom: 60px;
   left: 5px;
-  height: 25px;
-  overflow: hidden;
+  height: 50px;
+}
+
+.groupname {
+  overflow-y: scroll;
+  position: relative;
+  font-size: 14px;
+  top: 10px;
+  height: 30px;
+}
+
+.groupname::-webkit-scrollbar {
+  display: none;
+}
+
+.countmax {
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+  color: #000;
+  font-weight: 700;
 }
 
 /* 비밀번호 모달 */

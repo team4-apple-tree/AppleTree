@@ -37,6 +37,12 @@
           <div class="dropdown-content">
             <p id="TeamRole">팀규칙 내용</p>
           </div>
+          <img
+            src="./images/exit.png"
+            alt="exit"
+            class="exit"
+            onclick="location.href='http://localhost:4444/'"
+          />
         </div>
       </div>
     </header>
@@ -113,12 +119,17 @@
       <!-- 실시간 채팅방 -->
       <div class="mainSection chat-section">
         <h2>실시간 채팅방</h2>
+        <div id="overlay"></div>
+        <button id="invite">초대</button>
         <div id="invite-div">
-          <button id="invite">초대</button>
-          <input id="memberEmailInput" type="text" style="display: none" />
-          <button id="checkEmailBtn" style="display: none">초대</button>
+          <input
+            id="memberEmailInput"
+            type="text"
+            placeholder="초대하실 유저의 email을 입력해주세요."
+          />
+          <button id="checkEmailBtn">초대</button>
           <ul id="invite-ul"></ul>
-          <button id="iniviteMembersBtn" style="display: none">초대하기</button>
+          <button id="iniviteMembersBtn">초대하기</button>
         </div>
         <div class="chatMember">
           <p>접속자 목록</p>
