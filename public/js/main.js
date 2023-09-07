@@ -70,26 +70,7 @@ $(document).ready(async () => {
     allButton.classList.remove('active');
     newButton.classList.add('active');
   });
-  // 기본 메인페이지 구동 스크립트
 
-  $(document).on('click', '#createStudy', async () => {
-    await axios
-      .get('http://localhost:4444/user/isLogin', {
-        headers: {
-          Authorization: getCookie(),
-        },
-      })
-      .then(() => {
-        window.location.href = 'createstudygroup.html';
-      })
-      .catch((response) => {
-        if (response.response.data.error === 'Forbidden') {
-          alert('로그인이 필요한 기능입니다.');
-        }
-      });
-  });
-
-  // 내가 속한 스터디그룹 리스트
   await axios
     .get(`http://localhost:4444/group/my`, {
       headers: {
@@ -103,31 +84,10 @@ $(document).ready(async () => {
       groupNamePlaceholder.innerHTML = '';
       groupData.forEach((element) => {
         const p = document.createElement('div');
-        p.innerText = element.name; //
-        groupNamePlaceholder.append(p); //
+        p.innerText = element.name;
+        groupNamePlaceholder.append(p);
       });
-      const p = document.createElement('p');
-      // p.innerText = groupData[0].name;
     });
-
-  // 스터디 클릭 시 이벤트
-  $(document).on('click', '.study-item-img-wrap', async (e) => {
-    const studyId = e.target.parentNode.id;
-
-    window.location.href = `room.html?id=${studyId}`;
-
-    // await axios
-    //   .post(`http://localhost:4444/group/enter/${studyId}`, null, {
-    //     headers: {
-    //       Authorization: getCookie(),
-    //     },
-    //   })
-    //   .then(() => {
-    //     window.location.href = `room.html?id=${studyId}`;
-    //   });
-    p.innerText = element.name;
-    groupNamePlaceholder.append(p);
-  });
 
   $(document).on('click', '#createStudy', async () => {
     await axios
@@ -221,11 +181,11 @@ $(document).ready(async () => {
     <div class="room-more-view-btn-area"><!----></div>
     <!---->
     </div>
-  </div>
-  <div class="study-item-tx-wrap">
-      <em class="study-item-tx title">${publicStudy.name}</em>
-      <div class="study-item-tx-hashtag-wrap"></div>
-  </div>
+</div>
+<div class="study-item-tx-wrap">
+    <em class="study-item-tx title">${publicStudy.name}</em>
+    <div class="study-item-tx-hashtag-wrap"></div>
+</div>
   `;
 
     studyBody.appendChild(tempDiv);
@@ -263,7 +223,6 @@ $(document).ready(async () => {
           window.location.reload();
         })
         .catch((error) => {
-          console.log(error);
           alert('로그아웃이 실패했습니다.', error);
         });
     });

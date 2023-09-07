@@ -382,7 +382,7 @@ export class GroupService {
   }
 
   async isGroupPasswordProtected(groupId: number): Promise<boolean> {
-    const group = await this.findOne(groupId); // findOne 메서드는 이미 구현되어 있다고 가정합니다.
+    const group = await this.findOne(groupId);
     if (!group) {
       throw new NotFoundException('Group not found.');
     }
