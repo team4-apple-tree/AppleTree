@@ -15,6 +15,7 @@ import {
   Put,
   Req,
   Res,
+  UnauthorizedException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -34,6 +35,7 @@ import { validate } from 'class-validator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/user/roles.guard';
 import { roleEnum } from 'src/enums/userRoles.enum';
+import { VerifyPasswordDto } from 'src/dto/group/VerifyPassword.dto';
 
 @Controller('group')
 export class GroupController {
@@ -53,9 +55,7 @@ export class GroupController {
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
     try {
-      // const user = res.locals.user;
-
-      const user = await req.user;
+      const user = req.user;
 
       const folderName = 'image';
       const fileName = `${Date.now()}_${Buffer.from(
@@ -94,17 +94,38 @@ export class GroupController {
   //내가 속한 스터디 조회
   @Get('/my')
   @UseGuards(JwtAuthGuard)
-  async findMyGroups(
-  @Req() req: any, userId : number): Promise<Group[]>{
-    try{
-      const userId = await req.user.id
-      return await this.groupService.findMyGroup(userId)
-    } catch(error){
-      console.error(error)
-      throw new InternalServerErrorException('내가 속한 스터디 조회 실패했지롱?쿠쿠루삥뽕빵뿡빵뽕?ㅋㅋ킹받지?')
+  async findMyGroups(@Req() req: any, userId: number): Promise<Group[]> {
+    try {
+      const userId = await req.user.id;
+      return await this.groupService.findMyGroup(userId);
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(
+        '내가 속한 스터디 조회 실패했습니다.',
+      );
     }
   }
-  
+
+  @Post('join/:groupId')
+  @UseGuards(JwtAuthGuard) // JWT 인증 가드가 필요하다고 가정
+  async joinGroup(
+    @Param('groupId') groupId: number,
+    @Body('password') password: string,
+    @Req() req: any,
+  ): Promise<any> {
+    const user = req.user;
+
+    const group = await this.groupService.findOne(groupId);
+    if (group.isPassword) {
+      if (group.password !== password) {
+        throw new UnauthorizedException('Incorrect password.');
+      }
+    }
+
+    await this.groupService.joinGroup(groupId, user);
+    return { message: 'Successfully joined the group.' };
+  }
+
   // 스터디그룹 정보 조히
   @Get(':groupId/info')
   async findGroupInfo(@Param('groupId') groupId: number): Promise<Group> {
@@ -289,5 +310,26 @@ export class GroupController {
         throw new InternalServerErrorException('서버 오류');
       }
     }
+  }
+
+  @Get(':groupId/is-password-protected')
+  async isGroupPasswordProtected(
+    @Param('groupId') groupId: number,
+  ): Promise<{ isPassword: boolean }> {
+    const isPassword = await this.groupService.isGroupPasswordProtected(
+      groupId,
+    );
+    return { isPassword };
+  }
+
+  @Post(':id/verify-password')
+  verifyGroupPassword(
+    @Param('id') groupId: number,
+    @Body() verifyPasswordDto: VerifyPasswordDto,
+  ) {
+    return this.groupService.verifyPassword(
+      groupId,
+      verifyPasswordDto.password,
+    );
   }
 }

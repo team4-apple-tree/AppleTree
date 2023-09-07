@@ -22,14 +22,13 @@ $(document).ready(async () => {
 
   try {
     const response = await axios.get('http://localhost:4444/group/');
-    publicStudies = response.data.sort((a, b) => a.id - b.id); // 기본은 아이디 낮은 순으로 정렬
-
+    publicStudies = response.data.sort((a, b) => a.id - b.id);
     displayPage(publicStudies, currentPage);
   } catch (error) {
     console.log(error);
     alert('실패');
   }
-  // 기본 메인페이지 구동 스크립트
+
   const loadMoreButton = document.createElement('button');
   loadMoreButton.textContent = ' 더보기 ';
   loadMoreButton.classList.add('load-more-button');
@@ -55,7 +54,7 @@ $(document).ready(async () => {
   allButton.addEventListener('click', (event) => {
     event.preventDefault();
     currentPage = 1;
-    publicStudies.sort((a, b) => a.id - b.id); // 아이디 낮은 순으로 정렬
+    publicStudies.sort((a, b) => a.id - b.id);
     displayPage(publicStudies, currentPage);
 
     allButton.classList.add('active');
@@ -65,15 +64,12 @@ $(document).ready(async () => {
   newButton.addEventListener('click', (event) => {
     event.preventDefault();
     currentPage = 1;
-    publicStudies.sort((a, b) => b.id - a.id); // 아이디 높은 순으로 정렬
+    publicStudies.sort((a, b) => b.id - a.id);
     displayPage(publicStudies, currentPage);
 
     allButton.classList.remove('active');
     newButton.classList.add('active');
   });
-  // 기본 메인페이지 구동 스크립트
-
-  // 내가 속한 스터디그룹 리스트
 
   await axios
     .get(`http://localhost:4444/group/my`, {
@@ -82,129 +78,140 @@ $(document).ready(async () => {
       },
     })
     .then((response) => {
-      //   const groupData = response.data;
-      //   const groupNamePlaceholder = document.getElementById('아이디');
-      //   groupNamePlaceholder.innerHTML = '';
-      //   groupData.forEach((element) => {
-      //     const p = document.createElement('p');
-      //     p.innerText = element.name;
-      //     groupNamePlaceholder.append(p);
-      //   });
-      // })
       const groupData = response.data;
       console.log(groupData);
       const groupNamePlaceholder = document.getElementById('mystudygroup');
-      groupNamePlaceholder.innerHTML = ''; //
+      groupNamePlaceholder.innerHTML = '';
       groupData.forEach((element) => {
         const p = document.createElement('div');
-        p.innerText = element.name; //
-        groupNamePlaceholder.append(p); //
-      });
-      const p = document.createElement('p');
-      // p.innerText = groupData[0].name;
-
-      // .catch((error) => {
-      //   console.log('데이터를 가져오는 중 오류 발생:', error);
-      // });
-      $(document).on('click', '#createStudy', async () => {
-        await axios
-          .get('http://localhost:4444/user/isLogin', {
-            headers: {
-              Authorization: getCookie(),
-            },
-          })
-          .then(() => {
-            window.location.href = 'createstudygroup.html';
-          })
-          .catch((response) => {
-            if (response.response.data.error === 'Forbidden') {
-              alert('로그인이 필요한 기능입니다.');
-            }
-          });
-      });
-
-      // 스터디 클릭 시 이벤트
-      $(document).on('click', '.study-item-img-wrap', async (e) => {
-        const studyId = e.target.parentNode.id;
-
-        window.location.href = `room.html?id=${studyId}`;
-
-        // await axios
-        //   .post(`http://localhost:4444/group/enter/${studyId}`, null, {
-        //     headers: {
-        //       Authorization: getCookie(),
-        //     },
-        //   })
-        //   .then(() => {
-        //     window.location.href = `room.html?id=${studyId}`;
-        //   });
+        p.innerText = element.name;
+        groupNamePlaceholder.append(p);
       });
     });
 
+  $(document).on('click', '#createStudy', async () => {
+    await axios
+      .get('http://localhost:4444/user/isLogin', {
+        headers: {
+          Authorization: getCookie(),
+        },
+      })
+      .then(() => {
+        window.location.href = 'createstudygroup.html';
+      })
+      .catch((response) => {
+        if (response.response.data.error === 'Forbidden') {
+          alert('로그인이 필요한 기능입니다.');
+        }
+      });
+  });
+  // 기존에 있던 스터디 그룹 클릭 이벤트
+  $(document).on('click', '.study-item-img-wrap', async (e) => {
+    const studyId = e.target.closest('.study-item-img-wrap').id;
+    try {
+      const isPasswordResponse = await axios.get(
+        `http://localhost:4444/group/${studyId}/is-password-protected`,
+      );
+      if (isPasswordResponse.data.isPassword) {
+        // 비밀번호 보호되어 있을 때 팝업 모달 띄우기
+        document.getElementById('passwordModal').style.display = 'block';
+        document.getElementById('passwordModal').dataset.currentStudyItemId =
+          studyId;
+      } else {
+        window.location.href = `room.html?id=${studyId}`;
+      }
+    } catch (error) {
+      console.error('Error checking if group is password protected:', error);
+    }
+  });
+
+  const modal = document.getElementById('passwordModal');
+  const closeModal = document.getElementById('closeModal');
+  const submitPassword = document.getElementById('submitPassword');
+
+  closeModal.addEventListener('click', function () {
+    modal.style.display = 'none';
+  });
+
+  submitPassword.addEventListener('click', async function () {
+    const currentStudyItemId =
+      document.getElementById('passwordModal').dataset.currentStudyItemId;
+    const inputPassword = document.getElementById('passwordInput').value;
+
+    try {
+      const verifyResponse = await axios.post(
+        `http://localhost:4444/group/${currentStudyItemId}/verify-password`,
+        {
+          password: inputPassword,
+        },
+      );
+
+      if (verifyResponse.data.success) {
+        // 수정된 부분
+        window.location.href = `room.html?id=${currentStudyItemId}`;
+      } else {
+        alert('비밀번호가 일치하지 않습니다.');
+      }
+    } catch (error) {
+      console.error('Error verifying password:', error);
+    }
+  });
+
   function postingPublicStudies(publicStudy, studyBody) {
     const tempDiv = document.createElement('div');
-
     tempDiv.className = 'study-item-list flex-wrap';
     tempDiv.innerHTML = `
-        <div class="study-item-img-wrap" id="${publicStudy.id}">
-            <img
-            src="${publicStudy.image}"
-            alt="study-img"
-            class="study-item-img"
-            />
-            <div class="study-item-info-cover">
-            <div class="study-item-info-badge-wrap">
-                <!---->
-                <!---->
-                <!---->
-            </div>
-            <!---->
-            <div class="study-item-info-personnel-wrap">
-                <span class="study-item-info-personnel present">7 </span>
-                <span class="study-item-info-personnel maximum">/${publicStudy.max}</span>
-            </div>
-            <div class="room-more-view-btn-area"><!----></div>
-            <!---->
-            </div>
-        </div>
-        <div class="study-item-tx-wrap">
-            <em class="study-item-tx title">${publicStudy.name}</em>
-            <div class="study-item-tx-hashtag-wrap"></div>
-        </div>
+    <div class="study-item-img-wrap" id="${publicStudy.id}">
+    <img
+    src="${publicStudy.image}"
+    alt="study-img"
+    class="study-item-img"
+    />
+    <div class="study-item-info-cover">
+    <div class="study-item-info-badge-wrap">
+        <!---->
+        <!---->
+        <!---->
+    </div>
+    <!---->
+    <div class="study-item-info-personnel-wrap">
+        <span class="study-item-info-personnel present">7 </span>
+        <span class="study-item-info-personnel maximum">/${publicStudy.max}</span>
+    </div>
+    <div class="room-more-view-btn-area"><!----></div>
+    <!---->
+    </div>
+</div>
+<div class="study-item-tx-wrap">
+    <em class="study-item-tx title">${publicStudy.name}</em>
+    <div class="study-item-tx-hashtag-wrap"></div>
+</div>
   `;
 
     studyBody.appendChild(tempDiv);
   }
 
-  // 로그아웃 버어트으은
-
-  // 로그아웃 버튼을 클릭했을 때 로그아웃 로직을 추가할 수도 있습니다.
   const logoutButton = document.getElementById('logoutButton');
   logoutButton.addEventListener('click', function () {
     // 로그아웃 처리 로직을 여기에 추가하세요.
-    // 예를 들어 로그아웃 API 호출 또는 로컬 스토리지에서 로그인 정보 삭제 등
-    // 로그아웃이 완료되면 다시 로그인 버튼과 회원가입 버튼을 표시할 수 있습니다.
   });
+
   function logoutBtn() {
-    // 여기에서 로그인 상태를 확인하고 버튼을 제어하는 로직을 추가합니다.
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
     const logoutButton = document.getElementById('logoutButton');
     const profileButton = document.getElementById('profileButton');
 
-    // 로그인 상태를 확인하는 로직 (예시: 로그인이 되었다고 가정)
-
     const isLoggedIn = getCookie();
     if (isLoggedIn) {
-      // 로그인한 경우
-      loginButton.style.display = 'none'; // 로그인 버튼 숨김
-      signupButton.style.display = 'none'; // 회원가입 버튼 숨김
-      logoutButton.style.display = 'block'; // 로그아웃 버튼 표시
+      loginButton.style.display = 'none';
+      signupButton.style.display = 'none';
+      logoutButton.style.display = 'block';
       profileButton.style.display = 'block';
     } else {
-      loginButton.style.display = 'block'; // 로그인 버튼 숨김
-      signupButton.style.display = 'block'; // 회원가입 버튼 숨김
-      logoutButton.style.display = 'none'; // 로그아웃 버튼 표시
+      loginButton.style.display = 'block';
+      signupButton.style.display = 'block';
+      logoutButton.style.display = 'none';
       profileButton.style.display = 'none';
     }
 
@@ -212,77 +219,18 @@ $(document).ready(async () => {
       await axios
         .get('http://localhost:4444/user/out')
         .then((response) => {
-          alert('로그아웃이 성공적으로 완료 되었을까?', response);
+          alert('로그아웃이 성공적으로 완료 되었습니다.', response);
           window.location.reload();
         })
         .catch((error) => {
-          alert('로그아웃이 실패 했을까?', error);
+          alert('로그아웃이 실패했습니다.', error);
         });
     });
   }
-});
 
-// 쿠키 값 가져오는 함수
-function getCookie() {
-  const cookie = decodeURIComponent(document.cookie);
-  const [name, value] = cookie.split('=');
-  return value;
-}
-
-// 내목표
-document.addEventListener('DOMContentLoaded', () => {
-  let totalHours = 0;
-  let totalMinutes = 0;
-  let isRunning = false;
-  let intervalId = null;
-  let pausedTime = 0;
-
-  const goalText = document.getElementById('goalText');
-  const currentTimeDisplay = document.getElementById('currentTimeDisplay');
-  const gauge = document.getElementById('gauge');
-  const formSettingButton = document.querySelector('.form-setting');
-
-  formSettingButton.addEventListener('click', () => {
-    const userHours = parseInt(
-      prompt('목표 시간(시)을 입력하세요:', totalHours),
-    );
-    const userMinutes = parseInt(
-      prompt('목표 시간(분)을 입력하세요:', totalMinutes),
-    );
-
-    if (!isNaN(userHours) && !isNaN(userMinutes)) {
-      totalHours = userHours;
-      totalMinutes = userMinutes;
-
-      goalText.textContent = `목표시간: ${totalHours}시간 ${totalMinutes}분`;
-      currentTimeDisplay.textContent = `0시간 0분 0초`;
-
-      const gaugeWidth = ((totalHours * 60 + totalMinutes) / (60 * 24)) * 100; // 하루는 1440분
-      gauge.style.width = `${gaugeWidth}%`;
-
-      isRunning = true;
-      startCountdown(totalHours * 3600 + totalMinutes * 60 - pausedTime);
-    } else {
-      alert('유효한 숫자를 입력하세요.');
-    }
-  });
-
-  function startCountdown(totalSeconds) {
-    let currentTime = totalSeconds;
-    intervalId = setInterval(() => {
-      if (currentTime <= 0) {
-        clearInterval(intervalId);
-        alert('목표 시간이 다 되었습니다.');
-        return;
-      }
-
-      currentTime--;
-
-      const hours = Math.floor(currentTime / 3600);
-      const remainingMinutes = Math.floor((currentTime % 3600) / 60);
-      const seconds = currentTime % 60;
-
-      currentTimeDisplay.textContent = `${hours}시간 ${remainingMinutes}분 ${seconds}초`;
-    }, 1000);
+  function getCookie() {
+    const cookie = decodeURIComponent(document.cookie);
+    const [name, value] = cookie.split(';')[0].split('=');
+    return value;
   }
 });
