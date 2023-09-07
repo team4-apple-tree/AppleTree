@@ -17,6 +17,25 @@ $(document).ready(async () => {
     },
   });
 
+  // await socket.on('connect', async () => {
+  // 스터디그룹에 접속한 멤버 목록
+  await socket.on('members', async (members) => {
+    console.log('aaa');
+    const chatMember = await $('.chatMember');
+
+    await chatMember.empty();
+
+    members.forEach(async (name) => {
+      const p = document.createElement('p');
+
+      p.className = 'UserName';
+      p.innerText = name;
+
+      await chatMember.append(p);
+    });
+  });
+  // });
+
   // 스터디 그룹에서 입력받은 모든 채팅 목록 조회
   await axios
     .get(`http://localhost:4444/chat/${roomId}`)
@@ -48,23 +67,6 @@ $(document).ready(async () => {
       $('#messageInput').val('');
     }
   }
-
-  // 스터디그룹에 접속한 멤버 목록
-  await socket.on('members', async (members) => {
-    console.log('aaa');
-    const chatMember = await $('.chatMember');
-
-    await chatMember.empty();
-
-    members.forEach(async (name) => {
-      const p = document.createElement('p');
-
-      p.className = 'UserName';
-      p.innerText = name;
-
-      await chatMember.append(p);
-    });
-  });
 
   // 사용자가 입력한 채팅 받아오기
   socket.on('chatMessage', (messages) => {
