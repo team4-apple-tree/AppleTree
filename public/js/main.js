@@ -124,8 +124,20 @@ $(document).ready(async () => {
   $(document).on('click', '.study-item-img-wrap', async (e) => {
     const studyItem = e.target.closest('.study-item-img-wrap');
     const studyId = studyItem.id;
-    const count = studyItem.querySelector('#count').textContent;
-    const max = studyItem.querySelector('#max').textContent.slice(1);
+    let count;
+    let max;
+
+    if (studyItem.querySelector('.countmax')) {
+      [count, max] = studyItem
+        .querySelector('.countmax')
+        .textContent.split('/');
+
+      count = +count.trim();
+      max = +max.trim();
+    } else {
+      count = +studyItem.querySelector('#count').textContent;
+      max = +studyItem.querySelector('#max').textContent.slice(1);
+    }
 
     if (+count < +max) {
       try {
