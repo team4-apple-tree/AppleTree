@@ -152,7 +152,7 @@ export class GroupService {
     data: UpdateGroupDto,
     groupId: number,
     user: User,
-  ): Promise<void> {
+  ): Promise<Group> {
     await this.findGroup(groupId);
 
     const member = await this.memberRepository.findOne({
@@ -172,6 +172,8 @@ export class GroupService {
     if (!updateResult) {
       throw new NotFoundException('스터디그룹 정보 수정에 실패하였습니다.');
     }
+
+    return await this.findGroup(groupId);
   }
 
   // 스터디그룹 삭제
@@ -406,7 +408,9 @@ export class GroupService {
     const group = await this.findGroup(groupId);
     const count = group.count;
 
-    await this.groupRepository.update({ id: groupId }, { count: count + 1 });
+    if (count <= group.max) {
+      await this.groupRepository.update({ id: groupId }, { count: count + 1 });
+    }
   }
 
   // 스터디 그룹 인원수 감소
@@ -414,6 +418,8 @@ export class GroupService {
     const group = await this.findGroup(groupId);
     const count = group.count;
 
-    await this.groupRepository.update({ id: groupId }, { count: count - 1 });
+    if (count >= 0) {
+      await this.groupRepository.update({ id: groupId }, { count: count - 1 });
+    }
   }
 }

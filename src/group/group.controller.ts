@@ -189,17 +189,17 @@ export class GroupController {
 
   // 스터디그룹 정보 수정
   @Put(':groupId')
+  @UseGuards(JwtAuthGuard)
   async updateGroup(
     @Body() data: UpdateGroupDto,
     @Param('groupId') groupId: number,
+    @Req() req: any,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<any> {
+  ): Promise<Group> {
     try {
-      const user = res.locals.user;
+      const user = await req.user;
 
-      await this.groupService.updateGroup(data, groupId, user);
-
-      return { message: '스터디그룹 정보가 수정되었습니다.' };
+      return await this.groupService.updateGroup(data, groupId, user);
     } catch (error) {
       console.error(error);
 
