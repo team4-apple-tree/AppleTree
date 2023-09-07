@@ -70,7 +70,6 @@ $(document).ready(async () => {
     allButton.classList.remove('active');
     newButton.classList.add('active');
   });
-<<<<<<< HEAD
   // 기본 메인페이지 구동 스크립트
 
   $(document).on('click', '#createStudy', async () => {
@@ -89,8 +88,6 @@ $(document).ready(async () => {
         }
       });
   });
-=======
->>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
 
   // 내가 속한 스터디그룹 리스트
   await axios
@@ -106,7 +103,6 @@ $(document).ready(async () => {
       groupNamePlaceholder.innerHTML = '';
       groupData.forEach((element) => {
         const p = document.createElement('div');
-<<<<<<< HEAD
         p.innerText = element.name; //
         groupNamePlaceholder.append(p); //
       });
@@ -129,11 +125,9 @@ $(document).ready(async () => {
     //   .then(() => {
     //     window.location.href = `room.html?id=${studyId}`;
     //   });
-=======
-        p.innerText = element.name;
-        groupNamePlaceholder.append(p);
-      });
-    });
+    p.innerText = element.name;
+    groupNamePlaceholder.append(p);
+  });
 
   $(document).on('click', '#createStudy', async () => {
     await axios
@@ -201,7 +195,6 @@ $(document).ready(async () => {
     } catch (error) {
       console.error('Error verifying password:', error);
     }
->>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
   });
 
   function postingPublicStudies(publicStudy, studyBody) {
@@ -228,11 +221,11 @@ $(document).ready(async () => {
     <div class="room-more-view-btn-area"><!----></div>
     <!---->
     </div>
-</div>
-<div class="study-item-tx-wrap">
-    <em class="study-item-tx title">${publicStudy.name}</em>
-    <div class="study-item-tx-hashtag-wrap"></div>
-</div>
+  </div>
+  <div class="study-item-tx-wrap">
+      <em class="study-item-tx title">${publicStudy.name}</em>
+      <div class="study-item-tx-hashtag-wrap"></div>
+  </div>
   `;
 
     studyBody.appendChild(tempDiv);
@@ -270,12 +263,8 @@ $(document).ready(async () => {
           window.location.reload();
         })
         .catch((error) => {
-<<<<<<< HEAD
           console.log(error);
-          alert('로그아웃이 실패 했을까?', error);
-=======
           alert('로그아웃이 실패했습니다.', error);
->>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
         });
     });
   }

@@ -18,10 +18,7 @@ import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
 import { UploadService } from 'src/upload.service';
 import { EntityManager, DataSource } from 'typeorm';
-<<<<<<< HEAD
 import { MailerService } from '@nestjs-modules/mailer';
-=======
->>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
 @Injectable()
 export class GroupService {
   constructor(
@@ -32,10 +29,7 @@ export class GroupService {
     private readonly uploadService: UploadService,
     private readonly entityManager: EntityManager,
     private readonly dataSource: DataSource,
-<<<<<<< HEAD
     private readonly mailerService: MailerService,
-=======
->>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
   ) {}
 
   async addUserToGroup(user: User, group: Group): Promise<Member> {
@@ -87,10 +81,7 @@ export class GroupService {
       await queryRunner.rollbackTransaction();
       throw error;
     } finally {
-<<<<<<< HEAD
       // 트랜잭션 릴리즈
-=======
->>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
       await queryRunner.release();
     }
   }
