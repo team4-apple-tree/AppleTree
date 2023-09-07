@@ -218,6 +218,7 @@ function createStudy(
   isPassword,
   desc,
   password,
+  videoChatURL,
 ) {
   $(document).on('click', '#createStudyBtn', async () => {
     const formData = new FormData();

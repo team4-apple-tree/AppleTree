@@ -385,7 +385,6 @@ header {
 
 .studies-header {
   position: relative;
-  z-index: 3;
 }
 
 .studies-header-title-wrap {
@@ -764,15 +763,46 @@ ul {
 
 .modal-content {
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #f9f9f9;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 8px;
+  width: 300px;
 }
 
 .close-btn {
-  float: right;
   cursor: pointer;
+  position: absolute;
+  right: 3px;
+  top: 0;
+  font-weight: 700;
+}
+
+#submitPassword {
+  background-color: #19baa4;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+}
+
+#passwordInput {
+  height: 30px;
+  width: 230px;
+  margin-left: 15px;
+}
+
+#profileButton,
+#logoutButton {
+  display: none;
+}
+
+.lock-icon {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  top: 0;
 }

@@ -9,11 +9,14 @@ import { User } from 'src/entity/user.entity';
 import { Access } from 'src/entity/access.entity';
 import { S3Service } from 'src/aws.service';
 import { UploadService } from 'src/upload.service';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Group, Member, User, Access]),
     UserModule,
+    ConfigModule,
   ],
   controllers: [GroupController],
   providers: [GroupService, S3Service, UploadService],

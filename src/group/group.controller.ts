@@ -36,12 +36,15 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/user/roles.guard';
 import { roleEnum } from 'src/enums/userRoles.enum';
 import { VerifyPasswordDto } from 'src/dto/group/VerifyPassword.dto';
+import axios from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('group')
 export class GroupController {
   constructor(
     private readonly groupService: GroupService,
     private readonly s3Service: S3Service,
+    private readonly configService: ConfigService,
   ) {}
 
   // 스터디그룹 생성
@@ -58,8 +61,9 @@ export class GroupController {
       const user = await req.user;
 
       const folderName = 'image';
+      const originalName = file.originalname;
       const fileName = `${Date.now()}_${Buffer.from(
-        file.originalname,
+        originalName,
         'latin1',
       ).toString('utf8')}`;
 
@@ -68,10 +72,26 @@ export class GroupController {
         folderName,
         fileName,
       );
+      const apiKey = this.configService.get<string>('DAILY_API_KEY');
+      const dailyResponse = await axios.post(
+        'https://api.daily.co/v1/rooms',
+        {
+          name: 'room_' + new Date().getTime(),
+          privacy: 'public',
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`,
+          },
+        },
+      );
 
-      await this.groupService.createGroup(data, image, user);
+      const videoChatURL = dailyResponse.data.url;
 
-      return { message: '스터디그룹이 생성되었습니다.' };
+      await this.groupService.createGroup(data, image, user, videoChatURL);
+
+      return { message: '스터디그룹이 생성되었습니다.', videoChatURL };
     } catch (error) {
       console.error(error);
 
@@ -116,7 +136,7 @@ export class GroupController {
   }
 
   @Post('join/:groupId')
-  @UseGuards(JwtAuthGuard) // JWT 인증 가드가 필요하다고 가정
+  @UseGuards(JwtAuthGuard)
   async joinGroup(
     @Param('groupId') groupId: number,
     @Body('password') password: string,
@@ -127,12 +147,12 @@ export class GroupController {
     const group = await this.groupService.findOne(groupId);
     if (group.isPassword) {
       if (group.password !== password) {
-        throw new UnauthorizedException('Incorrect password.');
+        throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
       }
     }
 
     await this.groupService.joinGroup(groupId, user);
-    return { message: 'Successfully joined the group.' };
+    return { message: '성공적으로 그룹에 입장했습니다.' };
   }
 
   // 스터디그룹 정보 조히
