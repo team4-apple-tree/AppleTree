@@ -71,7 +71,7 @@ $(document).ready(function () {
   $(document).on('click', '#createBtn', async () => {
     await axios('http://localhost:4444/user/isLogin', {
       headers: {
-        Authorization: getCookie(),
+        Authorization: getCookie('Authorization'),
       },
     })
       .then(() => {
@@ -238,7 +238,7 @@ function createStudy(
     await axios
       .post('http://localhost:4444/group', formData, {
         headers: {
-          Authorization: getCookie(),
+          Authorization: getCookie('Authorization'),
         },
       })
       .then(() => {
@@ -265,8 +265,14 @@ function createStudy(
 }
 
 // 쿠키 값 가져오는 함수
-function getCookie() {
-  const cookie = decodeURIComponent(document.cookie);
-  const [name, value] = cookie.split('=');
-  return value;
+// function getCookie() {
+//   const cookie = decodeURIComponent(document.cookie);
+//   const [name, value] = cookie.split('=');
+//   return value;
+// }
+function getCookie(name) {
+  const value = decodeURIComponent(document.cookie).match(
+    '(^|;) ?' + name + '=([^;]*)(;|$)',
+  );
+  return value ? value[2] : null;
 }

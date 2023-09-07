@@ -1,4 +1,4 @@
-const token = getCookie();
+const token = getCookie('Authorization');
 const roomId = getQueryParam('id');
 
 let userList = new Set();
@@ -163,10 +163,16 @@ $(document).ready(async () => {
 });
 
 // 쿠키 값 가져오는 함수
-function getCookie() {
-  const cookie = decodeURIComponent(document.cookie);
-  const [name, value] = cookie.split('=');
-  return value;
+// function getCookie() {
+//   const cookie = decodeURIComponent(document.cookie);
+//   const [name, value] = cookie.split('=');
+//   return value;
+// }
+function getCookie(name) {
+  const value = decodeURIComponent(document.cookie).match(
+    '(^|;) ?' + name + '=([^;]*)(;|$)',
+  );
+  return value ? value[2] : null;
 }
 
 // 현재 페이지의 쿼리 스트링 파싱 함수
