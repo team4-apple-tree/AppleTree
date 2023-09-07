@@ -7,6 +7,7 @@ let inviteMembers = [];
 const inviteDiv = document.querySelector('#invite-div');
 const inviteUl = document.querySelector('#invite-ul');
 const inviteEmail = document.querySelector('#memberEmailInput');
+const mdfBtn = document.querySelector('#mdfBtn');
 
 $(document).ready(async () => {
   const socket = await io({
@@ -49,18 +50,19 @@ $(document).ready(async () => {
   }
 
   // 스터디그룹에 접속한 멤버 목록
-  socket.on('members', (members) => {
-    const chatMember = $('.chatMember');
+  await socket.on('members', async (members) => {
+    console.log('aaa');
+    const chatMember = await $('.chatMember');
 
-    chatMember.empty();
+    await chatMember.empty();
 
-    members.forEach((name) => {
+    members.forEach(async (name) => {
       const p = document.createElement('p');
 
       p.className = 'UserName';
       p.innerText = name;
 
-      chatMember.append(p);
+      await chatMember.append(p);
     });
   });
 
@@ -154,13 +156,74 @@ $(document).ready(async () => {
         $('#checkEmailBtn').css('display', 'none');
         $('#iniviteMembersBtn').css('display', 'none');
       })
-      .catch((responst) => {
+      .catch((response) => {
         console.log(response);
 
         alert('실패');
       });
   });
+
+  // 스터디그룹 수정
+  $(document).on('click', '#mdfBtn', () => {
+    const name = $('#groupName').text();
+    const desc = $('#TeamRole').text();
+
+    $('#mdfInput').css('display', 'block');
+    $('#mdfTextArea').css('display', 'block');
+    $('#groupMdfBtn').css('display', 'block');
+
+    $('#mdfInput').val(name);
+    $('#mdfTextArea').val(desc);
+  });
+
+  $(document).on('click', '#groupMdfBtn', async () => {
+    const name = $('#mdfInput').val();
+    const desc = $('#mdfTextArea').val();
+
+    const data = {
+      name,
+      desc,
+    };
+
+    await axios
+      .put(`http://localhost:4444/group/${roomId}`, data, {
+        headers: {
+          Authorization: getCookie('Authorization'),
+        },
+      })
+      .then((response) => {
+        const name = response.data.name;
+        const desc = response.data.desc;
+
+        alert('성공');
+
+        $('#groupName').text(name);
+        $('#TeamRole').text(desc);
+
+        $('#mdfInput').css('display', 'none');
+        $('#mdfTextArea').css('display', 'none');
+        $('#groupMdfBtn').css('display', 'none');
+
+        $('#mdfInput').val();
+        $('#mdfTextArea').val();
+      })
+      .catch((response) => {
+        console.log(response);
+
+        alert(response.response.data.message);
+
+        $('#mdfInput').css('display', 'none');
+        $('#mdfTextArea').css('display', 'none');
+        $('#groupMdfBtn').css('display', 'none');
+
+        $('#mdfInput').val();
+        $('#mdfTextArea').val();
+      });
+  });
 });
+
+// 추방 버튼 클릭 시 이벤트
+$(document).on('click', '#kick', () => {});
 
 // 쿠키 값 가져오는 함수
 // function getCookie() {

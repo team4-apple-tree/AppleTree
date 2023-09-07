@@ -128,7 +128,7 @@ $(document).ready(async () => {
     const count = studyItem.querySelector('#count').textContent;
     const max = studyItem.querySelector('#max').textContent.slice(1);
 
-    if (count < max) {
+    if (+count < +max) {
       try {
         const isPasswordResponse = await axios.get(
           `http://localhost:4444/group/${studyId}/is-password-protected`,

@@ -9,10 +9,11 @@ import { User } from '../entity/user.entity';
 import { JwtAuthGuard } from './jwt.guard';
 import { RolesGuard } from './roles.guard';
 import { SocketGuard } from './socket.guard';
+import { Member } from 'src/entity/member.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Member]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useClass: JwtConfigService,

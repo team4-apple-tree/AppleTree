@@ -33,6 +33,16 @@
       <div class="right">
         <!-- 드롭다운 메뉴 -->
         <div class="dropdown">
+          <button id="mdfBtn">수정</button>
+          <input id="mdfInput" style="display: none" type="text" />
+          <textarea
+            name=""
+            id="mdfTextArea"
+            cols="30"
+            rows="10"
+            style="display: none"
+          ></textarea>
+          <button id="groupMdfBtn" style="display: none">수정하기</button>
           <button class="dropbtn" id="dropbtn">팀규칙을 확인해주세요!</button>
           <div class="dropdown-content">
             <p id="TeamRole">팀규칙 내용</p>
@@ -120,9 +130,7 @@
           <ul id="invite-ul"></ul>
           <button id="iniviteMembersBtn" style="display: none">초대하기</button>
         </div>
-        <div class="chatMember">
-          <p>접속자 목록</p>
-        </div>
+        <div class="chatMember"></div>
         <div class="chat-messages">
           <div class="rooms">
             <div class="room" id="room">
