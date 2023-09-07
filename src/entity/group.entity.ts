@@ -11,6 +11,7 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Member } from './member.entity';
@@ -59,6 +60,7 @@ export class Group {
   deletedAt: Date | null;
 
   @ManyToOne(() => User, (user) => user.groups)
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @OneToMany(() => Member, (member) => member.group)

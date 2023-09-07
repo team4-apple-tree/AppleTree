@@ -18,7 +18,10 @@ import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
 import { UploadService } from 'src/upload.service';
 import { EntityManager, DataSource } from 'typeorm';
+<<<<<<< HEAD
 import { MailerService } from '@nestjs-modules/mailer';
+=======
+>>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
 @Injectable()
 export class GroupService {
   constructor(
@@ -29,8 +32,20 @@ export class GroupService {
     private readonly uploadService: UploadService,
     private readonly entityManager: EntityManager,
     private readonly dataSource: DataSource,
+<<<<<<< HEAD
     private readonly mailerService: MailerService,
+=======
+>>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
   ) {}
+
+  async addUserToGroup(user: User, group: Group): Promise<Member> {
+    const member = new Member();
+    member.user = user;
+    member.group = group;
+    member.createdAt = new Date();
+
+    return this.memberRepository.save(member);
+  }
 
   // 스터디그룹 생성
   async createGroup(
@@ -38,26 +53,28 @@ export class GroupService {
     image: string,
     user: User,
   ): Promise<void> {
-    // const queryRunner = this.entityManager.queryRunner;
+    if (data.isPassword && data.password) {
+      data.isPassword = true;
+    } else {
+      data.isPassword = false;
+      data.password = null;
+    }
+
     const queryRunner = this.dataSource.createQueryRunner();
     try {
-      //여기에 트라이-캐치 문
       await queryRunner.connect();
       await queryRunner.startTransaction();
-      // this.uploadService.createUploadFolder(image);
 
       const isPublic = String(data.isPublic) === 'true';
-      const isPassword = String(data.isPassword) === 'true';
 
-      const createGroup = this.groupRepository.create({
+      const newGroup = this.groupRepository.create({
         ...data,
         isPublic,
-        isPassword,
         image,
         user,
       });
 
-      const group = await this.entityManager.save(Group, createGroup);
+      const group = await this.entityManager.save(Group, newGroup);
 
       const member = new Member();
       member.user = user;
@@ -65,14 +82,15 @@ export class GroupService {
       member.role = 1;
 
       await this.entityManager.save(Member, member);
-      // 트랜잭션 커밋
       await queryRunner.commitTransaction();
     } catch (error) {
-      // 트랜잭션 롤백
       await queryRunner.rollbackTransaction();
       throw error;
     } finally {
+<<<<<<< HEAD
       // 트랜잭션 릴리즈
+=======
+>>>>>>> 500cec083c10de4fae2894e0a424a3dabc7c3b04
       await queryRunner.release();
     }
   }
@@ -195,8 +213,16 @@ export class GroupService {
   }
 
   // 스터디그룹 입장
-  async enterGroup(groupId: number, user: User): Promise<void> {
+  async enterGroup(
+    groupId: number,
+    user: User,
+    password?: string,
+  ): Promise<void> {
     const group = await this.findGroup(groupId);
+
+    if (group.isPassword && group.password !== password) {
+      throw new ForbiddenException('비밀번호가 일치하지 않습니다.');
+    }
 
     const access = new Access();
 
@@ -320,5 +346,55 @@ export class GroupService {
     if (!deleteResult) {
       throw new NotFoundException('스터디그룹 멤버 삭제에 실패하였습니다.');
     }
+  }
+
+  async verifyPassword(
+    groupId: number,
+    password: string,
+  ): Promise<{ success: boolean }> {
+    const group = await this.groupRepository.findOne({
+      where: { id: groupId },
+    });
+    if (group && group.password === password) {
+      return { success: true };
+    }
+    return { success: false };
+  }
+
+  async findOne(groupId: number): Promise<Group> {
+    try {
+      return await this.groupRepository.findOne({ where: { id: groupId } });
+    } catch (error) {
+      // ... 에러 처리 로직 ...
+    }
+  }
+
+  async joinGroup(groupId: number, user: any): Promise<any> {
+    // 그룹을 찾는다.
+    const group = await this.findOne(groupId);
+
+    // 이미 그룹의 회원인지 확인한다.
+    const existingMember = await this.memberRepository.findOne({
+      where: { user: user, group: group },
+    });
+    if (existingMember) {
+      throw new ConflictException('You are already a member of this group.');
+    }
+
+    // Member 인스턴스를 생성하고 저장한다.
+    const member = new Member();
+    member.user = user;
+    member.group = group;
+    member.createdAt = new Date();
+
+    return await this.memberRepository.save(member);
+  }
+
+  async isGroupPasswordProtected(groupId: number): Promise<boolean> {
+    const group = await this.findOne(groupId); // findOne 메서드는 이미 구현되어 있다고 가정합니다.
+    if (!group) {
+      throw new NotFoundException('Group not found.');
+    }
+    return group.isPassword;
   }
 }
