@@ -72,40 +72,41 @@ $(document).ready(async () => {
   });
 
   // 내 스터디 조회
-  await axios
-    .get(`http://localhost:4444/group/myGroup`, {
-      headers: {
-        Authorization: getCookie(),
-      },
-    })
-    .then((response) => {
-      const groups = response.data;
-      console.log(groups.length);
-      const groupNamePlaceholder = document.getElementById('mystudygroup');
+  if (getCookie('Authorization')) {
+    await axios
+      .get(`http://localhost:4444/group/myGroup`, {
+        headers: {
+          Authorization: getCookie('Authorization'),
+        },
+      })
+      .then((response) => {
+        const groups = response.data;
+        const groupNamePlaceholder = document.getElementById('mystudygroup');
 
-      if (groups.length) {
-        groupNamePlaceholder.innerHTML = '';
-      }
+        if (groups.length) {
+          groupNamePlaceholder.innerHTML = '';
+        }
 
-      groups.forEach((group) => {
-        const div = document.createElement('div');
-        div.innerText = group.group.name;
-        div.id = group.group.id;
-        div.className = 'study-item-img-wrap';
-        groupNamePlaceholder.append(div);
+        groups.forEach((group) => {
+          const div = document.createElement('div');
+          div.innerText = group.group.name;
+          div.id = group.group.id;
+          div.className = 'study-item-img-wrap';
+          groupNamePlaceholder.append(div);
+        });
+      })
+      .catch((response) => {
+        console.log(response);
+
+        alert('실패');
       });
-    })
-    .catch((response) => {
-      console.log(response);
-
-      alert('실패');
-    });
+  }
 
   $(document).on('click', '#createStudy', async () => {
     await axios
       .get('http://localhost:4444/user/isLogin', {
         headers: {
-          Authorization: getCookie(),
+          Authorization: getCookie('Authorization'),
         },
       })
       .then(() => {
@@ -187,7 +188,7 @@ $(document).ready(async () => {
     </div>
     <!---->
     <div class="study-item-info-personnel-wrap">
-        <span class="study-item-info-personnel present">7 </span>
+        <span class="study-item-info-personnel present">${publicStudy.count} </span>
         <span class="study-item-info-personnel maximum">/${publicStudy.max}</span>
     </div>
     <div class="room-more-view-btn-area"><!----></div>
@@ -214,7 +215,7 @@ $(document).ready(async () => {
     const logoutButton = document.getElementById('logoutButton');
     const profileButton = document.getElementById('profileButton');
 
-    const isLoggedIn = getCookie();
+    const isLoggedIn = getCookie('Authorization');
     if (isLoggedIn) {
       loginButton.style.display = 'none';
       signupButton.style.display = 'none';
@@ -240,9 +241,17 @@ $(document).ready(async () => {
     });
   }
 
-  function getCookie() {
-    const cookie = decodeURIComponent(document.cookie);
-    const [name, value] = cookie.split(';')[0].split('=');
-    return value;
+  // function getCookie() {
+  //   const cookie = decodeURIComponent(document.cookie);
+  //   const [name, value] = cookie.split(';')[0].split('=');
+  //   console.log(cookie);
+  //   // console.log(value);
+  //   return value;
+  // }
+  function getCookie(name) {
+    const value = decodeURIComponent(document.cookie).match(
+      '(^|;) ?' + name + '=([^;]*)(;|$)',
+    );
+    return value ? value[2] : null;
   }
 });

@@ -50,7 +50,7 @@ export class Group {
   @Column()
   endDate: Date;
 
-  @Column({ default: 1 })
+  @Column({ default: 0 })
   count: number;
 
   @CreateDateColumn()

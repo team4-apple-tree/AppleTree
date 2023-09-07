@@ -149,6 +149,8 @@ $(document).on('click', '#iniviteMembersBtn', async () => {
 
       inviteUl.innerHTML = '';
 
+      inviteMembers = [];
+
       $('#memberEmailInput').css('display', 'none');
       $('#checkEmailBtn').css('display', 'none');
       $('#iniviteMembersBtn').css('display', 'none');

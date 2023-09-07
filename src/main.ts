@@ -31,7 +31,7 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   });
 
-  app.use(authMiddleware.use.bind(authMiddleware));
+  // app.use(authMiddleware.use.bind(authMiddleware));
 
   app.use(express.static(join(__dirname, '..', 'public')));
 

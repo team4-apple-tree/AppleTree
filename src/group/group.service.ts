@@ -97,6 +97,7 @@ export class GroupService {
         'max',
         'isPublic',
         'isPassword',
+        'count',
         'createdAt',
         'updatedAt',
       ],
@@ -395,5 +396,21 @@ export class GroupService {
       where: { user: { id: user.id } },
       relations: ['group'],
     });
+  }
+
+  // 스터디 그룹 인원수 증가
+  async plusCount(groupId: number): Promise<void> {
+    const group = await this.findGroup(groupId);
+    const count = group.count;
+
+    await this.groupRepository.update({ id: groupId }, { count: count + 1 });
+  }
+
+  // 스터디 그룹 인원수 감소
+  async minusCount(groupId: number): Promise<void> {
+    const group = await this.findGroup(groupId);
+    const count = group.count;
+
+    await this.groupRepository.update({ id: groupId }, { count: count - 1 });
   }
 }

@@ -67,6 +67,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       this.server.to(roomId).emit('members', members);
 
+      await this.groupService.plusCount(roomId);
+
       // const group = await this.groupService.findGroup(roomId);
 
       // const roomUser = await this.accessRepository.findOne({
@@ -134,6 +136,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // this.server.to(roomId).emit('userList', roomUsersName);
       // this.server.to(roomId).emit('exit', user.name);
     }
+    await this.groupService.minusCount(roomId);
   }
 
   @SubscribeMessage('chatMessage')
