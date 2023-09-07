@@ -87,11 +87,15 @@ $(document).ready(async () => {
         }
 
         groups.forEach((group) => {
-          const div = document.createElement('div');
-          div.innerText = group.group.name;
-          div.id = group.group.id;
-          div.className = 'study-item-img-wrap';
-          groupNamePlaceholder.append(div);
+          const div = `
+            <div id="${group.group.id}" class="study-item-img-wrap">
+              ${group.group.name}|
+              <span id="count" class="study-item-info-personnel present">${group.group.count} </span>
+              <span id="max" class="study-item-info-personnel maximum">/${group.group.max}</span>
+            </div>
+          `;
+
+          groupNamePlaceholder.innerHTML += div;
         });
       })
       .catch((response) => {

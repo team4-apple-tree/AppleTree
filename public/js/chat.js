@@ -9,7 +9,7 @@ const inviteUl = document.querySelector('#invite-ul');
 const inviteEmail = document.querySelector('#memberEmailInput');
 
 $(document).ready(async () => {
-  const socket = io({
+  const socket = await io({
     extraHeaders: {
       authorization: token,
       roomId,
