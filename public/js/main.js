@@ -120,21 +120,29 @@ $(document).ready(async () => {
   });
   // 기존에 있던 스터디 그룹 클릭 이벤트
   $(document).on('click', '.study-item-img-wrap', async (e) => {
-    const studyId = e.target.closest('.study-item-img-wrap').id;
-    try {
-      const isPasswordResponse = await axios.get(
-        `http://localhost:4444/group/${studyId}/is-password-protected`,
-      );
-      if (isPasswordResponse.data.isPassword) {
-        // 비밀번호 보호되어 있을 때 팝업 모달 띄우기
-        document.getElementById('passwordModal').style.display = 'block';
-        document.getElementById('passwordModal').dataset.currentStudyItemId =
-          studyId;
-      } else {
-        window.location.href = `room.html?id=${studyId}`;
+    const studyItem = e.target.closest('.study-item-img-wrap');
+    const studyId = studyItem.id;
+    const count = studyItem.querySelector('#count').textContent;
+    const max = studyItem.querySelector('#max').textContent.slice(1);
+
+    if (count < max) {
+      try {
+        const isPasswordResponse = await axios.get(
+          `http://localhost:4444/group/${studyId}/is-password-protected`,
+        );
+        if (isPasswordResponse.data.isPassword) {
+          // 비밀번호 보호되어 있을 때 팝업 모달 띄우기
+          document.getElementById('passwordModal').style.display = 'block';
+          document.getElementById('passwordModal').dataset.currentStudyItemId =
+            studyId;
+        } else {
+          window.location.href = `room.html?id=${studyId}`;
+        }
+      } catch (error) {
+        console.error('Error checking if group is password protected:', error);
       }
-    } catch (error) {
-      console.error('Error checking if group is password protected:', error);
+    } else {
+      alert('인원을 초과하여 입장할 수 없습니다.');
     }
   });
 
@@ -188,8 +196,8 @@ $(document).ready(async () => {
     </div>
     <!---->
     <div class="study-item-info-personnel-wrap">
-        <span class="study-item-info-personnel present">${publicStudy.count} </span>
-        <span class="study-item-info-personnel maximum">/${publicStudy.max}</span>
+        <span id="count" class="study-item-info-personnel present">${publicStudy.count} </span>
+        <span id="max" class="study-item-info-personnel maximum">/${publicStudy.max}</span>
     </div>
     <div class="room-more-view-btn-area"><!----></div>
     <!---->
