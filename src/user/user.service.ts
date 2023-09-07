@@ -74,10 +74,10 @@ export class UserService {
     });
 
     if (user) {
-      throw new ConflictException(`해당하는 email이 이미 있지롱`);
+      throw new ConflictException(`해당하는 email이 이미 존재합니다.`);
     }
     if (password !== confirm) {
-      throw new UnauthorizedException(`패스워드가 틀렸지롱`);
+      throw new UnauthorizedException(`비밀번호가 틀렸습니다.`);
     }
     const hash = await bcrypt.hash(password, 10);
     password = hash;
@@ -163,7 +163,7 @@ export class UserService {
   // 존재하는 이메일인지 확인
   async checkEmail(data: CheckEmailDto): Promise<boolean> {
     const user = await this.userRepository.findOne({
-      where: {email: data.email}
+      where: { email: data.email },
     });
 
     if (_.isNil(user)) {

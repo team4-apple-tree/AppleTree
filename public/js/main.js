@@ -2,7 +2,6 @@ $(document).ready(async () => {
   const pageSize = 15;
   let currentPage = 1;
   let publicStudies = [];
-  logoutBtn();
 
   const displayPage = (data, page) => {
     const startIndex = (page - 1) * pageSize;
@@ -160,6 +159,11 @@ $(document).ready(async () => {
   function postingPublicStudies(publicStudy, studyBody) {
     const tempDiv = document.createElement('div');
     tempDiv.className = 'study-item-list flex-wrap';
+    let lockImage = '';
+    if (publicStudy.isPassword) {
+      lockImage =
+        '<img src="./images/lock.png" alt="Locked" class="lock-icon" />';
+    }
     tempDiv.innerHTML = `
     <div class="study-item-img-wrap" id="${publicStudy.id}">
     <img
@@ -167,6 +171,7 @@ $(document).ready(async () => {
     alt="study-img"
     class="study-item-img"
     />
+    ${lockImage}
     <div class="study-item-info-cover">
     <div class="study-item-info-badge-wrap">
         <!---->
@@ -191,11 +196,6 @@ $(document).ready(async () => {
     studyBody.appendChild(tempDiv);
   }
 
-  const logoutButton = document.getElementById('logoutButton');
-  logoutButton.addEventListener('click', function () {
-    // 로그아웃 처리 로직을 여기에 추가하세요.
-  });
-
   function logoutBtn() {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
@@ -211,20 +211,16 @@ $(document).ready(async () => {
     } else {
       loginButton.style.display = 'block';
       signupButton.style.display = 'block';
-      logoutButton.style.display = 'none';
-      profileButton.style.display = 'none';
     }
 
     logoutButton.addEventListener('click', async function () {
-      await axios
-        .get('http://localhost:4444/user/out')
-        .then((response) => {
-          alert('로그아웃이 성공적으로 완료 되었습니다.', response);
-          window.location.reload();
-        })
-        .catch((error) => {
-          alert('로그아웃이 실패했습니다.', error);
-        });
+      try {
+        await axios.get('http://localhost:4444/user/out');
+        alert('로그아웃이 성공적으로 완료 되었습니다.');
+        window.location.reload();
+      } catch (error) {
+        alert('로그아웃이 실패했습니다.');
+      }
     });
   }
 
@@ -233,4 +229,5 @@ $(document).ready(async () => {
     const [name, value] = cookie.split(';')[0].split('=');
     return value;
   }
+  logoutBtn();
 });

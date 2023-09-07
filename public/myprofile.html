@@ -32,7 +32,34 @@
               <h3 class="emailAddress-tx">test@naver.com</h3>
               <button class="pass-chg-btn">비밀번호 변경</button>
             </div>
-            <!---->
+            <!-- 비밀번호 변경 부분 -->
+            <div class="form-group passwordArea m-b-2">
+              <label class="profileLabel">현재 비밀번호</label>
+              <input
+                type="password"
+                name="currentPassword"
+                placeholder="현재 비밀번호"
+                class="form-control input-h44"
+              />
+
+              <label class="profileLabel">새 비밀번호</label>
+              <input
+                type="password"
+                name="newPassword"
+                placeholder="새 비밀번호"
+                class="form-control input-h44"
+              />
+            </div>
+
+            <!-- 사용자의 역할 입력 부분 (예시) -->
+            <div class="form-group roleArea m-b-2">
+              <label class="profileLabel">역할</label>
+              <select name="role" class="form-control input-h44">
+                <option value="user">사용자</option>
+                <option value="admin">관리자</option>
+                <!-- 다른 역할 옵션들도 추가 가능 -->
+              </select>
+            </div>
           </div>
           <div class="form-group nicknameArea m-b-2">
             <label class="profileLabel">이름</label>
@@ -54,11 +81,12 @@
             <label for="birth" class="profileLabel">내 각오</label>
             <textarea
               autocomplete="off"
-              maxlength="1000"
-              placeholder="asd"
+              maxlength="30"
+              placeholder="나의 각오를 적어주세요!"
               class="profileTxarea"
+              id="profileTxarea"
             ></textarea>
-            <p class="text-length"><span>0</span>/1000</p>
+            <p class="text-length"><span>0</span>/30</p>
           </div>
 
           <div class="createBtnRec text-left">
