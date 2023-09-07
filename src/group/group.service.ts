@@ -119,16 +119,16 @@ export class GroupService {
   }
 
   //내가 속한 그룹 조회 하기
-  async findMyGroup(userId: number): Promise<Group[]> {
-    const group = await this.groupRepository.find({
-      where: { id: userId },
-      select: ['name'],
-    });
-    if (_.isNil(group)) {
-      throw new NotFoundException('스터디그룹에 먼저 가입하시쥬?쿠쿠루삥뽕');
-    }
-    return group;
-  }
+  // async findMyGroup(userId: number): Promise<Group[]> {
+  //   const group = await this.groupRepository.find({
+  //     where: { id: userId },
+  //     select: ['name'],
+  //   });
+  //   if (_.isNil(group)) {
+  //     throw new NotFoundException('스터디그룹에 먼저 가입하시쥬?쿠쿠루삥뽕');
+  //   }
+  //   return group;
+  // }
 
   // 스터디그룹 상세 조회
   async findGroup(groupId: number): Promise<Group> {
@@ -387,5 +387,13 @@ export class GroupService {
       throw new NotFoundException('Group not found.');
     }
     return group.isPassword;
+  }
+
+  // 내가 속한 스터디 그룹 조회
+  async findMyGroup(user: User): Promise<Member[]> {
+    return await this.memberRepository.find({
+      where: { user: { id: user.id } },
+      relations: ['group'],
+    });
   }
 }

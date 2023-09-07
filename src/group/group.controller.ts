@@ -55,7 +55,7 @@ export class GroupController {
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
     try {
-      const user = req.user;
+      const user = await req.user;
 
       const folderName = 'image';
       const fileName = `${Date.now()}_${Buffer.from(
@@ -92,18 +92,27 @@ export class GroupController {
   }
 
   //내가 속한 스터디 조회
-  @Get('/my')
+  // @Get('/my')
+  // @UseGuards(JwtAuthGuard)
+  // async findMyGroups(@Req() req: any, userId: number): Promise<Group[]> {
+  //   try {
+  //     const userId = await req.user.id;
+  //     return await this.groupService.findMyGroup(userId);
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new InternalServerErrorException(
+  //       '내가 속한 스터디 조회 실패했습니다.',
+  //     );
+  //   }
+  // }
+
+  // 내가 속한 스터디 그룹 조회
+  @Get('myGroup')
   @UseGuards(JwtAuthGuard)
-  async findMyGroups(@Req() req: any, userId: number): Promise<Group[]> {
-    try {
-      const userId = await req.user.id;
-      return await this.groupService.findMyGroup(userId);
-    } catch (error) {
-      console.error(error);
-      throw new InternalServerErrorException(
-        '내가 속한 스터디 조회 실패했습니다.',
-      );
-    }
+  async findMyGroup(@Req() req: any): Promise<Member[]> {
+    const user = await req.user;
+
+    return await this.groupService.findMyGroup(user);
   }
 
   @Post('join/:groupId')

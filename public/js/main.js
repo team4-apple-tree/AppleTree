@@ -26,7 +26,7 @@ $(document).ready(async () => {
     displayPage(publicStudies, currentPage);
   } catch (error) {
     console.log(error);
-    alert('실패');
+    alert('조회 실패');
   }
 
   const loadMoreButton = document.createElement('button');
@@ -71,22 +71,34 @@ $(document).ready(async () => {
     newButton.classList.add('active');
   });
 
+  // 내 스터디 조회
   await axios
-    .get(`http://localhost:4444/group/my`, {
+    .get(`http://localhost:4444/group/myGroup`, {
       headers: {
         Authorization: getCookie(),
       },
     })
     .then((response) => {
-      const groupData = response.data;
-      console.log(groupData);
+      const groups = response.data;
+      console.log(groups.length);
       const groupNamePlaceholder = document.getElementById('mystudygroup');
-      groupNamePlaceholder.innerHTML = '';
-      groupData.forEach((element) => {
-        const p = document.createElement('div');
-        p.innerText = element.name;
-        groupNamePlaceholder.append(p);
+
+      if (groups.length) {
+        groupNamePlaceholder.innerHTML = '';
+      }
+
+      groups.forEach((group) => {
+        const div = document.createElement('div');
+        div.innerText = group.group.name;
+        div.id = group.group.id;
+        div.className = 'study-item-img-wrap';
+        groupNamePlaceholder.append(div);
       });
+    })
+    .catch((response) => {
+      console.log(response);
+
+      alert('실패');
     });
 
   $(document).on('click', '#createStudy', async () => {
