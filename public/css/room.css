@@ -6,6 +6,7 @@ header {
   justify-content: space-around;
   align-items: center;
   display: flex;
+  margin-left: 10px;
 }
 
 .center {
@@ -19,6 +20,16 @@ header {
 .right {
   display: flex;
   align-items: center;
+  position: relative;
+}
+
+.exit {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  position: absolute;
+  right: -110px;
+  top: -8px;
 }
 
 #groupName {
@@ -94,6 +105,8 @@ header {
 }
 .chat-section .chat-input {
   padding: 7px;
+  /* position: relative;
+  bottom: 25px; */
 }
 
 .chat-section {
@@ -464,4 +477,60 @@ input {
 #dailyIframe {
   height: 680px;
   width: 100%;
+}
+
+#invite-div {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  z-index: 1000;
+  display: none;
+  width: 310px;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: none; /* 초기 상태는 숨김 상태 */
+}
+
+#invite {
+  background-color: #19baa4;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #fff;
+  position: absolute;
+  right: 190px;
+  top: 96px;
+  font-size: 14px;
+}
+
+#invite-div button {
+  background-color: #19baa4;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #fff;
+}
+
+#checkEmailBtn {
+  position: absolute;
+  right: 8px;
+  top: 30px;
+}
+
+#memberEmailInput {
+  width: 250px;
 }
