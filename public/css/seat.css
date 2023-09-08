@@ -29,25 +29,6 @@ header {
   background-color: #ff0000;
 }
 
-.seat-type-1 {
-  /* 일인석 스타일 */
-  width: 40px;
-  height: 40px;
-}
-
-.seat-type-2 {
-  /* 사인석 스타일 */
-  width: 80px;
-  height: 40px;
-}
-
-.seat-type-3 {
-  /* 회의실 스타일 */
-  width: 120px;
-  height: 80px;
-}
-
-/* 추가된 모달 스타일 */
 .modal {
   display: none;
   position: fixed;
@@ -102,13 +83,12 @@ header {
 }
 
 .seatsection {
-  background-color: red;
   width: 50%;
 }
 
 main {
   display: flex;
-  background-color: aqua;
+
   text-align: center;
   justify-content: center;
   height: 400px;
@@ -127,4 +107,8 @@ main {
   background-color: aquamarine;
   width: 100px;
   height: 60px;
+}
+
+#seatsGrid {
+  margin-top: 30px;
 }
