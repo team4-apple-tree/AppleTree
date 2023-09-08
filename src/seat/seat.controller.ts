@@ -36,4 +36,13 @@ export class SeatController {
     }
     return seatDetail;
   }
+
+  @Get('/:roomId/:seatId')
+  async getSeatById(@Param('seatId') seatId: number) {
+    const seat = await this.seatService.getSeatById(seatId);
+    if (!seat) {
+      throw new NotFoundException('해당 좌석 정보가 없습니다.');
+    }
+    return seat;
+  }
 }

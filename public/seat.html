@@ -4,11 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>좌석 예약</title>
+    <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/seat.css" />
   </head>
   <body>
-    <div id="seatsGrid"></div>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo" onclick="location.href='http://localhost:4444/'">
+          사과나무
+        </h1>
+      </div>
+    </header>
+    <main>
+      <img src="./images/studycafe(1.png" alt="" id="cafeimage" />
 
+      <div class="seatsection">
+        <p>좌석배치도</p>
+        <div id="seatsGrid"></div>
+      </div>
+    </main>
     <!-- 좌석 정보 수정 모달 -->
     <div id="seatModal">
       <h3>좌석 정보</h3>
@@ -29,9 +43,9 @@
 
       <label for="seatType">좌석 유형:</label>
       <select id="seatType">
-        <option value="일인석">일인석</option>
-        <option value="사인석">사인석</option>
-        <option value="회의실">회의실</option>
+        <option value="1">일인석</option>
+        <option value="2">사인석</option>
+        <option value="3">회의실</option>
       </select>
 
       <br /><br />

@@ -1,3 +1,20 @@
+header {
+  background-color: #19baa4;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
 .seat {
   display: inline-block;
   width: 20px;
@@ -10,6 +27,24 @@
 
 .seat.selected {
   background-color: #ff0000;
+}
+
+.seat-type-1 {
+  /* 일인석 스타일 */
+  width: 40px;
+  height: 40px;
+}
+
+.seat-type-2 {
+  /* 사인석 스타일 */
+  width: 80px;
+  height: 40px;
+}
+
+.seat-type-3 {
+  /* 회의실 스타일 */
+  width: 120px;
+  height: 80px;
 }
 
 /* 추가된 모달 스타일 */
@@ -60,4 +95,36 @@
   border: 1px solid black;
   padding: 20px;
   background-color: white;
+}
+
+#cafeimage {
+  position: relative;
+}
+
+.seatsection {
+  background-color: red;
+  width: 50%;
+}
+
+main {
+  display: flex;
+  background-color: aqua;
+  text-align: center;
+  justify-content: center;
+  height: 400px;
+}
+.single-seat {
+  background-color: #fff;
+}
+
+.four-seat {
+  background-color: blue;
+  width: 80px;
+  height: 40px;
+}
+
+.meeting-room {
+  background-color: aquamarine;
+  width: 100px;
+  height: 60px;
 }

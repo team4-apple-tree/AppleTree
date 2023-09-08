@@ -82,4 +82,14 @@ export class SeatService {
     }
     return await this.seatRepository.save(seat);
   }
+
+  async getSeatById(seatId: number): Promise<any> {
+    const seat = await this.seatRepository.findOne({ where: { seatId } });
+
+    if (!seat) {
+      throw new NotFoundException(`Seat with ID ${seatId} not found.`);
+    }
+
+    return seat;
+  }
 }
