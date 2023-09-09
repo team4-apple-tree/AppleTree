@@ -8,6 +8,7 @@ import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
+import { UserModule } from 'src/user/user.module';
 
 describe('GroupService', () => {
   let service: GroupService;
@@ -19,6 +20,7 @@ describe('GroupService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         GroupModule,
+        UserModule,
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           useClass: TypeOrmConfigService,

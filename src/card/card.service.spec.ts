@@ -6,6 +6,7 @@ import { Card } from 'src/entity/card.entity';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
+import { GroupModule } from 'src/group/group.module';
 
 describe('CardService', () => {
   let service: CardService;
@@ -15,6 +16,7 @@ describe('CardService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         CardModule,
+        GroupModule,
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           useClass: TypeOrmConfigService,
