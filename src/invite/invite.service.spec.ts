@@ -4,6 +4,8 @@ import { InviteModule } from './invite.module';
 import { Repository } from 'typeorm';
 import { Invitation } from 'src/entity/invite.entity';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
 
 describe('InviteService', () => {
   let service: InviteService;
@@ -11,7 +13,14 @@ describe('InviteService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [InviteModule, TypeOrmModule.forRoot()],
+      imports: [
+        InviteModule,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useClass: TypeOrmConfigService,
+          inject: [ConfigService],
+        }),
+      ],
       providers: [InviteService],
     }).compile();
 

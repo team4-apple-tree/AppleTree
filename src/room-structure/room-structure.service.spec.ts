@@ -4,6 +4,8 @@ import { RoomStructureModule } from './room-structure.module';
 import { Repository } from 'typeorm';
 import { RoomStructure } from 'src/entity/roomStructure.entity';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
 
 describe('RoomStructureService', () => {
   let service: RoomStructureService;
@@ -11,7 +13,14 @@ describe('RoomStructureService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [RoomStructureModule, TypeOrmModule.forRoot()],
+      imports: [
+        RoomStructureModule,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useClass: TypeOrmConfigService,
+          inject: [ConfigService],
+        }),
+      ],
       providers: [RoomStructureService],
     }).compile();
 

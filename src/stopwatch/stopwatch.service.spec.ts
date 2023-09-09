@@ -4,6 +4,8 @@ import { StopwatchModule } from './stopwatch.module';
 import { Repository } from 'typeorm';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Stopwatch } from 'src/entity/stopwatch.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
 
 describe('StopwatchesService', () => {
   let service: StopwatchService;
@@ -11,7 +13,14 @@ describe('StopwatchesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [StopwatchModule, TypeOrmModule.forRoot()],
+      imports: [
+        StopwatchModule,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useClass: TypeOrmConfigService,
+          inject: [ConfigService],
+        }),
+      ],
       providers: [StopwatchService],
     }).compile();
 

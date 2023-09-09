@@ -4,6 +4,8 @@ import { UserModule } from './user.module';
 import { Repository } from 'typeorm';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
 
 describe('UserService', () => {
   let service: UserService;
@@ -11,7 +13,14 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UserModule, TypeOrmModule.forRoot()],
+      imports: [
+        UserModule,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useClass: TypeOrmConfigService,
+          inject: [ConfigService],
+        }),
+      ],
       providers: [UserService],
     }).compile();
 

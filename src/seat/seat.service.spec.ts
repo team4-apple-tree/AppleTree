@@ -6,6 +6,8 @@ import { Seat } from 'src/entity/seat.entity';
 import { Room } from 'src/entity/room.entity';
 import { SeatPrice } from 'src/entity/seatPrice.entity';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
 
 describe('SeatService', () => {
   let service: SeatService;
@@ -15,7 +17,14 @@ describe('SeatService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [SeatModule, TypeOrmModule.forRoot()],
+      imports: [
+        SeatModule,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useClass: TypeOrmConfigService,
+          inject: [ConfigService],
+        }),
+      ],
       providers: [SeatService],
     }).compile();
 

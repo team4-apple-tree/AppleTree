@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Todo } from 'src/entity/to-do.entity';
 import { Card } from 'src/entity/card.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
 
 describe('ToDoService', () => {
   let service: TodoService;
@@ -13,7 +15,14 @@ describe('ToDoService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ToDoModule, TypeOrmModule.forRoot()],
+      imports: [
+        ToDoModule,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useClass: TypeOrmConfigService,
+          inject: [ConfigService],
+        }),
+      ],
       providers: [TodoService],
     }).compile();
 
