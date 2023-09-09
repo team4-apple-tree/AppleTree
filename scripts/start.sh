@@ -7,7 +7,6 @@ TIME_NOW=$(date +%c)
 
 cd $PROJECT_ROOT
 
-npm i
 pm2 delete $APP_NAME
 pm2 start npm --name $APP_NAME -- start
 
