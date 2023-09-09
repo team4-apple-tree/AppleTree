@@ -210,4 +210,4 @@ function getQueryParam(key) {
   return urlSearchParams.get(key);
 }
 
-console.log('test2');
+console.log('test3');
