@@ -1,11 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostController } from './post.controller';
+import { PostModule } from './post.module';
 
 describe('PostController', () => {
   let controller: PostController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [PostModule],
       controllers: [PostController],
     }).compile();
 
