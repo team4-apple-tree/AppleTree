@@ -1,10 +1,6 @@
-import {
-    Matches,
-    IsString,
-    IsEmail,
-    MinLength,
-    MaxLength,
-    IsEnum,
-    IsOptional
-  } from 'class-validator';
-  import { roleEnum } from 'src/entity/user.entity';
+import { IsNotEmpty } from 'class-validator';
+
+export class CreateToDoDto {
+  @IsNotEmpty()
+  state: number;
+}

@@ -1,0 +1,136 @@
+/* form css */
+form {
+  margin: 0 auto;
+  width: 400px;
+  padding: 0px;
+  border: none;
+  margin-top: 80px;
+  text-align: center;
+}
+
+form h4,
+h2 {
+  text-align: start;
+  margin-left: 50px;
+}
+form h4 {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#wrap h2 {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+form div {
+  margin-bottom: 5px;
+}
+form div label {
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+}
+form div input {
+  font: 1em sans-serif;
+  width: 300px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #999;
+  height: 40px;
+}
+form .submitBtn {
+  padding-left: 90px;
+}
+form .submitBtn button {
+  margin-left: 0.5em;
+  background: none;
+  transition: 0.3s;
+}
+form .submitBtn button:hover {
+  background: #333;
+  color: #fff;
+}
+.btn {
+  background: #19baa4;
+  border-radius: 10px;
+  transition: 0.3s;
+  margin-top: 50px;
+  cursor: pointer;
+  color: #fff;
+  height: 60px;
+}
+.btn:hover {
+  background: #fff;
+  color: #333;
+}
+
+input::placeholder {
+  opacity: 1;
+  font-size: 12px;
+}
+
+input:focus {
+  outline: 1.5px solid #19baa4;
+}
+
+input {
+  border-radius: 8px;
+  padding-left: 10px;
+}
+
+.line {
+  border-bottom: 1px solid #999;
+  background-color: #19baa4;
+  position: relative;
+  top: 25px;
+  width: 300px;
+  left: 50px;
+}
+
+.Gobtn {
+  border-radius: 10px;
+  transition: 0.3s;
+  margin-top: 50px;
+  cursor: pointer;
+  color: #000;
+  height: 60px;
+  background: #fff;
+}
+
+.Gobtn:hover {
+  background: #19baa4;
+  color: #fff;
+}
+
+P {
+  position: relative;
+  top: 30px;
+  font-size: small;
+  color: #999;
+}
+
+/* form css */
+
+header {
+  background-color: #19baa4;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}

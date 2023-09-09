@@ -1,26 +1,38 @@
 import {
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
-    OneToMany,
-    OneToOne,
-    Index,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    ManyToOne
-  
-  } from 'typeorm';
-import { Todo } from './to-do.entity';
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 
-  @Entity({ schema: 'apple', name: 'card' })
+import { Group } from './group.entity';
+
+export enum ToDoState {
+  TODO = 1,
+  IN_PROGRESS = 2,
+  COMPLETED = 3,
+}
+@Entity({ schema: 'apple', name: 'card' })
 export class Card {
   @PrimaryGeneratedColumn()
   cardId: number;
 
-  @ManyToOne(()=>Todo, todo=>todo.cards)
-  toDos:Todo
+  @Column()
+  title: string;
 
+  @Column()
+  desc: string;
+
+  @Column({ type: 'enum', enum: ToDoState, default: ToDoState.TODO })
+  selectToDo: ToDoState;
+
+  // @ManyToOne(() => Todo, (todo) => todo.cards)
+  // @JoinColumn({ name: 'todoId' })
+  // toDos: Todo;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -30,4 +42,7 @@ export class Card {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @ManyToOne(() => Group, (group) => group.todos) // Group과의 일대다 관계 설정
+  group: Group;
 }

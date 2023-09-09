@@ -2,13 +2,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ develope ]
+    branches: [develope]
   pull_request:
-    branches: [ develope ]
-    
+    branches: [develope]
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm run test
+        run: npm run test -- --config jest.config.js
 
       - name: Build test
         run: npm run build

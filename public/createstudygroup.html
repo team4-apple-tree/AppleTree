@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/studygroup.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css"
+    />
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- axios -->
+    <script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+    <title>스터디 만들기</title>
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo" onclick="location.href='http://localhost:4444/'">
+          사과나무
+        </h1>
+      </div>
+    </header>
+    <div class="create-room-bottom">
+      <div class="container createRoom">
+        <div class="createForm">
+          <div class="create-room-form-basic">
+            <h3 class="create-room-title">스터디 만들기</h3>
+            <!--  -->
+            <div class="formGroup">
+              <label for="open" class="formLabel">공개 여부</label>
+              <div class="formContent clearfix">
+                <label class="formContentLabel half clearfix">
+                  <input
+                    type="radio"
+                    name="publicOption"
+                    id="public"
+                    class="checkbox"
+                    value="true"
+                  />
+                  <span class="formContentLabelTx">공개 스터디</span>
+                </label>
+                <label class="formContentLabel half clearfix">
+                  <input
+                    type="radio"
+                    name="publicOption"
+                    id="private"
+                    class="checkbox"
+                    value="false"
+                  />
+                  <span class="formContentLabelTx">비공개 스터디</span>
+                </label>
+              </div>
+            </div>
+            <div class="formGroup withValidateTx">
+              <label class="maxParticipants">최대 인원수</label>
+              <div class="formContent">
+                <select
+                  id="max"
+                  name="max"
+                  class="form-control input-md rounded"
+                >
+                  <option value="" selected hidden>선택</option>
+                  <option value="4">4명</option>
+                  <option value="8">8명</option>
+                  <option value="12">12명</option>
+                  <option value="16">16명</option>
+                  <!-- 원하는 만큼 옵션을 추가할 수 있습니다. -->
+                </select>
+              </div>
+            </div>
+            <div class="formGroup withValidateTx">
+              <label class="formLabel input-field-label"> 스터디 이름 </label>
+              <div class="formContent">
+                <input
+                  name="title"
+                  id="name"
+                  type="text"
+                  placeholder="스터디 이름을 입력하세요"
+                  title="스터디 이름을 입력하세요"
+                  autocomplete="off"
+                  maxlength="30"
+                  class="form-control input-md rounded"
+                  aria-required="true"
+                  aria-invalid="false"
+                />
+                <!---->
+              </div>
+            </div>
+            <div class="formGroup">
+              <label class="formLabel">대표 이미지</label>
+              <div class="formContent">
+                <div class="create-room-img-area" id="imageArea">
+                  <div class="imgEditBtnRec">
+                    <input
+                      type="file"
+                      id="imageUpload"
+                      accept="image/*"
+                      style="display: none"
+                    />
+                    <label for="imageUpload" class="imgEditBtn">편집</label>
+                  </div>
+                  <img
+                    id="roomImage"
+                    src=""
+                    alt="방 대표 이미지"
+                    style="max-width: 100%; height: auto; display: none"
+                  />
+                  <p
+                    id="noImageText"
+                    style="display: block; text-align: center"
+                  >
+                    이미지가 없습니다.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="create-room-form-detail">
+            <div class="formGroup">
+              <label class="formLabel input-field-label dateboard">기간</label>
+              <div class="formContent clearfix">
+                <input
+                  type="hidden"
+                  data-input=""
+                  class="form-control input-md inputDate text-center rounded flatpickr-input"
+                  id="startDate"
+                />
+                <span class="dateDivision">~</span>
+                <input
+                  class="form-control input-md inputDate text-center rounded flatpickr-input input"
+                  placeholder=""
+                  tabindex="0"
+                  type="text"
+                  readonly="readonly"
+                  id="endDate"
+                />
+              </div>
+              <div class="formContent clearfix">
+                <p class="dateNotice" id="dateNotice"></p>
+              </div>
+            </div>
+            <div class="formGroup">
+              <label class="formLabel input-field-label passwordtitle"
+                >비밀번호설정</label
+              >
+              <div class="formContent">
+                <div class="clearfix password-container">
+                  <input
+                    type="checkbox"
+                    class="toggleBtn password"
+                    id="passwordToggle"
+                  />
+                  <input
+                    name="password"
+                    type="text"
+                    placeholder="영문 + 숫자 30자리 미만 입력해주세요."
+                    title="영문 + 숫자 30자리 미만 입력해주세요."
+                    autocapitalize="off"
+                    autocorrect="off"
+                    maxlength="30"
+                    class="password-input form-control input-md inputField rounded"
+                    aria-required="false"
+                    aria-invalid="false"
+                    disabled="disabled"
+                  />
+                </div>
+              </div>
+            </div>
+            <!--  -->
+            <div class="formGroup">
+              <label for="open" class="formLabel">스터디 에티켓</label>
+              <div class="formContent textarea">
+                <textarea
+                  id="studyEtiquette"
+                  maxlength="1000"
+                  placeholder="스터디 규칙, 공지 사항 등을 입력해주세요"
+                  title="스터디 규칙, 공지 사항 등을 입력해주세요"
+                  class="form-control input-md"
+                ></textarea>
+                <p class="limit-length">( 0 /1000)</p>
+              </div>
+            </div>
+            <div class="createBtnRec text-center">
+              <button
+                id="createBtn"
+                class="btn btn-lg btn-skin btn-xs-block createRoomBtn"
+              >
+                스터디 만들기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="previewModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <div class="preview-image">
+          <img id="previewImage" src="#" />
+        </div>
+        <div id="previewContent"></div>
+        <button class="btn btn-skin btn-lg" id="createStudyBtn">
+          스터디 생성
+        </button>
+      </div>
+    </div>
+    <script src="./js/createstudy.js"></script>
+  </body>
+</html>

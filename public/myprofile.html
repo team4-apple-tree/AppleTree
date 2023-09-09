@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 정보</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/profile.css" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo" onclick="location.href='http://localhost:4444/'">
+          사과나무
+        </h1>
+      </div>
+    </header>
+    <div class="container profile verticalCenter">
+      <div class="profile-container">
+        <div
+          class="col-md-3 col-sm-3 text-lg-left text-md-left text-sm-left text-xs-center m-543-pd-00"
+        >
+          <span class="profile_photo_area position-relative"
+            ><img src="./images/pngwing.com.png"
+          /></span>
+          <!---->
+        </div>
+
+        <div class="col-md-9 col-sm-8 valign-middle m-543-pd-00">
+          <div class="row profile-email">
+            <div class="emailAddress">
+              <h3 class="emailAddress-tx">test@naver.com</h3>
+              <button class="pass-chg-btn">비밀번호 변경</button>
+            </div>
+            <!-- 비밀번호 변경 부분 -->
+            <div class="form-group passwordArea m-b-2">
+              <label class="profileLabel">현재 비밀번호</label>
+              <input
+                type="password"
+                name="currentPassword"
+                placeholder="현재 비밀번호"
+                class="form-control input-h44"
+              />
+
+              <label class="profileLabel">새 비밀번호</label>
+              <input
+                type="password"
+                name="newPassword"
+                placeholder="새 비밀번호"
+                class="form-control input-h44"
+              />
+            </div>
+
+            <!-- 사용자의 역할 입력 부분 (예시) -->
+            <div class="form-group roleArea m-b-2">
+              <label class="profileLabel">역할</label>
+              <select name="role" class="form-control input-h44">
+                <option value="user">사용자</option>
+                <option value="admin">관리자</option>
+                <!-- 다른 역할 옵션들도 추가 가능 -->
+              </select>
+            </div>
+          </div>
+          <div class="form-group nicknameArea m-b-2">
+            <label class="profileLabel">이름</label>
+            <input
+              autocomplete="off"
+              name="userNickname"
+              type="text"
+              maxlength="25"
+              placeholder="asd"
+              title="이름"
+              class="form-control input-h44"
+              aria-required="true"
+              aria-invalid="false"
+            />
+            <!---->
+          </div>
+
+          <div class="form-group text-area-field m-b-2">
+            <label for="birth" class="profileLabel">내 각오</label>
+            <textarea
+              autocomplete="off"
+              maxlength="30"
+              placeholder="나의 각오를 적어주세요!"
+              class="profileTxarea"
+              id="profileTxarea"
+            ></textarea>
+            <p class="text-length"><span>0</span>/30</p>
+          </div>
+
+          <div class="createBtnRec text-left">
+            <button class="btn btn-lg btn-skin createRoomBtn">
+              프로필 설정 완료
+            </button>
+          </div>
+          <div class="withdrawal-btn-wrapper">
+            <button class="withdrawalBtn">회원 탈퇴</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/profile.js"></script>
+  </body>
+</html>

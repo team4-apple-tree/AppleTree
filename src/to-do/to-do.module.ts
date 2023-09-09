@@ -1,9 +1,14 @@
-import { Module } from '@nestjs/common';
-import { ToDoController } from './to-do.controller';
-import { ToDoService } from './to-do.service';
+import { Module, forwardRef } from '@nestjs/common';
+import { TodoController } from './to-do.controller';
+import { TodoService } from './to-do.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Todo } from '../entity/to-do.entity';
+import { Card } from '../entity/card.entity';
+import { CardModule } from '../card/card.module';
 
 @Module({
-  controllers: [ToDoController],
-  providers: [ToDoService]
+  imports: [TypeOrmModule.forFeature([Todo, Card])],
+  controllers: [TodoController],
+  providers: [TodoService],
 })
 export class ToDoModule {}

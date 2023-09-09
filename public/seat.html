@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>좌석 예약</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/seat.css" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo" onclick="location.href='http://localhost:4444/'">
+          사과나무
+        </h1>
+      </div>
+    </header>
+    <main>
+      <img src="./images/studycafe(1.png" alt="" id="cafeimage" />
+
+      <div class="seatsection">
+        <p>좌석배치도</p>
+        <div id="seatsGrid"></div>
+      </div>
+    </main>
+    <!-- 좌석 정보 수정 모달 -->
+    <div id="seatModal">
+      <h3>좌석 정보</h3>
+      <p>좌석 번호: <span id="seatNumber"></span></p>
+
+      <label for="seatStatus">예약 상태:</label>
+      <select id="seatStatus">
+        <option value="예약됨">예약됨</option>
+        <option value="예약되지 않음">예약되지 않음</option>
+      </select>
+
+      <br /><br />
+
+      <label for="seatPrice">가격:</label>
+      <input type="number" id="seatPrice" placeholder="가격 입력" />
+
+      <br /><br />
+
+      <label for="seatType">좌석 유형:</label>
+      <select id="seatType">
+        <option value="1">일인석</option>
+        <option value="2">사인석</option>
+        <option value="3">회의실</option>
+      </select>
+
+      <br /><br />
+
+      <button id="updateSeatBtn">수정하기</button>
+      <button class="close-btn">닫기</button>
+    </div>
+
+    <script src="./js/seat.js"></script>
+  </body>
+</html>

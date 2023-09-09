@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  overflow-x: hidden;
+  margin: 0;
+  position: relative;
+  line-height: 1.6;
+  font-size: 16px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+a,
+button,
+.btn {
+  line-height: 1.6;
+  font-size: 16px;
+  text-decoration: none;
+  color: #333;
+}
+
+ol,
+ul,
+li {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.hide {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  text-indent: -9999em;
+  overflow: hidden;
+  visibility: hidden;
+  line-height: 0;
+}
+#wrap {
+  min-height: 100%;
+  position: relative;
+  /* padding-bottom: 60px; */
+}
+/* header */
+#header {
+  background-color: #19baa4;
+  padding: 10px 0;
+}
+#header .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+#header h1 .appleTree {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+}
+#header h1 a {
+  font-size: 23px;
+  margin-right: 20px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.1s;
+}
+#header h1 a:hover {
+  border-bottom: 3px solid #fff;
+}
+
+#header .header-content {
+  display: flex;
+  align-items: center;
+}
+#header .navigation ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+#header .navigation ul li {
+  margin-right: 80px;
+}
+#header .navigation ul li a {
+  color: #fff;
+  transition: 0.1s;
+}
+#header .navigation ul li a:hover {
+  border-bottom: 2.5px solid #fff;
+}
+
+#header .search-login {
+  display: flex;
+  align-items: center;
+}
+
+#header .search-login input[type='text'] {
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+}
+
+#header .login-button {
+  padding: 4px 16px;
+  background-color: #2acf30;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: 0.4s;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#header .login-button:active {
+  box-shadow: 2px 2px 2px 2px #777 inset;
+}
+
+/* main */
+#container {
+  height: 100%;
+  padding-bottom: 70px;
+}
+#container::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ================================================== */
+/* 반응형 css */
+@media (min-width: 1230px) {
+}
