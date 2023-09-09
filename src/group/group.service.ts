@@ -418,7 +418,7 @@ export class GroupService {
     const group = await this.findGroup(groupId);
     const count = group.count;
 
-    if (count >= 0) {
+    if (count >= 1) {
       await this.groupRepository.update({ id: groupId }, { count: count - 1 });
     }
   }
