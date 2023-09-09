@@ -1,33 +1,39 @@
 import {
-  Column,
   Entity,
   PrimaryGeneratedColumn,
+  Column,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import { Seat } from './seat.entity';
-import { seatEnum } from './seat.entity';
-import { IsEnum, IsOptional } from 'class-validator';
+import { Room } from './room.entity';
 
+enum SeatType {
+  일인석 = 1,
+  사인석 = 2,
+  회의실 = 3,
+}
 @Entity({ schema: 'apple', name: 'seatprice' })
 export class SeatPrice {
   @PrimaryGeneratedColumn()
   seatPriceId: number;
 
-  @ManyToOne(() => Seat, (seat) => seat.seatPrices)
-  seats: Seat;
+  @ManyToOne(() => Room, (room) => room.seatPrices)
+  @JoinColumn({ name: 'roomId' })
+  room: Room;
 
-  @Column('varchar')
-  @IsOptional()
-  type: seatEnum | null;
+  @ManyToOne(() => Seat, (seat) => seat.seatPrices)
+  @JoinColumn({ name: 'seatId' })
+  seat: Seat;
+
+  @Column({ type: 'enum', enum: SeatType })
+  type: SeatType;
 
   @Column()
   price: number;
-
-  @Column()
-  seatId: number;
 
   @CreateDateColumn()
   createdAt: Date;

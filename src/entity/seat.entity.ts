@@ -1,21 +1,18 @@
 import {
-  Column,
   Entity,
   PrimaryGeneratedColumn,
-  OneToMany,
-  OneToOne,
-  Index,
+  Column,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
 import { Room } from './room.entity';
 import { SeatPrice } from './seatPrice.entity';
-import { RoomStructure } from './roomStructure.entity';
 
-export enum seatEnum {
+export enum SeatType {
   일인석 = 1,
   사인석 = 2,
   회의실 = 3,
@@ -27,10 +24,9 @@ export class Seat {
   seatId: number;
 
   @ManyToOne(() => Room, (room) => room.seats)
-  rooms: Room;
+  room: Room;
 
-  @OneToMany(() => SeatPrice, (seatPrice) => seatPrice.seats)
-  @JoinColumn({ name: 'seatId' })
+  @OneToMany(() => SeatPrice, (seatPrice) => seatPrice.seat)
   seatPrices: SeatPrice[];
 
   @CreateDateColumn()
@@ -42,17 +38,8 @@ export class Seat {
   @Column()
   column: number;
 
-  @Column()
-  price: number;
-
-  @Column()
-  prices: number;
-
-  @Column()
-  roomId: number;
-
-  @Column({ type: 'enum', enum: seatEnum, default: seatEnum.일인석 })
-  type: seatEnum;
+  @Column({ type: 'enum', enum: SeatType, default: SeatType.일인석 })
+  type: SeatType;
 
   @UpdateDateColumn()
   updatedAt: Date;
@@ -62,7 +49,4 @@ export class Seat {
 
   @Column({ default: false })
   reservationStatus: boolean;
-
-  @ManyToOne(() => RoomStructure)
-  roomStructure: RoomStructure;
 }

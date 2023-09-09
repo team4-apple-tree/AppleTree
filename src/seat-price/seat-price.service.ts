@@ -2,29 +2,124 @@ import { Injectable } from '@nestjs/common';
 import { SeatPrice } from 'src/entity/seatPrice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Seat } from '../entity/seat.entity';
+import { SeatType } from '../entity/seat.entity';
 import { createSeatInfoDto } from 'src/dto/seat-price/createSeatPrice.dto';
-import { type } from 'os';
+import { Room } from 'src/entity/room.entity'; // Room entity를 import합니다.
 
 @Injectable()
 export class SeatPriceService {
   constructor(
     @InjectRepository(SeatPrice)
     private seatPriceRepository: Repository<SeatPrice>,
-    @InjectRepository(Seat) private seatRepository: Repository<Seat>,
+    @InjectRepository(Room) // Room repository를 inject합니다.
+    private roomRepository: Repository<Room>,
   ) {}
 
-  async createPrice(seatId: number, data: createSeatInfoDto) {
-    const seat = await this.seatRepository.findOne({
-      where: { seatId },
-      select: ['type'],
-    });
-    console.log(seat.type);
-    const seatPrice = new SeatPrice();
-    seatPrice.type = seat.type;
-    seatPrice.price = data.price;
-    seatPrice.seatId = seatId;
+  async createPriceByType(
+    roomId: number, // roomId를 추가로 받습니다.
+    seatTypeString: string,
+    data: createSeatInfoDto,
+  ): Promise<void> {
+    console.log('Received seatType:', seatTypeString);
 
-    await this.seatPriceRepository.save(seatPrice);
+    const seatType = parseInt(seatTypeString, 10);
+    if (isNaN(seatType)) {
+      throw new Error('Seat type is not a valid number.');
+    }
+
+    let type: SeatType;
+
+    switch (seatType) {
+      case 1:
+        type = SeatType.일인석;
+        break;
+      case 2:
+        type = SeatType.사인석;
+        break;
+      case 3:
+        type = SeatType.회의실;
+        break;
+      default:
+        throw new Error('Invalid seat type provided.');
+    }
+
+    const room = await this.roomRepository.findOne({ where: { roomId } });
+    if (!room) {
+      throw new Error('Invalid room ID provided.');
+    }
+
+    const existingPrice = await this.seatPriceRepository.findOne({
+      where: { type, room }, // room을 기반으로도 조회합니다.
+    });
+
+    if (existingPrice) {
+      existingPrice.price = data.price;
+      await this.seatPriceRepository.save(existingPrice);
+    } else {
+      const newSeatPrice = new SeatPrice();
+      newSeatPrice.type = type;
+      newSeatPrice.price = data.price;
+      newSeatPrice.room = room; // room을 할당합니다.
+      await this.seatPriceRepository.save(newSeatPrice);
+    }
+  }
+
+  async getPriceByType(
+    roomId: number,
+    seatTypeString: string,
+  ): Promise<SeatPrice> {
+    const seatType = parseInt(seatTypeString, 10);
+    if (isNaN(seatType)) {
+      throw new Error('Seat type is not a valid number.');
+    }
+
+    const room = await this.roomRepository.findOne({
+      where: { roomId: roomId },
+    });
+    if (!room) {
+      throw new Error('Invalid room ID provided.');
+    }
+
+    const seatPrice = await this.seatPriceRepository.findOne({
+      where: { type: seatType, room: { roomId } },
+    });
+    console.log('seatPrice', seatPrice);
+    console.log('room', room);
+
+    // console.log('Checking values:', seatType, room);
+    if (!seatPrice) {
+      throw new Error(
+        `Seat price for room ID ${roomId} and seat type ${seatType} not found.`,
+      );
+    }
+
+    return seatPrice;
+  }
+
+  async updatePriceByType(
+    roomId: number,
+    seatTypeString: string,
+    data: createSeatInfoDto,
+  ): Promise<void> {
+    const seatType = parseInt(seatTypeString, 10);
+    if (isNaN(seatType)) {
+      throw new Error('Seat type is not a valid number.');
+    }
+
+    const room = await this.roomRepository.findOne({ where: { roomId } });
+    if (!room) {
+      throw new Error('Invalid room ID provided.');
+    }
+
+    const existingSeatPrice = await this.seatPriceRepository.findOne({
+      where: { type: seatType, room: { roomId } },
+    });
+
+    if (!existingSeatPrice) {
+      throw new Error('Seat price for given room and seat type not found.');
+    }
+
+    existingSeatPrice.price = data.price;
+    await this.seatPriceRepository.save(existingSeatPrice);
   }
 }

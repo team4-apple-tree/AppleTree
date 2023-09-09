@@ -1,32 +1,15 @@
-let selectedSeat = null;
-const roomId = 1;
-
-let modal,
-  closeModal,
-  seatNumberEl,
-  seatStatusEl,
-  seatPriceInput,
-  seatTypeSelect,
-  updateSeatBtn;
-
-function loadSeats(roomId) {
-  fetch(`http://localhost:4444/room-structure/${roomId}`)
-    .then((response) => response.json())
-    .then((roomData) => {
-      const seatShape = JSON.parse(roomData.seatShape);
-
-      return fetch(`http://localhost:4444/seat/${roomId}`)
-        .then((response) => response.json())
-        .then((seatData) => {
-          drawSeats(seatShape, seatData);
-        });
-    })
-    .catch((error) => {
-      console.error('Error while fetching seat data:', error);
-    });
+function getRoomIdFromURL() {
+  const url = new URL(window.location.href);
+  const roomId = url.searchParams.get('roomId');
+  return roomId;
 }
 
+let selectedSeat = null;
+
 document.addEventListener('DOMContentLoaded', function () {
+  const roomId = getRoomIdFromURL();
+  console.log('roomId value:', roomId);
+
   modal = document.getElementById('seatModal');
   closeModal = document.querySelector('.close-btn');
   seatNumberEl = document.getElementById('seatNumber');
@@ -34,8 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
   seatPriceInput = document.getElementById('seatPrice');
   seatTypeSelect = document.getElementById('seatType');
   updateSeatBtn = document.getElementById('updateSeatBtn');
-
-  loadSeats(roomId);
 
   closeModal.addEventListener('click', function () {
     modal.style.display = 'none';
@@ -53,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
       column,
       price: parseFloat(seatPriceInput.value),
       type: parseInt(seatTypeSelect.value, 10),
-      status: seatStatusEl.value === '예약됨' ? 1 : 0,
+      reservationStatus: seatStatusEl.value === '예약됨',
     };
 
     fetch(`http://localhost:4444/seat/${seatId}`, {
@@ -72,7 +53,27 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error while updating seat data:', error);
       });
   });
+
+  loadSeats(roomId);
 });
+
+function loadSeats(roomId) {
+  Promise.all([
+    fetch(`http://localhost:4444/room-structure/${roomId}`).then((response) =>
+      response.json(),
+    ),
+    fetch(`http://localhost:4444/seat/room/${roomId}`).then((response) =>
+      response.json(),
+    ),
+  ])
+    .then(([roomData, seatData]) => {
+      const seatShape = JSON.parse(roomData.seatShape);
+      drawSeats(seatShape, seatData);
+    })
+    .catch((error) => {
+      console.error('Error while fetching seat data:', error);
+    });
+}
 
 function getSeatName(row, column) {
   const columnLabel = String.fromCharCode(97 + column);
@@ -96,30 +97,47 @@ function drawSeats(seatShape, seatData) {
       seatElement.dataset.column = j;
 
       if (seatInfo) {
+        seatElement.addEventListener('click', function () {
+          if (seatInfo.reservationStatus) {
+            alert('이미 예약이 완료되었습니다.');
+            return;
+          }
+
+          selectedSeat = seatElement;
+          showSeatModal(seatInfo);
+        });
+
         if (seatInfo.reservationStatus) {
           seatElement.className = 'seat reserved';
         } else {
           seatElement.className = 'seat available';
-          seatElement.addEventListener('click', function () {
-            selectedSeat = seatElement;
-            showSeatModal(seatInfo);
-          });
         }
 
         switch (seatInfo.type) {
           case 1:
             seatElement.classList.add('single-seat');
+            // 타입별로 설명 추가
+            const type1Description = document.createElement('p');
+            type1Description.textContent = '일인석';
+            seatElement.appendChild(type1Description);
             break;
           case 2:
             seatElement.classList.add('four-seat');
+            const type2Description = document.createElement('p');
+            type2Description.textContent = '사인석';
+            seatElement.appendChild(type2Description);
             break;
           case 3:
             seatElement.classList.add('meeting-room');
+            const type3Description = document.createElement('p');
+            type3Description.textContent = '회의실';
+            seatElement.appendChild(type3Description);
             break;
         }
-
         seatElement.dataset.seatId = seatInfo.seatId;
-        seatElement.textContent = getSeatName(i, j);
+        const seatNameP = document.createElement('p');
+        seatNameP.textContent = getSeatName(i, j); // 좌석 이름을 p태그에 설정
+        seatElement.appendChild(seatNameP);
       } else {
         seatElement.className = 'seat unavailable';
       }

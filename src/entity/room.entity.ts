@@ -9,38 +9,42 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Seat } from './seat.entity';
 import { User } from './user.entity';
-export enum typeEnum {
-  A25 = 1,
-  A50 = 2,
-  A75 = 3,
-  A100 = 4,
-  A125 = 5,
-  A150 = 6,
-  A175 = 7,
-  A200 = 8,
-}
+import { RoomStructure } from './roomStructure.entity';
+import { IsString, Length, IsNotEmpty } from 'class-validator'; // class-validator를 추가합니다.
+import { SeatPrice } from './seatPrice.entity';
 
 @Entity({ schema: 'apple', name: 'room' })
 export class Room {
   @PrimaryGeneratedColumn()
   roomId: number;
 
+  @OneToOne(() => RoomStructure, (roomStructure) => roomStructure.room)
+  @JoinColumn()
+  roomStructure: RoomStructure;
   @ManyToOne(() => User, (user) => user.rooms)
   user: User;
-  @OneToMany(() => Seat, (seat) => seat.rooms)
-  seats: Seat;
+
+  @OneToMany(() => Seat, (seat) => seat.room)
+  seats: Seat[];
 
   @Column('varchar')
+  @IsString()
+  @IsNotEmpty()
+  @Length(1, 255) // 최소 1자 이상, 255자 이하
   name: string;
 
   @Column('varchar')
+  @IsString()
+  @IsNotEmpty()
+  @Length(1, 255) // 최소 1자 이상, 255자 이하
   address: string;
 
-  @Column({ type: 'enum', enum: typeEnum, default: typeEnum.A25 })
-  type: typeEnum;
+  @OneToMany(() => SeatPrice, (seatPrice) => seatPrice.room)
+  seatPrices: SeatPrice[];
 
   @CreateDateColumn()
   createdAt: Date;

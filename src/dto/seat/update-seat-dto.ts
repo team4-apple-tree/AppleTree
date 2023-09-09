@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsNumber, IsBoolean } from 'class-validator';
-import { seatEnum } from 'src/entity/seat.entity';
+import { SeatType } from 'src/entity/seat.entity';
 
 export class UpdateSeatDto {
   @IsNumber()
@@ -10,7 +10,7 @@ export class UpdateSeatDto {
   @IsOptional()
   readonly reservationStatus?: boolean; // 예약 상태를 선택적으로 수정
 
-  @IsEnum(seatEnum)
+  @IsEnum(SeatType)
   @IsOptional()
-  readonly type?: seatEnum; // 좌석 유형을 선택적으로 수정
+  readonly type?: SeatType; // 좌석 유형을 선택적으로 수정
 }

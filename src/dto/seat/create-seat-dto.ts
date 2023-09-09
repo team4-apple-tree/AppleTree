@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsNumber } from 'class-validator';
-import { seatEnum } from 'src/entity/seat.entity';
+import { SeatType } from 'src/entity/seat.entity';
 
 export class createSeatDto {
   @IsNumber()
@@ -14,7 +14,7 @@ export class createSeatDto {
   @IsNumber()
   readonly roomId: number;
 
-  @IsEnum(seatEnum)
+  @IsEnum(SeatType)
   @IsOptional()
-  readonly type: seatEnum | null;
+  readonly type: SeatType | null;
 }

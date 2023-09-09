@@ -88,13 +88,19 @@ header {
 
 main {
   display: flex;
-
+  margin-top: 30px;
   text-align: center;
   justify-content: center;
   height: 400px;
+  position: relative;
+  left: 30px;
+  right: 30px;
 }
 .single-seat {
   background-color: #fff;
+  font-size: 8px;
+  width: 40px;
+  height: 20px;
 }
 
 .four-seat {
