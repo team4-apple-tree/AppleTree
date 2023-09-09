@@ -3,7 +3,7 @@ import { InviteService } from './invite.service';
 import { InviteModule } from './invite.module';
 import { Repository } from 'typeorm';
 import { Invitation } from 'src/entity/invite.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 
 describe('InviteService', () => {
   let service: InviteService;
@@ -11,7 +11,7 @@ describe('InviteService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [InviteModule],
+      imports: [InviteModule, TypeOrmModule.forRoot()],
       providers: [InviteService],
     }).compile();
 

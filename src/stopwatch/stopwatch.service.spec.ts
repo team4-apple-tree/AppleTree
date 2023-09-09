@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StopwatchService } from './stopwatch.service';
 import { StopwatchModule } from './stopwatch.module';
 import { Repository } from 'typeorm';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Stopwatch } from 'src/entity/stopwatch.entity';
 
 describe('StopwatchesService', () => {
@@ -11,7 +11,7 @@ describe('StopwatchesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [StopwatchModule],
+      imports: [StopwatchModule, TypeOrmModule.forRoot()],
       providers: [StopwatchService],
     }).compile();
 

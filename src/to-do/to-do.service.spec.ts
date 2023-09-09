@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TodoService } from './to-do.service';
 import { ToDoModule } from './to-do.module';
 import { Repository } from 'typeorm';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Todo } from 'src/entity/to-do.entity';
 import { Card } from 'src/entity/card.entity';
 
@@ -13,7 +13,7 @@ describe('ToDoService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ToDoModule],
+      imports: [ToDoModule, TypeOrmModule.forRoot()],
       providers: [TodoService],
     }).compile();
 

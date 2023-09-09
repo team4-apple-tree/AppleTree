@@ -3,7 +3,7 @@ import { GroupService } from './group.service';
 import { GroupModule } from './group.module';
 import { Repository } from 'typeorm';
 import { Group } from 'src/entity/group.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
 
@@ -15,7 +15,7 @@ describe('GroupService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [GroupModule],
+      imports: [GroupModule, TypeOrmModule.forRoot()],
       providers: [GroupService],
     }).compile();
 

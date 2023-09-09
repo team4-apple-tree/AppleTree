@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Seat } from 'src/entity/seat.entity';
 import { Room } from 'src/entity/room.entity';
 import { SeatPrice } from 'src/entity/seatPrice.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 
 describe('SeatService', () => {
   let service: SeatService;
@@ -15,7 +15,7 @@ describe('SeatService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [SeatModule],
+      imports: [SeatModule, TypeOrmModule.forRoot()],
       providers: [SeatService],
     }).compile();
 

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SeatPriceService } from './seat-price.service';
 import { SeatPriceModule } from './seat-price.module';
 import { Repository } from 'typeorm';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { SeatPrice } from 'src/entity/seatPrice.entity';
 import { Seat } from 'src/entity/seat.entity';
 
@@ -13,7 +13,7 @@ describe('SeatPriceService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [SeatPriceModule],
+      imports: [SeatPriceModule, TypeOrmModule.forRoot()],
       providers: [SeatPriceService],
     }).compile();
 

@@ -3,7 +3,7 @@ import { RoomStructureService } from './room-structure.service';
 import { RoomStructureModule } from './room-structure.module';
 import { Repository } from 'typeorm';
 import { RoomStructure } from 'src/entity/roomStructure.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 
 describe('RoomStructureService', () => {
   let service: RoomStructureService;
@@ -11,7 +11,7 @@ describe('RoomStructureService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [RoomStructureModule],
+      imports: [RoomStructureModule, TypeOrmModule.forRoot()],
       providers: [RoomStructureService],
     }).compile();
 
