@@ -15,9 +15,11 @@ import { Payment } from '../entity/payment.entity';
 import { RoomStructure } from '../entity/roomStructure.entity';
 import { Member } from 'src/entity/member.entity';
 import { Access } from 'src/entity/access.entity';
-import { Stopwatch } from 'src/entity/stopwatch.entity';
+// import { Stopwatch } from 'src/entity/stopwatch.entity';
 import { Invitation } from 'src/entity/invite.entity';
 import { SeatPrice } from 'src/entity/seatPrice.entity';
+import { TimeTable } from 'src/entity/timeTable.entity';
+import { Reservation } from 'src/entity/reservation.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -45,10 +47,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Group,
         Access,
         Payment,
-        Stopwatch,
+        // Stopwatch,
         Invitation,
         RoomStructure,
         SeatPrice,
+        TimeTable,
+        Reservation
       ],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'),
     };

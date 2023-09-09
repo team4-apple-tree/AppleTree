@@ -13,14 +13,14 @@ import {
 } from 'typeorm';
 import { Room } from './room.entity';
 import { SeatPrice } from './seatPrice.entity';
+import { TimeTable } from './timeTable.entity';
+import { Reservation } from './reservation.entity';
 import { RoomStructure } from './roomStructure.entity';
-
 export enum seatEnum {
   일인석 = 1,
   사인석 = 2,
   회의실 = 3,
 }
-
 @Entity({ schema: 'apple', name: 'seat' })
 export class Seat {
   @PrimaryGeneratedColumn()
@@ -29,9 +29,16 @@ export class Seat {
   @ManyToOne(() => Room, (room) => room.seats)
   rooms: Room;
 
+  @ManyToOne(() => RoomStructure)
+  roomStructure: RoomStructure;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.seats)
+  reservations: Reservation;
+
   @OneToMany(() => SeatPrice, (seatPrice) => seatPrice.seats)
   @JoinColumn({ name: 'seatId' })
   seatPrices: SeatPrice[];
+
 
   @CreateDateColumn()
   createdAt: Date;
@@ -46,7 +53,7 @@ export class Seat {
   price: number;
 
   @Column()
-  prices: number;
+  prices: number
 
   @Column()
   roomId: number;
@@ -59,10 +66,4 @@ export class Seat {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
-
-  @Column({ default: false })
-  reservationStatus: boolean;
-
-  @ManyToOne(() => RoomStructure)
-  roomStructure: RoomStructure;
 }

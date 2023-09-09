@@ -3,8 +3,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
-  OneToOne,
-  Index,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -12,6 +10,7 @@ import {
 } from 'typeorm';
 import { Seat } from './seat.entity';
 import { User } from './user.entity';
+import { TimeTable } from './timeTable.entity';
 export enum typeEnum {
   A25 = 1,
   A50 = 2,
@@ -31,7 +30,9 @@ export class Room {
   @ManyToOne(() => User, (user) => user.rooms)
   user: User;
   @OneToMany(() => Seat, (seat) => seat.rooms)
-  seats: Seat;
+  seats: Seat[]
+  @OneToMany(()=> TimeTable,(timeTable)=> timeTable.rooms)
+  timeTable:TimeTable[]
 
   @Column('varchar')
   name: string;

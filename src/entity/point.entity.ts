@@ -1,28 +1,33 @@
 import {
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
-    OneToMany,
-    OneToOne,
-    Index,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn
-  
-  } from 'typeorm';
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+  Index,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn
 
-  @Entity({ schema: 'apple', name: 'point' })
+} from 'typeorm';
+
+@Entity({ schema: 'apple', name: 'point' })
 export class Point {
-  @PrimaryGeneratedColumn()
-  pointId: number;
+@PrimaryGeneratedColumn()
+pointId: number;
 
+@Column({ default: 0 })
+point: number; 
 
-  @CreateDateColumn()
-  createdAt: Date;
+@Column()
+userId : number
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+@CreateDateColumn()
+createdAt: Date;
 
-  @DeleteDateColumn()
-  deletedAt: Date | null;
+@UpdateDateColumn()
+updatedAt: Date;
+
+@DeleteDateColumn()
+deletedAt: Date | null;
 }
