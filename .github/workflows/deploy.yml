@@ -9,9 +9,9 @@ on:
 # 리전, 버킷 이름, CodeDeploy 앱 이름, CodeDeploy 배포 그룹 이름
 env:
   AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: nbc-node-cicd-s3-bucket
-  CODE_DEPLOY_APPLICATION_NAME: cicd-backend
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: cicd-codedeploy-deployment-group
+  S3_BUCKET_NAME: apple-tree-action-s3-buket
+  CODE_DEPLOY_APPLICATION_NAME: apple-tree-app
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: apple-tree-deployment-group
 
 permissions:
   contents: read

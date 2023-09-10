@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PROJECT_ROOT="/home/ubuntu/app"
-APP_NAME="project"
+APP_NAME="apple_tree"
 
 TIME_NOW=$(date +%c)
 
