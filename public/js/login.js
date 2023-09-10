@@ -10,7 +10,7 @@ $(document).on('click', '#loginBtn', async (e) => {
   };
 
   axios
-    .post('http://http://52.78.189.158:4444//user/login', data)
+    .post('http://http://52.78.189.158:4444/user/login', data)
     .then((response) => {
       console.log(response);
       alert('로그인 성공');
