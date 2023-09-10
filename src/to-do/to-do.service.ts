@@ -83,7 +83,7 @@ export class TodoService {
       throw new NotFoundException('Todo가 존재하지 않습니다.');
     }
 
-    await this.todoRepository.softDelete(todoToDelete);
+    await this.todoRepository.softDelete(todoId);
   }
 
   // async createCardInTodo(

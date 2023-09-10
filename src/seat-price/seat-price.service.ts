@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SeatPrice } from 'src/entity/seatPrice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { SeatType } from '../entity/seat.entity';
 import { createSeatInfoDto } from 'src/dto/seat-price/createSeatPrice.dto';
 import { Room } from 'src/entity/room.entity'; // Room entity를 import합니다.
@@ -49,7 +49,7 @@ export class SeatPriceService {
     }
 
     const existingPrice = await this.seatPriceRepository.findOne({
-      where: { type, room }, // room을 기반으로도 조회합니다.
+      where: { type, room: room as FindOptionsWhere<Room> },
     });
 
     if (existingPrice) {

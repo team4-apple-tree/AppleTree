@@ -18,7 +18,7 @@ import { Comment } from './comment.entity';
 import { Post } from './post.entity';
 import { Group } from './group.entity';
 import { Access } from './access.entity';
-import { Stopwatch } from './stopwatch.entity';
+import { Payment } from './payment.entity';
 export enum roleEnum {
   유저 = 1,
   관리자 = 2,
@@ -43,7 +43,8 @@ export class User {
   groups: Group[];
   @OneToMany(() => Access, (access) => access.user)
   access: Access[];
-
+  @OneToMany(()=>Payment,(payment)=>payment.user)
+  payments:Payment
   // @ManyToMany(() => Group, (group) => group.members)
   // @JoinTable({ name: 'group_member' })
   // myGroups: Group[];
@@ -71,7 +72,4 @@ export class User {
 
   @Column({ type: 'enum', enum: roleEnum, default: roleEnum.유저 })
   role: roleEnum;
-
-  @OneToMany(() => Stopwatch, (stopwatch) => stopwatch.user)
-  stopwatches: Stopwatch[];
 }
