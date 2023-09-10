@@ -21,11 +21,12 @@ async function bootstrap() {
   // Api doc = 4444/api
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.enableCors({
-    origin: '*',
-    credentials: true,
-    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
-  });
+  // app.enableCors({
+  //   origin: '*',
+  //   credentials: true,
+  //   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  // });
+  app.enableCors();
 
   // app.use(authMiddleware.use.bind(authMiddleware));
 
