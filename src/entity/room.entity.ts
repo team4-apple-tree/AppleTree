@@ -8,12 +8,14 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { Seat } from './seat.entity';
 import { User } from './user.entity';
 import { RoomStructure } from './roomStructure.entity';
 import { IsString, Length, IsNotEmpty } from 'class-validator'; // class-validator를 추가합니다.
 import { SeatPrice } from './seatPrice.entity';
+import { TimeTable } from './timeTable.entity';
 
 @Entity({ schema: 'apple', name: 'room' })
 export class Room {
@@ -25,9 +27,9 @@ export class Room {
   roomStructure: RoomStructure;
   @ManyToOne(() => User, (user) => user.rooms)
   user: User;
-  
-  @OneToMany(()=> TimeTable,(timeTable)=> timeTable.rooms)
-  timeTable:TimeTable[]
+
+  @OneToMany(() => TimeTable, (timeTable) => timeTable.rooms)
+  timeTable: TimeTable[];
 
   @OneToMany(() => Seat, (seat) => seat.room)
   seats: Seat[];
