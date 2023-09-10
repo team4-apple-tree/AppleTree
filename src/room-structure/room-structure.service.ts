@@ -1,20 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RoomStructure } from '../entity/roomStructure.entity';
 import { CreateRoomStructureDto } from 'src/dto/RoomStructure/create-room-structure.dto';
-import { SeatService } from '../seat/seat.service'; // SeatService를 import합니다.
+import { SeatService } from '../seat/seat.service';
 import { createSeatDto } from 'src/dto/seat/create-seat-dto';
+import { Room } from '../entity/room.entity';
 
 @Injectable()
 export class RoomStructureService {
   constructor(
     @InjectRepository(RoomStructure)
     private roomStructureRepository: Repository<RoomStructure>,
-    private readonly seatService: SeatService, // SeatService를 주입받습니다.
+    @InjectRepository(Room)
+    private roomRepository: Repository<Room>,
+    private readonly seatService: SeatService,
   ) {}
 
-  async create(dto: CreateRoomStructureDto): Promise<RoomStructure> {
+  async create(
+    roomId: number,
+    dto: CreateRoomStructureDto,
+  ): Promise<RoomStructure> {
+    // Room 엔터티 조회
+    const room = await this.roomRepository.findOne({ where: { roomId } });
+    if (!room) {
+      throw new NotFoundException(`Room with ID ${roomId} not found.`);
+    }
+
+    // 기존 RoomStructure 검사
+    const existingStructure = await this.roomStructureRepository.findOne({
+      where: { room: room },
+    });
+    if (existingStructure) {
+      throw new ConflictException('This room already has a structure.');
+    }
+
     const { rows, columns } = dto;
     const seatShape = Array(rows)
       .fill(0)
@@ -24,13 +48,13 @@ export class RoomStructureService {
     newRoomStructure.rows = rows;
     newRoomStructure.columns = columns;
     newRoomStructure.seatShape = JSON.stringify(seatShape);
+    newRoomStructure.room = room;
 
     const savedRoomStructure = await this.roomStructureRepository.save(
       newRoomStructure,
     );
 
     const seatDtos: createSeatDto[] = [];
-
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < columns; col++) {
         const seatDto = {
@@ -38,7 +62,7 @@ export class RoomStructureService {
           row: row,
           column: col,
           price: 10000,
-          roomId: savedRoomStructure.id,
+          roomId: roomId,
         };
         seatDtos.push(seatDto);
       }

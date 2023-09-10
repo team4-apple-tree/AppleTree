@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Room } from './room.entity';
 
 @Entity({ name: 'roomstructure' })
 export class RoomStructure {
@@ -13,4 +14,7 @@ export class RoomStructure {
 
   @Column({ type: 'text', nullable: true })
   seatShape: string;
+
+  @OneToOne(() => Room, (room) => room.roomStructure, { onDelete: 'CASCADE' })
+  room: Room;
 }

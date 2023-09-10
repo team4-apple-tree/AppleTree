@@ -17,10 +17,11 @@ export class RoomStructureController {
     return this.roomStructureService.findOne(id);
   }
 
-  @Post()
+  @Post(':roomId')
   async create(
+    @Param('roomId') roomId: number,
     @Body() createRoomStructureDto: CreateRoomStructureDto,
   ): Promise<RoomStructure> {
-    return this.roomStructureService.create(createRoomStructureDto);
+    return this.roomStructureService.create(roomId, createRoomStructureDto);
   }
 }
