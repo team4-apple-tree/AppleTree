@@ -20,9 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (groupId) {
     try {
-      const response = await axios.get(
-        `http://localhost:4444/group/${groupId}`,
-      );
+      const response = await axios.get(`/group/${groupId}`);
       const groupData = response.data;
       const groupName = groupData.name;
       const TeamRole = groupData.desc;
@@ -101,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:4444/group/${groupId}`,
+        `/group/${groupId}`,
         { name, desc },
         {
           headers: {

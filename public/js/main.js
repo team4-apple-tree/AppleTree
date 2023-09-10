@@ -20,7 +20,7 @@ $(document).ready(async () => {
   };
 
   try {
-    const response = await axios.get('http://52.78.189.158:4444/group/');
+    const response = await axios.get('/group/');
     publicStudies = response.data.sort((a, b) => a.id - b.id);
     displayPage(publicStudies, currentPage);
   } catch (error) {
@@ -73,7 +73,7 @@ $(document).ready(async () => {
   // 내 스터디 조회
   if (getCookie('Authorization')) {
     await axios
-      .get(`http://52.78.189.158:4444/myGroup`, {
+      .get(`/group/myGroup`, {
         headers: {
           Authorization: getCookie('Authorization'),
         },
@@ -106,7 +106,7 @@ $(document).ready(async () => {
 
   $(document).on('click', '#createStudy', async () => {
     await axios
-      .get('http://localhost:4444/user/isLogin', {
+      .get('/user/isLogin', {
         headers: {
           Authorization: getCookie('Authorization'),
         },
@@ -142,7 +142,7 @@ $(document).ready(async () => {
     if (+count < +max) {
       try {
         const isPasswordResponse = await axios.get(
-          `http://localhost:4444/group/${studyId}/is-password-protected`,
+          `/group/${studyId}/is-password-protected`,
         );
         if (isPasswordResponse.data.isPassword) {
           // 비밀번호 보호되어 있을 때 팝업 모달 띄우기
@@ -175,7 +175,7 @@ $(document).ready(async () => {
 
     try {
       const verifyResponse = await axios.post(
-        `http://localhost:4444/group/${currentStudyItemId}/verify-password`,
+        `/group/${currentStudyItemId}/verify-password`,
         {
           password: inputPassword,
         },
@@ -251,7 +251,7 @@ $(document).ready(async () => {
 
     logoutButton.addEventListener('click', async function () {
       try {
-        await axios.get('http://localhost:4444/user/out');
+        await axios.get('/user/out');
         alert('로그아웃이 성공적으로 완료 되었습니다.');
         window.location.reload();
       } catch (error) {
