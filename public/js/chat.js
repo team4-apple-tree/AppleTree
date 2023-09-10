@@ -38,7 +38,7 @@ $(document).ready(async () => {
 
   // 스터디 그룹에서 입력받은 모든 채팅 목록 조회
   await axios
-    .get(`http://52.78.189.158:4444/chat/${roomId}`)
+    .get(`/chat/${roomId}`)
     .then((response) => {
       const messages = response.data;
       console.log(messages);
@@ -117,7 +117,7 @@ $(document).ready(async () => {
     const data = { email };
 
     await axios
-      .post('http://52.78.189.158:4444/user/checkEmail', data)
+      .post('/user/checkEmail', data)
       .then((response) => {
         const isExistEmail = response.data;
 
@@ -146,7 +146,7 @@ $(document).ready(async () => {
   $(document).on('click', '#iniviteMembersBtn', async () => {
     console.log(inviteMembers);
     await axios
-      .post(`http://52.78.189.158:4444/group/${roomId}`, inviteMembers)
+      .post(`/group/${roomId}`, inviteMembers)
       .then((response) => {
         alert(response.data.message);
 

@@ -69,7 +69,7 @@ $(document).ready(function () {
 
   // 스터디 만들기 버튼 클릭 이벤트
   $(document).on('click', '#createBtn', async () => {
-    await axios('http://52.78.189.158:4444/user/isLogin', {
+    await axios('/user/isLogin', {
       headers: {
         Authorization: getCookie('Authorization'),
       },
@@ -236,7 +236,7 @@ function createStudy(
     }
 
     await axios
-      .post('http://52.78.189.158:4444/group', formData, {
+      .post('/group', formData, {
         headers: {
           Authorization: getCookie('Authorization'),
         },

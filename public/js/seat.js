@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
       reservationStatus: seatStatusEl.value === '예약됨',
     };
 
-    fetch(`http://52.78.189.158:4444/seat/${seatId}`, {
+    fetch(`/seat/${seatId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -59,12 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function loadSeats(roomId) {
   Promise.all([
-    fetch(`http://52.78.189.158:4444room-structure/${roomId}`).then(
-      (response) => response.json(),
-    ),
-    fetch(`http://52.78.189.158:4444/seat/room/${roomId}`).then((response) =>
-      response.json(),
-    ),
+    fetch(`room-structure/${roomId}`).then((response) => response.json()),
+    fetch(`/seat/room/${roomId}`).then((response) => response.json()),
   ])
     .then(([roomData, seatData]) => {
       const seatShape = JSON.parse(roomData.seatShape);
@@ -162,9 +158,7 @@ function showSeatModal(seatInfo) {
 
 async function getPriceByType(roomId, seatType) {
   try {
-    const response = await fetch(
-      `http://52.78.189.158:4444/seat-price/room/${roomId}/type/${seatType}`,
-    );
+    const response = await fetch(`/seat-price/room/${roomId}/type/${seatType}`);
     const data = await response.json();
     console.log(data);
     const priceElement = document.getElementById('seatPrice');

@@ -10,7 +10,7 @@ function clearModalData() {
 
 async function loadCards(groupId) {
   await axios
-    .get(`http://52.78.189.158:4444/card/room/${groupId}`)
+    .get(`/card/room/${groupId}`)
     .then((response) => {
       const cards = response.data;
       renderCards(cards);
@@ -74,7 +74,7 @@ $(document).on('click', '#createCard', async () => {
   };
 
   await axios
-    .post(`http://52.78.189.158:4444/card/room/${groupId}`, data)
+    .post(`/card/room/${groupId}`, data)
     .then((response) => {
       const newCard = response.data; // 서버에서 반환된 새 카드 데이터
       const { title, selectToDo, cardId } = newCard;
@@ -129,7 +129,7 @@ $(document).on('click', '#updateCard', async (e) => {
     };
     console.log(updatedData);
     await axios
-      .put(`http://52.78.189.158:4444/card/${cardId}`, updatedData)
+      .put(`/card/${cardId}`, updatedData)
       .then(() => {
         alert('수정 성공');
         const cardToUpdate = document.querySelector(
@@ -169,7 +169,7 @@ $(document).on('click', '#deleteCard', async (e) => {
   const cardId = e.target.parentNode.id;
 
   await axios
-    .delete(`http://52.78.189.158:4444/card/${cardId}`)
+    .delete(`/card/${cardId}`)
     .then(() => {
       alert('삭제 성공');
 

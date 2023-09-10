@@ -14,12 +14,12 @@ $(document).on('click', '#signinbtn', async (e) => {
   };
 
   axios
-    .post('http://52.78.189.158:4444/user/sign', data)
+    .post('/user/sign', data)
     .then((response) => {
       console.log(response);
       alert('회원가입 성공');
 
-      window.location.href = 'http://52.78.189.158:4444/login.html';
+      window.location.href = '/login.html';
     })
     .catch((error) => {
       console.error(error);

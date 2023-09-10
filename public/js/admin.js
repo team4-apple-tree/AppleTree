@@ -3,7 +3,7 @@ function createRoom() {
   const roomName = document.getElementById('room-name').value;
   const roomAddress = document.getElementById('room-address').value;
 
-  fetch('http://52.78.189.158:4444/room', {
+  fetch('/room', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ function createRoom() {
 
 // List all rooms function
 function listRooms() {
-  fetch('http://52.78.189.158:4444/room')
+  fetch('/room')
     .then((response) => response.json())
     .then((data) => {
       const roomList = document.getElementById('room-list-ul');
@@ -47,7 +47,7 @@ function updateRoom(id) {
   const newAddress = prompt('Enter the new room address:');
 
   if (newName && newAddress) {
-    fetch(`http://52.78.189.158:4444/room/${id}`, {
+    fetch(`/room/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ function updateRoom(id) {
 // Delete Room function
 function deleteRoom(id) {
   if (confirm('Are you sure you want to delete this room?')) {
-    fetch(`http://52.78.189.158:4444/room/${id}`, {
+    fetch(`/room/${id}`, {
       method: 'DELETE',
     })
       .then(() => {
@@ -83,7 +83,7 @@ function deleteRoom(id) {
 
 // List all rooms function
 function listRooms() {
-  fetch('http://52.78.189.158:4444/room')
+  fetch('/room')
     .then((response) => response.json())
     .then((data) => {
       const roomList = document.getElementById('room-list-ul');
@@ -133,7 +133,7 @@ function createRoomStructure(event) {
     return;
   }
 
-  fetch(`http://52.78.189.158:4444/room-structure/${roomId}`, {
+  fetch(`/room-structure/${roomId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

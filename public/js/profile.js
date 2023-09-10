@@ -25,7 +25,7 @@ function parseJwt(token) {
 // 사용자 프로필 정보를 로드하는 함수
 async function loadUserProfile(userId) {
   try {
-    const response = await fetch(`http://52.78.189.158:4444/user/${userId}`);
+    const response = await fetch(`/user/${userId}`);
     const data = await response.json();
 
     // HTML 요소에 데이터 설정
@@ -54,7 +54,7 @@ window.onload = init;
 
 async function updateUser(userId, data) {
   try {
-    const response = await fetch(`http://52.78.189.158:4444/user/${userId}`, {
+    const response = await fetch(`/user/${userId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ async function updateUser(userId, data) {
 // 사용자 삭제 함수
 async function deleteUser(userId, password) {
   try {
-    const response = await fetch(`http://52.78.189.158:4444/user/${userId}`, {
+    const response = await fetch(`/user/${userId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ async function deleteUser(userId, password) {
     if (response.ok) {
       const result = await response.json();
       alert('사용자가 삭제되었습니다.');
-      window.location.href = 'http://52.78.189.158:4444/'; // 삭제 후 메인 페이지로 리디렉션
+      window.location.href = '/'; // 삭제 후 메인 페이지로 리디렉션
       return result;
     } else {
       alert('사용자 삭제에 실패했습니다.');
