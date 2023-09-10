@@ -20,7 +20,7 @@ $(document).ready(async () => {
   };
 
   try {
-    const response = await axios.get('http://localhost:4444/group/');
+    const response = await axios.get('http://52.78.189.158:4444/group/');
     publicStudies = response.data.sort((a, b) => a.id - b.id);
     displayPage(publicStudies, currentPage);
   } catch (error) {
@@ -73,7 +73,7 @@ $(document).ready(async () => {
   // 내 스터디 조회
   if (getCookie('Authorization')) {
     await axios
-      .get(`http://localhost:4444/group/myGroup`, {
+      .get(`http://52.78.189.158:4444/myGroup`, {
         headers: {
           Authorization: getCookie('Authorization'),
         },
