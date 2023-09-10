@@ -73,7 +73,7 @@ $(document).ready(async () => {
   // 내 스터디 조회
   if (getCookie('Authorization')) {
     await axios
-      .get(`http://52.78.189.158:4444/myGroup`, {
+      .get(`http://52.78.189.158:4444/group/myGroup`, {
         headers: {
           Authorization: getCookie('Authorization'),
         },
