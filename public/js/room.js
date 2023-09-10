@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (groupId) {
     try {
       const response = await axios.get(
-        `http://localhost:4444/group/${groupId}`,
+        `http://52.78.189.158:4444/group/${groupId}`,
       );
       const groupData = response.data;
       const groupName = groupData.name;
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:4444/group/${groupId}`,
+        `http://52.78.189.158:4444/group/${groupId}`,
         { name, desc },
         {
           headers: {
