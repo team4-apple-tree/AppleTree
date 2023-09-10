@@ -22,6 +22,7 @@ export class RoomStructureController {
     @Param('roomId') roomId: number,
     @Body() createRoomStructureDto: CreateRoomStructureDto,
   ): Promise<RoomStructure> {
+    console.log('Request received:', roomId, createRoomStructureDto); // 요청 데이터 로깅
     return this.roomStructureService.create(roomId, createRoomStructureDto);
   }
 }

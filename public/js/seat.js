@@ -3,7 +3,7 @@ function getRoomIdFromURL() {
   const roomId = url.searchParams.get('roomId');
   return roomId;
 }
-
+let roomId = getRoomIdFromURL();
 let selectedSeat = null;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const seatData = {
       row,
       column,
-      price: parseFloat(seatPriceInput.value),
+      price: parseFloat(seatPriceInput.textContent),
       type: parseInt(seatTypeSelect.value, 10),
       reservationStatus: seatStatusEl.value === '예약됨',
     };
@@ -104,7 +104,7 @@ function drawSeats(seatShape, seatData) {
           }
 
           selectedSeat = seatElement;
-          showSeatModal(seatInfo);
+          showSeatModal(seatInfo, roomId);
         });
 
         if (seatInfo.reservationStatus) {
@@ -155,5 +155,26 @@ function showSeatModal(seatInfo) {
   seatPriceInput.value = seatInfo.price || '';
   seatTypeSelect.value = seatInfo.type || '';
 
+  getPriceByType(roomId, seatInfo.type);
+
   modal.style.display = 'block';
+}
+
+async function getPriceByType(roomId, seatType) {
+  try {
+    const response = await fetch(
+      `http://localhost:4444/seat-price/room/${roomId}/type/${seatType}`,
+    );
+    const data = await response.json();
+    console.log(data);
+    const priceElement = document.getElementById('seatPrice');
+
+    if (data && data.price) {
+      priceElement.textContent = data.price;
+    } else {
+      priceElement.textContent = '가격 정보를 가져오지 못했습니다.';
+    }
+  } catch (error) {
+    console.error('Error fetching price by type:', error);
+  }
 }

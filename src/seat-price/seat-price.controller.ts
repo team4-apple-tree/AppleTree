@@ -18,12 +18,12 @@ export class SeatPriceController {
       roomId,
       'seatType:',
       seatType,
-    ); // Controller에서의 로그 추가
+    );
     return await this.seatPriceService.createPriceByType(
       roomId,
       seatType,
       data,
-    ); // roomId를 service로 전달합니다.
+    );
   }
   @Get('/room/:roomId/type/:seatType')
   async getPriceByType(
