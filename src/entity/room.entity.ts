@@ -3,8 +3,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
-  OneToOne,
-  Index,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -27,6 +25,9 @@ export class Room {
   roomStructure: RoomStructure;
   @ManyToOne(() => User, (user) => user.rooms)
   user: User;
+  
+  @OneToMany(()=> TimeTable,(timeTable)=> timeTable.rooms)
+  timeTable:TimeTable[]
 
   @OneToMany(() => Seat, (seat) => seat.room)
   seats: Seat[];

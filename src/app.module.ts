@@ -30,19 +30,19 @@ import { PaymentService } from './payment/payment.service';
 import { PaymentController } from './payment/payment.controller';
 import { PaymentGateway } from './payment/payment.gateway';
 import { PaymentModule } from './payment/payment.module';
-import { SocketGuard } from './user/socket.guard';
 import { MyLogger } from './utils/winston.util';
 import { LoggerMiddleware } from './middleware/logger';
 import { ChatModule } from './chat/chat.module';
 import { SeatPriceController } from './seat-price/seat-price.controller';
 import { SeatPriceModule } from './seat-price/seat-price.module';
-import { StopwatchService } from './stopwatch/stopwatch.service';
-import { StopwatchController } from './stopwatch/stopwatch.controller';
-import { StopwatchModule } from './stopwatch/stopwatch.module';
+// import { StopwatchService } from './stopwatch/stopwatch.service';
+// import { StopwatchController } from './stopwatch/stopwatch.controller';
+// import { StopwatchModule } from './stopwatch/stopwatch.module';
 import { InviteModule } from './invite/invite.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { RoomStructureModule } from './room-structure/room-structure.module';
+import { TimeTableModule } from './time-table/time-table.module';
 
 @Module({
   imports: [
@@ -107,9 +107,11 @@ import { RoomStructureModule } from './room-structure/room-structure.module';
     UserModule,
     PaymentModule,
     ChatModule,
-    StopwatchModule,
+  //  StopwatchModule,
     InviteModule,
     RoomStructureModule,
+    TimeTableModule,
+    SeatPriceModule
   ],
   controllers: [AppController, PaymentController],
   providers: [

@@ -3,7 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { TimeTable } from './timeTable.entity';
+import { User } from './user.entity';
 
 @Entity({ schema: 'apple', name: 'payment' })
 export class Payment {
@@ -15,4 +18,13 @@ export class Payment {
 
   @CreateDateColumn()
   paymentTime: Date;
+
+  @Column()
+  userId: number;
+
+  @OneToMany(() => TimeTable, (timeTable) => timeTable.payments)
+  timeTable: TimeTable;
+
+  @OneToMany(() => User, (user) => user.payments)
+  user: User;
 }

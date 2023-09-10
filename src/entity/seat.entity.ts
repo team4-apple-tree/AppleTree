@@ -11,13 +11,14 @@ import {
 } from 'typeorm';
 import { Room } from './room.entity';
 import { SeatPrice } from './seatPrice.entity';
-
+import { TimeTable } from './timeTable.entity';
+import { Reservation } from './reservation.entity';
 export enum SeatType {
+
   일인석 = 1,
   사인석 = 2,
   회의실 = 3,
 }
-
 @Entity({ schema: 'apple', name: 'seat' })
 export class Seat {
   @PrimaryGeneratedColumn()
@@ -26,8 +27,15 @@ export class Seat {
   @ManyToOne(() => Room, (room) => room.seats)
   room: Room;
 
-  @OneToMany(() => SeatPrice, (seatPrice) => seatPrice.seat)
+  @OneToMany(() => Reservation, (reservation) => reservation.seats)
+  reservations: Reservation;
+
+  @ManyToOne(() => Seat, (seat) => seat.seatPrices)
+  @JoinColumn({ name: 'seatId' })
+  seat: Seat;
+
   seatPrices: SeatPrice[];
+
 
   @CreateDateColumn()
   createdAt: Date;
@@ -38,8 +46,19 @@ export class Seat {
   @Column()
   column: number;
 
+  @Column()
+  price: number;
+
+  @Column()
+  prices: number
+
+  @Column()
+  roomId: number;
+
+
   @Column({ type: 'enum', enum: SeatType, default: SeatType.일인석 })
   type: SeatType;
+
 
   @UpdateDateColumn()
   updatedAt: Date;
@@ -49,4 +68,5 @@ export class Seat {
 
   @Column({ default: false })
   reservationStatus: boolean;
+
 }
