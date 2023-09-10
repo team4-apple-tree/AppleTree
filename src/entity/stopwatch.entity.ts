@@ -14,7 +14,4 @@ export class Stopwatch {
 
   @Column({ type: 'integer' })
   targetSeconds: number;
-
-  @ManyToOne(() => User, (user) => user.stopwatches)
-  user: User;
 }

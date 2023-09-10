@@ -14,7 +14,6 @@ import { SeatPrice } from './seatPrice.entity';
 import { TimeTable } from './timeTable.entity';
 import { Reservation } from './reservation.entity';
 export enum SeatType {
-
   일인석 = 1,
   사인석 = 2,
   회의실 = 3,
@@ -30,12 +29,9 @@ export class Seat {
   @OneToMany(() => Reservation, (reservation) => reservation.seats)
   reservations: Reservation;
 
-  @ManyToOne(() => Seat, (seat) => seat.seatPrices)
+  @OneToMany(() => SeatPrice, (seatPrice) => seatPrice.seat)
   @JoinColumn({ name: 'seatId' })
-  seat: Seat;
-
   seatPrices: SeatPrice[];
-
 
   @CreateDateColumn()
   createdAt: Date;
@@ -50,15 +46,13 @@ export class Seat {
   price: number;
 
   @Column()
-  prices: number
+  prices: number;
 
   @Column()
   roomId: number;
 
-
   @Column({ type: 'enum', enum: SeatType, default: SeatType.일인석 })
   type: SeatType;
-
 
   @UpdateDateColumn()
   updatedAt: Date;
@@ -68,5 +62,4 @@ export class Seat {
 
   @Column({ default: false })
   reservationStatus: boolean;
-
 }

@@ -13,7 +13,7 @@ import { Group } from 'src/entity/group.entity';
 import { Member } from 'src/entity/member.entity';
 import { User } from 'src/entity/user.entity';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Access } from 'src/entity/access.entity';
 import { UploadService } from 'src/upload.service';
@@ -372,7 +372,7 @@ export class GroupService {
 
     // 이미 그룹의 회원인지 확인한다.
     const existingMember = await this.memberRepository.findOne({
-      where: { user: user, group: group },
+      where: { user: user, group: group as FindOptionsWhere<Group> },
     });
     if (existingMember) {
       throw new ConflictException('You are already a member of this group.');

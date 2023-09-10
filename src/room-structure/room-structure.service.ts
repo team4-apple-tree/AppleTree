@@ -4,7 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { RoomStructure } from '../entity/roomStructure.entity';
 import { CreateRoomStructureDto } from 'src/dto/RoomStructure/create-room-structure.dto';
 import { SeatService } from '../seat/seat.service';
@@ -33,7 +33,7 @@ export class RoomStructureService {
 
     // 기존 RoomStructure 검사
     const existingStructure = await this.roomStructureRepository.findOne({
-      where: { room: room },
+      where: { room: room as FindOptionsWhere<Room> },
     });
     if (existingStructure) {
       throw new ConflictException('This room already has a structure.');
