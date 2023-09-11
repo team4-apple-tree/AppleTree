@@ -19,6 +19,7 @@ import { Post } from './post.entity';
 import { Group } from './group.entity';
 import { Access } from './access.entity';
 import { Payment } from './payment.entity';
+import { Point } from './point.entity';
 export enum roleEnum {
   유저 = 1,
   관리자 = 2,
@@ -43,11 +44,11 @@ export class User {
   groups: Group[];
   @OneToMany(() => Access, (access) => access.user)
   access: Access[];
-  @OneToMany(()=>Payment,(payment)=>payment.user)
-  payments:Payment
-  // @ManyToMany(() => Group, (group) => group.members)
-  // @JoinTable({ name: 'group_member' })
-  // myGroups: Group[];
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payments: Payment;
+
+  @OneToMany(() => Point, (point) => point.user)
+  points: Point;
 
   @Column('varchar')
   name: string;

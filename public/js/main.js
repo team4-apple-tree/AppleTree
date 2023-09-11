@@ -1,3 +1,10 @@
+document.getElementById('kakaoPay').addEventListener('click', function (event) {
+  // 페이지 이동을 막기 위한 기본 동작 차단
+  event.preventDefault();
+  // payload.html로 페이지 이동
+  window.location.href = 'payload.html';
+});
+
 $(document).ready(async () => {
   const pageSize = 15;
   let currentPage = 1;
