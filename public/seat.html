@@ -6,6 +6,12 @@
     <title>좌석 예약</title>
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/seat.css" />
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <header id="header">
@@ -19,11 +25,12 @@
       <div class="seatsection">
         <p>좌석배치도</p>
         <div id="seatsGrid"></div>
+        <button id="reservationBtn">예약하기</button>
       </div>
     </main>
     <!-- 좌석 정보 수정 모달 -->
     <div id="seatModal">
-      <h3>좌석 정보</h3>
+      <!-- <h3>좌석 정보</h3>
       <p>좌석 번호: <span id="seatNumber"></span></p>
 
       <label for="seatStatus">예약 상태:</label>
@@ -43,11 +50,11 @@
         <option value="1">일인석</option>
         <option value="2">사인석</option>
         <option value="3">회의실</option>
-      </select>
+      </select> -->
+      <ul id="reservationList"></ul>
 
-      <br /><br />
-
-      <button id="updateSeatBtn">수정하기</button>
+      <span>총합계: </span><span id="totalPrice"></span> <br /><br />
+      <button id="paymentBtn">결제하기</button>
       <button class="close-btn">닫기</button>
     </div>
 

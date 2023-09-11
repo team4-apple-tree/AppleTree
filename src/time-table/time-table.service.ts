@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Seat } from '../entity/seat.entity';
 import { TimeTable } from '../entity/timeTable.entity';
@@ -82,15 +82,19 @@ export class TimeTableService {
       });
 
       if (!timeTable) {
-        throw new Error(
+        throw new HttpException(
           `해당 시간표를 찾을 수 없습니다. (timeTableId: ${timeTableId})`,
+          HttpStatus.BAD_REQUEST,
         );
       }
 
       for (const seatId of seatIds) {
         const seat = await this.seatRepository.findOne({ where: { seatId } });
         if (!seat) {
-          throw new Error(`해당 좌석을 찾을 수 없습니다. (seatId: ${seatId})`);
+          throw new HttpException(
+            `해당 좌석을 찾을 수 없습니다. (seatId: ${seatId})`,
+            HttpStatus.BAD_REQUEST,
+          );
         }
         console.log(seat);
         const existingReservation = await this.reservationRepository.findOne({
@@ -130,13 +134,17 @@ export class TimeTableService {
             await this.reservationRepository.update(timeTableId, {
               stats: true,
             }); // state를 true로 변경
-            throw new Error(
+            throw new HttpException(
               '결제가 실패하여 예약이 취소되었습니다. 남은 포인트를 확인해주세요',
+              HttpStatus.BAD_REQUEST,
             );
           }
           reservations.push(reservation);
         } else {
-          throw new Error('해당 시간대에 예약할 수 없습니다.');
+          throw new HttpException(
+            '해당 시간대에 예약할 수 없습니다.',
+            HttpStatus.BAD_REQUEST,
+          );
         }
       }
     }
@@ -186,5 +194,12 @@ export class TimeTableService {
       throw new Error('예약을 찾을 수 없습니다.');
     }
     await this.reservationRepository.remove(reservation);
+  }
+
+  // 해당 룸의 타임테이블 조회
+  async findTimeTablesByRoomId(roomId: number): Promise<TimeTable[]> {
+    return await this.timeTableRepository.find({
+      where: { roomId },
+    });
   }
 }

@@ -273,3 +273,19 @@ window.onload = function () {
     .getElementById('room-structure-form')
     .addEventListener('submit', createRoomStructure);
 };
+
+// 룸 타임 테이블 설정
+$(document).on('submit', '#room-time-form', async (e) => {
+  e.preventDefault();
+
+  const roomId = $('#timeRoomId').val();
+  const startTime = $('#startTime').val();
+  const endTime = $('#endTime').val();
+
+  data = {
+    startTime,
+    endTime,
+  };
+
+  await axios.post(`/time-table/create/${roomId}`, data);
+});

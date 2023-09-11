@@ -6,6 +6,7 @@ function getRoomIdFromURL() {
 
 let roomId = getRoomIdFromURL();
 let selectedSeat = null;
+let selectedInfo = [];
 
 document.addEventListener('DOMContentLoaded', function () {
   const roomId = getRoomIdFromURL();
@@ -18,43 +19,43 @@ document.addEventListener('DOMContentLoaded', function () {
   const seatStatusEl = document.getElementById('seatStatus');
   const seatPriceInput = document.getElementById('seatPrice');
   const seatTypeSelect = document.getElementById('seatType');
-  const updateSeatBtn = document.getElementById('updateSeatBtn');
+  // const updateSeatBtn = document.getElementById('updateSeatBtn');
 
   closeModal.addEventListener('click', function () {
     modal.style.display = 'none';
   });
 
-  updateSeatBtn.addEventListener('click', async function () {
-    if (!selectedSeat) return;
+  // updateSeatBtn.addEventListener('click', async function () {
+  //   if (!selectedSeat) return;
 
-    const seatId = selectedSeat.dataset.seatId;
-    const row = selectedSeat.dataset.row;
-    const column = selectedSeat.dataset.column;
+  //   const seatId = selectedSeat.dataset.seatId;
+  //   const row = selectedSeat.dataset.row;
+  //   const column = selectedSeat.dataset.column;
 
-    const seatData = {
-      row,
-      column,
-      price: parseFloat(seatPriceInput.textContent),
-      type: parseInt(seatTypeSelect.value, 10),
-      reservationStatus: seatStatusEl.value === '예약됨',
-    };
+  //   const seatData = {
+  //     row,
+  //     column,
+  //     price: parseFloat(seatPriceInput.textContent),
+  //     type: parseInt(seatTypeSelect.value, 10),
+  //     reservationStatus: seatStatusEl.value === '예약됨',
+  //   };
 
-    fetch(`/seat/${seatId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(seatData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        modal.style.display = 'none';
-        loadSeats(roomId);
-      })
-      .catch((error) => {
-        console.error('좌석 데이터 업데이트 중 오류:', error);
-      });
-  });
+  //   fetch(`/seat/${seatId}`, {
+  //     method: 'PATCH',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(seatData),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       modal.style.display = 'none';
+  //       loadSeats(roomId);
+  //     })
+  //     .catch((error) => {
+  //       console.error('좌석 데이터 업데이트 중 오류:', error);
+  //     });
+  // });
 
   // 좌석을 로드하고 방 이미지도 가져옵니다.
   loadSeats(roomId);
@@ -90,6 +91,17 @@ function getSeatName(row, column) {
   return `${columnLabel}${row}`;
 }
 
+function getSeatType(type) {
+  switch (type) {
+    case 1:
+      return '1인석';
+    case 2:
+      return '4인석';
+    case 3:
+      return '회의실';
+  }
+}
+
 function drawSeats(seatShape, seatData) {
   const seatsGrid = document.getElementById('seatsGrid');
   seatsGrid.innerHTML = '';
@@ -105,6 +117,18 @@ function drawSeats(seatShape, seatData) {
       const seatElement = document.createElement('div');
       seatElement.dataset.row = i;
       seatElement.dataset.column = j;
+      seatElement.onclick = function () {
+        seatElement.classList.toggle('selected');
+        const arr = Array.from(seatElement.classList);
+
+        if (arr.includes('selected')) {
+          selectedInfo.push(seatInfo);
+        } else {
+          const index = selectedInfo.indexOf(seatInfo);
+
+          selectedInfo.splice(index, 1);
+        }
+      };
 
       if (seatInfo) {
         seatElement.addEventListener('click', function () {
@@ -114,7 +138,7 @@ function drawSeats(seatShape, seatData) {
           }
 
           selectedSeat = seatElement;
-          showSeatModal(seatInfo, roomId);
+          // showSeatModal(seatInfo, roomId);
         });
 
         if (seatInfo.reservationStatus) {
@@ -159,21 +183,93 @@ function drawSeats(seatShape, seatData) {
   }
 }
 
-function showSeatModal(seatInfo) {
+async function showSeatModal(seatInfos) {
+  const response = await axios.get(`/time-table/${roomId}`);
+  const timeTables = response.data;
   const modal = document.getElementById('seatModal');
-  const seatNumberEl = document.getElementById('seatNumber');
-  const seatStatusEl = document.getElementById('seatStatus');
-  const seatPriceInput = document.getElementById('seatPrice');
-  const seatTypeSelect = document.getElementById('seatType');
+  const reservationList = document.getElementById('reservationList');
+  const totalPrice = document.getElementById('totalPrice');
+  let total = 0;
 
-  seatNumberEl.textContent = getSeatName(seatInfo.row, seatInfo.column);
-  seatStatusEl.value = seatInfo.reservationStatus ? '예약됨' : '예약되지 않음';
-  seatPriceInput.value = seatInfo.price || '';
-  seatTypeSelect.value = seatInfo.type || '';
+  reservationList.innerHTML = '';
 
-  getPriceByType(roomId, seatInfo.type);
+  seatInfos.forEach(async (seatInfo) => {
+    const seatName = getSeatName(seatInfo.row, seatInfo.column);
+    const seatType = getSeatType(seatInfo.type);
+    const seatPrice = await getPriceByType(roomId, seatInfo.type);
+
+    total += seatPrice;
+
+    const li = document.createElement('li');
+    const startSelect = document.createElement('select');
+    const endSelect = document.createElement('select');
+    startSelect.className = 'startTime';
+    endSelect.className = 'endTime';
+
+    timeTables.forEach((time, i) => {
+      const startOption = document.createElement('option');
+
+      startOption.value = time.timeTableId;
+      startOption.text = time.timeSlot;
+
+      if (i > 0) {
+        const endOption = document.createElement('option');
+
+        endOption.value = time.timeTableId;
+        endOption.text = time.timeSlot;
+
+        endSelect.appendChild(endOption);
+      }
+
+      startSelect.appendChild(startOption);
+    });
+
+    const startSelectHtml = startSelect.outerHTML;
+    const endSelectHtml = endSelect.outerHTML;
+    const tempHtml = `
+      <div class="seat-div" id="${seatInfo.seatId}">
+      <label for="seatName">좌석: </label>
+        <span class="seatName">
+          ${seatName}
+        </span><br>
+        <label for="seatPrice">가격: </label>
+        <span class="seatPrice">
+          ${seatPrice}
+        </span><br>
+        <label for="seatType">종류: </label>
+        <span class="seatType">
+          ${seatType}
+        </span><br>
+        <span>이용시간: </span>
+        ${startSelectHtml}
+        <span> ~ </span>
+        ${endSelectHtml}
+      </div>
+      <br>
+    `;
+
+    li.innerHTML = tempHtml;
+    reservationList.appendChild(li);
+    totalPrice.innerText = total;
+  });
 
   modal.style.display = 'block';
+
+  // const seatNumberEl = document.getElementById('seatNumber');
+  // const seatStatusEl = document.getElementById('seatStatus');
+  // const seatPriceInput = document.getElementById('seatPrice');
+  // const seatTypeSelect = document.getElementById('seatType');
+
+  // seatNumberEl.textContent = getSeatName(seatInfo.row, seatInfo.column);
+  // seatStatusEl.value = seatInfo.reservationStatus ? '예약됨' : '예약되지 않음';
+  // seatPriceInput.textContent = seatInfo.price || '';
+  // seatTypeSelect.value = seatInfo.type || '';
+
+  // const div = document.createElement('div');
+  // const p1 = document.createElement('p');
+  // const p2 = document.createElement('p');
+
+  // getPriceByType(roomId, seatInfo.type);
 }
 
 async function getPriceByType(roomId, seatType) {
@@ -181,13 +277,76 @@ async function getPriceByType(roomId, seatType) {
     const response = await fetch(`/seat-price/room/${roomId}/type/${seatType}`);
     const data = await response.json();
     const priceElement = document.getElementById('seatPrice');
-
     if (data && data.price) {
-      priceElement.textContent = data.price;
+      return data.price;
     } else {
-      priceElement.textContent = '가격 정보를 가져오지 못했습니다.';
+      return '가격 정보를 가져오지 못했습니다.';
     }
   } catch (error) {
     console.error('타입별 가격을 가져오는 중 오류:', error);
   }
+}
+
+// 예약하기 버튼 클릭 시 이벤트
+$(document).on('click', '#reservationBtn', () => {
+  const selectedList = document.querySelectorAll('.selected');
+
+  selectedInfo.sort((a, b) => a.seatId - b.seatId);
+
+  showSeatModal(selectedInfo);
+});
+
+let errorBreak = false;
+let successBreak = true;
+// 결제하기 버튼 클릭 시 이벤트
+$(document).on('click', '#paymentBtn', async () => {
+  const seats = $('.seat-div');
+
+  for (const seat of seats) {
+    const startTimeId = +seat.querySelector('.startTime').value;
+    const endTimeId = +seat.querySelector('.endTime').value;
+
+    const seatId = [seat.id];
+    const timeTableIds = Array.from(
+      { length: endTimeId - startTimeId },
+      (_, index) => startTimeId + index,
+    );
+
+    const data = {
+      seatIds: seatId,
+      timeTableIds,
+    };
+
+    await axios
+      .post('/time-table/reservation', data, {
+        headers: {
+          Authorization: getCookie('Authorization'),
+        },
+      })
+      .then(() => {})
+      .catch((response) => {
+        console.log(response);
+
+        alert(response.response.data.message);
+
+        errorBreak = true;
+        successBreak = false;
+      });
+
+    if (errorBreak) {
+      break;
+    }
+  }
+  if (successBreak) {
+    alert('결제 완료');
+  }
+  window.location.reload();
+});
+
+// 쿠키 값 가지고 오는 함수
+function getCookie(name) {
+  const value = decodeURIComponent(document.cookie).match(
+    '(^|;) ?' + name + '=([^;]*)(;|$)',
+  );
+  return value ? value[2] : null;
 }

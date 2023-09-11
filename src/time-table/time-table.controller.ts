@@ -1,8 +1,9 @@
-import { Controller, Req } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { TimeTableService } from './time-table.service';
-import { Post, Body, Param, UseGuards,  } from '@nestjs/common';
+import { Post, Body, Param, UseGuards } from '@nestjs/common';
 import { timeTableDto } from 'src/dto/time-table/createTimeTable.dto';
 import { JwtAuthGuard } from 'src/user/jwt.guard';
+import { TimeTable } from 'src/entity/timeTable.entity';
 
 @Controller('time-table')
 export class TimeTableController {
@@ -20,12 +21,20 @@ export class TimeTableController {
   @UseGuards(JwtAuthGuard)
   async makeReservation(
     @Req() req: any,
-    @Body() requestBody: { seatIds: number[], timeTableIds: number[] },
+    @Body() requestBody: { seatIds: number[]; timeTableIds: number[] },
   ): Promise<void> {
-    const user = await req.user; 
+    const user = await req.user;
     const userId = user.id;
-    console.log(req.user)
+    console.log(req.user);
     const { timeTableIds, seatIds } = requestBody;
     await this.timeTableService.makeReservation(timeTableIds, seatIds, userId);
+  }
+
+  // 해당 룸의 타임테이블 조회
+  @Get(':roomId')
+  async findTimeTablesByRoomId(
+    @Param('roomId') roomId: number,
+  ): Promise<TimeTable[]> {
+    return await this.timeTableService.findTimeTablesByRoomId(roomId);
   }
 }
