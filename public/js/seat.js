@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function loadSeats(roomId) {
   Promise.all([
-    fetch(`room-structure/${roomId}`).then((response) => response.json()),
+    fetch(`/room-structure/${roomId}`).then((response) => response.json()),
     fetch(`/seat/room/${roomId}`).then((response) => response.json()),
   ])
     .then(([roomData, seatData]) => {

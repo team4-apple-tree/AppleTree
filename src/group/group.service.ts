@@ -122,18 +122,6 @@ export class GroupService {
     return group;
   }
 
-  //내가 속한 그룹 조회 하기
-  // async findMyGroup(userId: number): Promise<Group[]> {
-  //   const group = await this.groupRepository.find({
-  //     where: { id: userId },
-  //     select: ['name'],
-  //   });
-  //   if (_.isNil(group)) {
-  //     throw new NotFoundException('스터디그룹에 먼저 가입하시쥬?쿠쿠루삥뽕');
-  //   }
-  //   return group;
-  // }
-
   // 스터디그룹 상세 조회
   async findGroup(groupId: number): Promise<Group> {
     const group = await this.groupRepository.findOne({
