@@ -45,7 +45,7 @@ export class Seat {
   @Column()
   column: number;
 
-  @Column()
+  @Column({ default: 0 })
   price: number;
 
   @Column({ type: 'enum', enum: SeatType, default: SeatType.일인석 })

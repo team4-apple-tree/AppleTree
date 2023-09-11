@@ -9,7 +9,8 @@ export class createSeatDto {
   readonly column: number;
 
   @IsNumber()
-  readonly price: number;
+  @IsOptional()
+  readonly price: number | null;
 
   @IsNumber()
   readonly roomId: number;
