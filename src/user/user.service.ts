@@ -11,11 +11,13 @@ import { JwtService } from '@nestjs/jwt';
 import { User, roleEnum } from 'src/entity/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CheckEmailDto } from 'src/dto/user/checkEmail.dto';
+import { Point } from 'src/entity/point.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Point) private pointRepository: Repository<Point>,
     private jwtService: JwtService,
   ) {}
 
@@ -66,7 +68,6 @@ export class UserService {
     password: string,
     confirm: string,
     role: roleEnum,
-    // desc:string
   ) {
     const user = await this.userRepository.findOne({
       where: { email, deleteAt: null },
@@ -79,23 +80,36 @@ export class UserService {
     if (password !== confirm) {
       throw new UnauthorizedException(`비밀번호가 틀렸습니다.`);
     }
+
+    // 비밀번호 해싱
     const hash = await bcrypt.hash(password, 10);
     password = hash;
+
+    // 사용자 생성
     const insertUser = await this.userRepository.insert({
       email,
       name,
       password,
       role,
-      // desc
     });
 
+    // 사용자의 ID를 사용하여 포인트를 생성하고 초기값 0으로 설정
+    const pointData = {
+      userId: insertUser.identifiers[0].id,
+    };
+
+    await this.pointRepository.insert(pointData);
+
+    // JWT 토큰 생성 및 반환
     const payload = {
       id: insertUser.identifiers[0].id,
       name: insertUser.identifiers[0].name,
     };
     const accessToken = await this.jwtService.signAsync(payload);
+
     return accessToken;
   }
+
   // 패스워드 수정 부분이 누락되어있다.
   // 이 부분 추가
   async update(

@@ -10,10 +10,11 @@ import { JwtAuthGuard } from './jwt.guard';
 import { RolesGuard } from './roles.guard';
 import { SocketGuard } from './socket.guard';
 import { Member } from 'src/entity/member.entity';
+import { Point } from 'src/entity/point.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Member]),
+    TypeOrmModule.forFeature([User, Member, Point]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useClass: JwtConfigService,
