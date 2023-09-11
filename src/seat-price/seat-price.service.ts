@@ -2,10 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { SeatPrice } from 'src/entity/seatPrice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { SeatType } from '../entity/seat.entity';
+import { SeatType, Seat } from '../entity/seat.entity';
 import { createSeatInfoDto } from 'src/dto/seat-price/createSeatPrice.dto';
-import { Room } from 'src/entity/room.entity'; // Room entity를 import합니다.
-
+import { Room } from 'src/entity/room.entity';
 @Injectable()
 export class SeatPriceService {
   constructor(
@@ -13,6 +12,8 @@ export class SeatPriceService {
     private seatPriceRepository: Repository<SeatPrice>,
     @InjectRepository(Room) // Room repository를 inject합니다.
     private roomRepository: Repository<Room>,
+    @InjectRepository(Seat) // Seat의 Repository를 주입합니다.
+    private seatRepository: Repository<Seat>,
   ) {}
 
   async createPriceByType(
@@ -61,6 +62,15 @@ export class SeatPriceService {
       newSeatPrice.price = data.price;
       newSeatPrice.room = room; // room을 할당합니다.
       await this.seatPriceRepository.save(newSeatPrice);
+    }
+    console.log(roomId);
+    const seatsToUpdate = await this.seatRepository.find({
+      where: { room: { roomId: roomId }, type: seatType },
+    });
+
+    for (const seat of seatsToUpdate) {
+      seat.price = data.price;
+      await this.seatRepository.save(seat);
     }
   }
 
@@ -114,6 +124,14 @@ export class SeatPriceService {
     const existingSeatPrice = await this.seatPriceRepository.findOne({
       where: { type: seatType, room: { roomId } },
     });
+    const seatsToUpdate = await this.seatRepository.find({
+      where: { room: { roomId: roomId }, type: seatType },
+    });
+
+    for (const seat of seatsToUpdate) {
+      seat.price = data.price;
+      await this.seatRepository.save(seat);
+    }
 
     if (!existingSeatPrice) {
       throw new Error('Seat price for given room and seat type not found.');
