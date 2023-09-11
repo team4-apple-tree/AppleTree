@@ -57,4 +57,7 @@ export class Room {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @Column('varchar', { nullable: true })
+  image: string;
 }

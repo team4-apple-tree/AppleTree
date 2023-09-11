@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/admin.css" />
+
     <title>Admin Dashboard</title>
   </head>
 
@@ -13,12 +16,74 @@
       <h2>Create Room</h2>
       <input type="text" id="room-name" placeholder="Room Name" />
       <input type="text" id="room-address" placeholder="Room Address" />
+      <input type="text" id="room-image-url" placeholder="Room Image URL" />
       <button onclick="createRoom()">Create</button>
     </section>
 
     <section id="room-list">
       <h2>Rooms</h2>
       <ul id="room-list-ul"></ul>
+
+      <!-- 좌석 구조 보기 모달 -->
+      <div id="seatStructureModal" class="modal">
+        <div class="modal-content">
+          <h4>좌석 구조</h4>
+          <div id="seatStructure"></div>
+        </div>
+        <div class="modal-footer">
+          <button onclick="closeModal()">닫기</button>
+        </div>
+      </div>
+
+      <!-- 좌석 정보 수정 모달 -->
+      <div id="seatInfoModal" class="modal">
+        <h3>좌석 정보</h3>
+        <p>좌석 번호: <span id="seatNumber"></span></p>
+
+        <label for="seatStatus">예약 상태:</label>
+        <select id="seatStatus">
+          <option value="예약됨">예약됨</option>
+          <option value="예약되지 않음">예약되지 않음</option>
+        </select>
+
+        <br /><br />
+
+        <label for="seatPrice">가격:</label>
+        <p id="seatPrice"></p>
+        <br /><br />
+
+        <label for="seatType">좌석 유형:</label>
+        <select id="seatType">
+          <option value="1">일인석</option>
+          <option value="2">사인석</option>
+          <option value="3">회의실</option>
+        </select>
+
+        <br /><br />
+
+        <button id="updateSeatBtn">수정하기</button>
+        <button onclick="closeSeatInfoModal()">닫기</button>
+      </div>
+    </section>
+
+    <section id="set-seat-price">
+      <h2>Set Seat Price</h2>
+      <form id="set-seat-price-form">
+        <label for="roomIdPrice">Room ID: </label>
+        <input type="number" id="roomIdPrice" required />
+
+        <label for="seatTypePrice">Seat Type: </label>
+        <select id="seatTypePrice">
+          <option value="1">일인석</option>
+          <option value="2">사인석</option>
+          <option value="3">회의실</option>
+        </select>
+
+        <label for="seatPriceInput">Seat Price: </label>
+        <input type="number" id="seatPriceInput" required />
+
+        <button type="submit">Set Price</button>
+      </form>
     </section>
 
     <section id="room-structure">
