@@ -13,17 +13,20 @@ import { Room } from './room.entity';
 import { SeatPrice } from './seatPrice.entity';
 import { TimeTable } from './timeTable.entity';
 import { Reservation } from './reservation.entity';
+
 export enum SeatType {
   일인석 = 1,
   사인석 = 2,
   회의실 = 3,
 }
+
 @Entity({ schema: 'apple', name: 'seat' })
 export class Seat {
   @PrimaryGeneratedColumn()
   seatId: number;
 
   @ManyToOne(() => Room, (room) => room.seats)
+  @JoinColumn({ name: 'roomId' }) // JoinColumn 데코레이터를 추가
   room: Room;
 
   @OneToMany(() => Reservation, (reservation) => reservation.seats)
@@ -44,12 +47,6 @@ export class Seat {
 
   @Column()
   price: number;
-
-  @Column()
-  prices: number;
-
-  @Column()
-  roomId: number;
 
   @Column({ type: 'enum', enum: SeatType, default: SeatType.일인석 })
   type: SeatType;

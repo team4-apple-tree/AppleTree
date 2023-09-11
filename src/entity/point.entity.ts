@@ -7,27 +7,31 @@ import {
   Index,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn
-
+  DeleteDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity({ schema: 'apple', name: 'point' })
 export class Point {
-@PrimaryGeneratedColumn()
-pointId: number;
+  @PrimaryGeneratedColumn()
+  pointId: number;
 
-@Column({ default: 0 })
-point: number; 
+  @Column({ default: 0 })
+  point: number;
 
-@Column()
-userId : number
+  @Column()
+  userId: number;
 
-@CreateDateColumn()
-createdAt: Date;
+  @ManyToOne(() => User, (user) => user.points)
+  user: User;
 
-@UpdateDateColumn()
-updatedAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-@DeleteDateColumn()
-deletedAt: Date | null;
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date | null;
 }

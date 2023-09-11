@@ -1,0 +1,51 @@
+/* 모달의 기본 스타일 */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background-color: #ffffff;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none; /* 기본적으로 숨김 */
+}
+
+.modal-footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+/* 좌석 스타일 */
+.seat {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #e6e6e6;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.seat:hover {
+  background-color: #cfcfcf;
+}
+
+.seat.reserved {
+  background-color: #ff6b6b;
+  cursor: not-allowed;
+}
+
+.seat.available {
+  background-color: #8fbc8f;
+}
+
+.seat.unavailable {
+  background-color: #b3b3b3;
+  cursor: not-allowed;
+}

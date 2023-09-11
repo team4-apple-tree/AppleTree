@@ -8,7 +8,7 @@ export class Reservation {
   id: number;
 
   @Column()
-  timeTableId: number
+  timeTableId: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   reservationTime: Date;

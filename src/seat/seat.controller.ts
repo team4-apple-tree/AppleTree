@@ -15,13 +15,13 @@ import { UpdateSeatDto } from '../dto/seat/update-seat-dto';
 export class SeatController {
   constructor(private readonly seatService: SeatService) {}
 
-  @Post(':roomId') // 변경된 부분: ':'을 추가하여 파라미터를 roomId로 설정
+  @Post(':roomId')
   async create(@Param('roomId') roomId: number, @Body() data: createSeatDto[]) {
     await this.seatService.createSeatsForRoomStructure(roomId, data);
     return { message: '좌석 생성이 완료되었습니다.' };
   }
 
-  @Get('room/:roomId') // 변경된 부분: 'room' 추가
+  @Get('room/:roomId')
   async seatInfo(@Param('roomId') roomId: number) {
     const seatDetail = await this.seatService.seatInfo(roomId);
     if (!seatDetail) {
@@ -30,7 +30,7 @@ export class SeatController {
     return seatDetail;
   }
 
-  @Get(':seatId') // 변경된 부분: ':'을 추가하여 파라미터를 seatId로 설정
+  @Get(':seatId')
   async getSeatById(@Param('seatId') seatId: number) {
     const seat = await this.seatService.getSeatById(seatId);
     if (!seat) {
@@ -39,7 +39,7 @@ export class SeatController {
     return seat;
   }
 
-  @Patch(':seatId') // 변경된 부분: ':'을 추가하여 파라미터를 seatId로 설정
+  @Patch(':seatId')
   async updateSeatInfo(
     @Param('seatId') seatId: number,
     @Body() seatData: UpdateSeatDto,

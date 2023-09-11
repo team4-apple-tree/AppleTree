@@ -6,6 +6,6 @@ export class PaymentDto {
   points: number;
 
   @IsNotEmpty()
-  @IsDate()
-  paymentTime: Date;
+  @IsNumber()
+  userId: number;
 }

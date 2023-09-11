@@ -44,4 +44,12 @@ export class RoomService {
     const room = await this.findOne(roomId); // Room의 존재를 확인
     await this.roomRepository.remove(room);
   }
+
+  async getImagePath(roomId: number): Promise<string> {
+    const room = await this.roomRepository.findOne({ where: { roomId } });
+    if (!room) {
+      throw new NotFoundException(`Room with ID ${roomId} not found`);
+    }
+    return room.image;
+  }
 }

@@ -72,7 +72,7 @@ export class TimeTableService {
   async makeReservation(
     timeTableIds: number[],
     seatIds: number[],
-    userId : number
+    userId: number,
   ): Promise<void> {
     const reservations: Reservation[] = [];
     for (const timeTableId of timeTableIds) {
@@ -92,7 +92,7 @@ export class TimeTableService {
         if (!seat) {
           throw new Error(`해당 좌석을 찾을 수 없습니다. (seatId: ${seatId})`);
         }
-
+        console.log(seat);
         const existingReservation = await this.reservationRepository.findOne({
           where: { timeTableId, seatId },
         });
@@ -102,7 +102,10 @@ export class TimeTableService {
           reservation.seatId = seatId;
 
           await this.reservationRepository.save(reservation);
-          const paymentSuccessful = await this.processPayment(seat.price,userId); // 결제 처리 함수
+          const paymentSuccessful = await this.processPayment(
+            seat.price,
+            userId,
+          ); // 결제 처리 함수
           if (paymentSuccessful) {
             await this.reservationRepository.save(reservation);
             // 예약 취소 타이머 설정 (예: 30분 후에 취소)
@@ -139,9 +142,12 @@ export class TimeTableService {
     }
   }
 
-  private async processPayment(amount: number, userId:number): Promise<boolean> {
-   // const userId = 2; // userId 주입
-   console.log(userId)
+  private async processPayment(
+    amount: number,
+    userId: number,
+  ): Promise<boolean> {
+    // const userId = 2; // userId 주입
+    console.log(userId);
     const point = await this.pointRepository.findOne({ where: { userId } });
     if (!point) {
       throw new Error('포인트를 조회 할 수 없습니다.');

@@ -3,55 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/client.css" />
     <title>User Page</title>
-    <style>
-      /* 아래 스타일을 추가하세요 */
-      .room {
-        border: 1px solid black;
-        margin: 10px;
-        padding: 10px;
-        display: inline-block;
-        cursor: pointer;
-      }
-
-      .room:hover {
-        background-color: #f0f0f0;
-      }
-    </style>
   </head>
   <body>
-    <h2>User Page</h2>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo" onclick="location.href='/'">사과나무</h1>
+      </div>
+    </header>
     <div id="roomsContainer">
       <!-- 각각의 Room을 여기에 동적으로 추가합니다 -->
     </div>
 
-    <script>
-      const roomsContainer = document.getElementById('roomsContainer');
-
-      // 서버에서 룸 데이터를 가져오는 함수
-      async function fetchRooms() {
-        try {
-          const response = await fetch('http://localhost:4444/room');
-          const rooms = await response.json();
-
-          // 가져온 룸 데이터를 이용해 요소를 생성하고 추가합니다.
-          rooms.forEach((room) => {
-            const roomDiv = document.createElement('div');
-            roomDiv.className = 'room';
-            roomDiv.innerHTML = `<h3>${room.name}</h3><p>${room.address}</p>`;
-            roomDiv.addEventListener('click', function () {
-              window.location.href = `seat.html?roomId=${room.roomId}`;
-            });
-            console.log(room.roomId);
-            roomsContainer.appendChild(roomDiv);
-          });
-        } catch (error) {
-          console.error('Error fetching rooms:', error);
-        }
-      }
-
-      // 페이지 로딩이 완료되면 룸 데이터를 가져옵니다.
-      document.addEventListener('DOMContentLoaded', fetchRooms);
-    </script>
+    <script src="./js/client.js"></script>
   </body>
 </html>
