@@ -153,5 +153,10 @@ export class UserController {
     return { user, point };
   }
 
+  @Get('reservation/:userId')
+    async getReservation(@Param("userId") userId:number){
+      return await this.userService.getReservation(userId)
+    }
+  
   //Get user로 얻어올 정보 이름, 이메일, 한마디
 }

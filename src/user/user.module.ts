@@ -12,10 +12,22 @@ import { SocketGuard } from './socket.guard';
 import { Member } from 'src/entity/member.entity';
 import { Point } from 'src/entity/point.entity';
 import { S3Service } from 'src/aws.service';
+import { Reservation } from 'src/entity/reservation.entity';
+import { Seat } from 'src/entity/seat.entity';
+import { Room } from 'src/entity/room.entity';
+import { TimeTable } from 'src/entity/timeTable.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Member, Point]),
+    TypeOrmModule.forFeature([
+      User,
+      Member,
+      Point,
+      Reservation,
+      Seat,
+      Room,
+      TimeTable,
+    ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useClass: JwtConfigService,

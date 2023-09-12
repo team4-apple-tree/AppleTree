@@ -16,6 +16,7 @@ import { RoomStructure } from './roomStructure.entity';
 import { IsString, Length, IsNotEmpty } from 'class-validator'; // class-validator를 추가합니다.
 import { SeatPrice } from './seatPrice.entity';
 import { TimeTable } from './timeTable.entity';
+import { Reservation } from './reservation.entity';
 
 @Entity({ schema: 'apple', name: 'room' })
 export class Room {
@@ -33,6 +34,9 @@ export class Room {
 
   @OneToMany(() => Seat, (seat) => seat.room)
   seats: Seat[];
+
+  @OneToMany(() => Reservation, (reservation) => reservation.room)
+  reservations: Reservation;
 
   @Column('varchar')
   @IsString()
