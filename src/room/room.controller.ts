@@ -58,18 +58,18 @@ export class RoomController {
     return this.roomService.findOne(id);
   }
 
-  @Get(':roomId/image')
-  async getRoomImage(@Param('roomId') roomId: number) {
-    const room = await this.roomService.findOne(roomId);
-    const imageName = room.image;
+  // @Get(':roomId/image')
+  // async getRoomImage(@Param('roomId') roomId: number) {
+  //   const room = await this.roomService.findOne(roomId);
+  //   const imageName = room.image;
 
-    const baseURL = 'http://localhost:4444/images/';
-    const imageURL = imageName.startsWith('http')
-      ? imageName
-      : `${baseURL}${imageName}`;
+  //   const baseURL = 'http://localhost:4444/images/';
+  //   const imageURL = imageName.startsWith('http')
+  //     ? imageName
+  //     : `${baseURL}${imageName}`;
 
-    return { path: imageURL };
-  }
+  //   return { path: imageURL };
+  // }
 
   @Put(':id')
   async update(
