@@ -21,6 +21,10 @@ $(document).ready(async () => {
       });
     });
 
+  if (!getCookie('Authorization')) {
+    document.querySelector('#myimg').style.display = 'none';
+  }
+
   const pageSize = 15;
   let currentPage = 1;
   let publicStudies = [];
@@ -40,7 +44,10 @@ $(document).ready(async () => {
       if (desc) {
         $('.tx').text(desc);
       }
-      $('#myimg').attr('src', image);
+      if (image) {
+        $('#myimg').attr('src', image);
+      }
+
       $('.d-day-tx').text(point);
     })
     .catch((response) => {

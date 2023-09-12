@@ -69,7 +69,6 @@ header {
 .profile_photo_area {
   display: inline-block;
   line-height: 1;
-  cursor: pointer;
   margin-right: 20px;
 }
 
@@ -107,16 +106,17 @@ img {
   letter-spacing: 0;
   line-height: 1.4;
   word-break: break-all;
+  min-width: 200px;
 }
 
 .pass-chg-btn {
   position: absolute;
-  right: 0;
+  right: -28px;
   padding: 6px 10px;
   border-radius: 4px;
-  border: 1px solid #1f90ff;
+  border: 1px solid #19baa4;
   font-size: 12px;
-  color: #1f90ff;
+  color: #19baa4;
   outline: 0;
   text-decoration: none;
   cursor: pointer;
@@ -274,6 +274,7 @@ a {
   padding: 20px;
   border: 1px solid #888;
   width: 30%;
+  position: relative;
 }
 .close {
   color: #aaa;
@@ -300,14 +301,11 @@ a {
 }
 
 #confirmpasswordmodal .modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  background-color: #ffffff;
+  position: relative;
   width: 300px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  border: 1px solid #19baa4;
+  height: 30px;
 }
 
 #confirmpasswordmodal .confirmpasswordmodalclose {
@@ -315,4 +313,82 @@ a {
   top: 10px;
   right: 10px;
   cursor: pointer;
+}
+
+#changeconfirmpasswordmodal .modal-content {
+  position: relative;
+  width: 300px;
+  display: flex;
+  border: 1px solid #19baa4;
+  height: 30px;
+}
+
+.confirmclose {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  cursor: pointer;
+}
+
+.confirmchange {
+  width: 50px !important;
+  padding: 0 !important;
+  position: absolute;
+  font-size: 14px;
+  right: 20px;
+  top: 23px;
+  background-color: #19baa4;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.confirmpasswordInput {
+  margin-left: 8px;
+  margin-right: 3px;
+}
+
+#previewImage {
+  width: 150px;
+  height: 130px;
+}
+
+.myprofileImg {
+  background: #19baa4;
+  margin-left: 28px;
+  margin-top: 15px;
+  cursor: pointer;
+  color: #fff;
+  padding: 3px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#changenewpassword,
+#changenewpasswordconfirm {
+  width: 260px;
+  margin-bottom: 10px;
+}
+
+#changenewpasswordconfirm {
+  margin-top: 10px;
+}
+
+#changepassword {
+  position: absolute;
+  right: 30px;
+  background: #19baa4;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 6px;
+  width: 80px;
+  margin-top: 8px;
+  bottom: 8px;
+}
+
+#passwordModal .modal-content {
+  width: 300px;
+  height: 200px;
+  min-width: 300px !important;
+  min-height: 200px !important;
 }
