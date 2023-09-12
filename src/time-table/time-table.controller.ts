@@ -37,4 +37,11 @@ export class TimeTableController {
   ): Promise<TimeTable[]> {
     return await this.timeTableService.findTimeTablesByRoomId(roomId);
   }
+
+  @Get('/reserved-times/:seatId')
+  async getReservedTimesForSeat(
+    @Param('seatId') seatId: number,
+  ): Promise<string[]> {
+    return await this.timeTableService.getReservedTimesForSeat(seatId);
+  }
 }

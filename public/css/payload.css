@@ -1,0 +1,61 @@
+header {
+  background-color: #19baa4;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+main {
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  margin-top: 80px;
+}
+
+main .title {
+  font-size: 48px;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+main p {
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+main button {
+  background: #19baa4;
+  border: none;
+  cursor: pointer;
+  width: 50px;
+  color: #fff;
+}
+
+.pointpng {
+  position: relative;
+}
+
+.pointpng img {
+  width: 650px;
+  height: 450px;
+  position: absolute;
+  right: 100px;
+}

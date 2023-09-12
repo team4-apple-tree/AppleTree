@@ -183,6 +183,19 @@ function drawSeats(seatShape, seatData) {
   }
 }
 
+async function fetchReservedTimes(seatId) {
+  const response = await fetch(`/time-table/reserved-times/${seatId}`);
+
+  // 오류 처리: 응답 상태가 200 OK가 아닐 경우
+  if (!response.ok) {
+    console.error(`seatId에 대해 예약된 시간을 가져오지 못했습니다: ${seatId}`);
+    return [];
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 async function showSeatModal(seatInfos) {
   const response = await axios.get(`/time-table/${roomId}`);
   const timeTables = response.data;
@@ -197,6 +210,8 @@ async function showSeatModal(seatInfos) {
     const seatName = getSeatName(seatInfo.row, seatInfo.column);
     const seatType = getSeatType(seatInfo.type);
     const seatPrice = await getPriceByType(roomId, seatInfo.type);
+    const reservedTimes = await fetchReservedTimes(seatInfo.seatId);
+    console.log('asd', reservedTimes);
 
     total += seatPrice;
 
@@ -254,22 +269,6 @@ async function showSeatModal(seatInfos) {
   });
 
   modal.style.display = 'block';
-
-  // const seatNumberEl = document.getElementById('seatNumber');
-  // const seatStatusEl = document.getElementById('seatStatus');
-  // const seatPriceInput = document.getElementById('seatPrice');
-  // const seatTypeSelect = document.getElementById('seatType');
-
-  // seatNumberEl.textContent = getSeatName(seatInfo.row, seatInfo.column);
-  // seatStatusEl.value = seatInfo.reservationStatus ? '예약됨' : '예약되지 않음';
-  // seatPriceInput.textContent = seatInfo.price || '';
-  // seatTypeSelect.value = seatInfo.type || '';
-
-  // const div = document.createElement('div');
-  // const p1 = document.createElement('p');
-  // const p2 = document.createElement('p');
-
-  // getPriceByType(roomId, seatInfo.type);
 }
 
 async function getPriceByType(roomId, seatType) {
