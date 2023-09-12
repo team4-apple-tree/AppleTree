@@ -12,11 +12,16 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <title>Admin Dashboard</title>
+    <title>관리자 페이지</title>
   </head>
 
   <body>
-    <h1>Admin Dashboard</h1>
+    <header id="header">
+      <div class="container">
+        <h1 class="logo" onclick="location.href='/'">사과나무</h1>
+      </div>
+    </header>
+    <h1 class="title">관리자 페이지</h1>
 
     <section id="create-room">
       <h2>Create Room</h2>
@@ -72,6 +77,19 @@
       </div>
     </section>
 
+    <section id="room-structure">
+      <h2>Create Room Structure</h2>
+      <form id="room-structure-form">
+        <label for="roomId">Room ID: </label>
+        <input type="number" id="roomId" required />
+        <label for="rows">Rows: </label>
+        <input type="number" id="rows" required />
+        <label for="columns">Columns: </label>
+        <input type="number" id="columns" required />
+        <button type="submit">Create</button>
+      </form>
+    </section>
+
     <section id="set-seat-price">
       <h2>Set Seat Price</h2>
       <form id="set-seat-price-form">
@@ -89,19 +107,6 @@
         <input type="number" id="seatPriceInput" required />
 
         <button type="submit">Set Price</button>
-      </form>
-    </section>
-
-    <section id="room-structure">
-      <h2>Create Room Structure</h2>
-      <form id="room-structure-form">
-        <label for="roomId">Room ID: </label>
-        <input type="number" id="roomId" required />
-        <label for="rows">Rows: </label>
-        <input type="number" id="rows" required />
-        <label for="columns">Columns: </label>
-        <input type="number" id="columns" required />
-        <button type="submit">Create</button>
       </form>
     </section>
 

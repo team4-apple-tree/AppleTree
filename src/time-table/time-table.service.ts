@@ -9,6 +9,7 @@ import { Room } from 'src/entity/room.entity';
 import { Payment } from 'src/entity/payment.entity';
 import { Point } from 'src/entity/point.entity';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { In } from 'typeorm';
 
 @Injectable()
 export class TimeTableService {
@@ -75,6 +76,8 @@ export class TimeTableService {
     userId: number,
   ): Promise<void> {
     const reservations: Reservation[] = [];
+
+    // 예약 가능 여부를 먼저 확인
     for (const timeTableId of timeTableIds) {
       const timeTable = await this.timeTableRepository.findOne({
         where: { timeTableId },
@@ -96,59 +99,86 @@ export class TimeTableService {
             HttpStatus.BAD_REQUEST,
           );
         }
-        console.log(seat);
+
         const existingReservation = await this.reservationRepository.findOne({
           where: { timeTableId, seatId },
         });
-        if (!existingReservation) {
-          const reservation = new Reservation();
-          reservation.timeTableId = timeTableId;
-          reservation.seatId = seatId;
-          reservation.userId = userId;
-
-          await this.reservationRepository.save(reservation);
-          const paymentSuccessful = await this.processPayment(
-            seat.price,
-            userId,
-          ); // 결제 처리 함수
-          if (paymentSuccessful) {
-            await this.reservationRepository.save(reservation);
-            // 예약 취소 타이머 설정 (예: 30분 후에 취소)
-            setTimeout(async () => {
-              // 예약 상태 확인
-              const updatedReservation =
-                await this.reservationRepository.findOne({
-                  where: { timeTableId, seatId },
-                  select: ['stats'], // state를 조회하도록 변경
-                });
-
-              if (updatedReservation && !updatedReservation.stats) {
-                // 이미 결제가 완료되었으면 취소하지 않음
-                return;
-              }
-              // 예약 취소 처리
-              updatedReservation.stats = true;
-              await this.deleteReservation(reservation.id); // 예시: 예약 정보 삭제 함수
-            }, 10 * 60 * 1000); // 10분 후에 실행 (밀리초 단위)
-          } else {
-            // 결제가 실패한 경우, 상태를 true로 변경하여 예약 취소
-            await this.reservationRepository.update(timeTableId, {
-              stats: true,
-            }); // state를 true로 변경
-            throw new HttpException(
-              '결제가 실패하여 예약이 취소되었습니다. 남은 포인트를 확인해주세요',
-              HttpStatus.BAD_REQUEST,
-            );
-          }
-          reservations.push(reservation);
-        } else {
+        if (existingReservation) {
           throw new HttpException(
-            '해당 시간대에 예약할 수 없습니다.',
+            '해당 시간대에는 이미 예약이 되어 있습니다.',
             HttpStatus.BAD_REQUEST,
           );
         }
       }
     }
+
+    // 전체 금액 계산 및 결제 가능 여부 확인
+    const totalAmount =
+      seatIds.length *
+      timeTableIds.length *
+      (await this.seatRepository.findOne({ where: { seatId: seatIds[0] } }))
+        .price; // assuming all seats have the same price for simplicity
+    const paymentSuccessful = await this.processPayment(totalAmount, userId);
+    if (!paymentSuccessful) {
+      throw new HttpException(
+        '결제가 실패하여 예약이 취소되었습니다. 남은 포인트를 확인해주세요',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // 결제가 성공하면 예약을 저장
+    for (const timeTableId of timeTableIds) {
+      for (const seatId of seatIds) {
+        const reservation = new Reservation();
+        reservation.timeTableId = timeTableId;
+        reservation.seatId = seatId;
+        reservation.userId = userId;
+        await this.reservationRepository.save(reservation);
+
+        // 예약 취소 타이머 설정 (예: 30분 후에 취소)
+        setTimeout(async () => {
+          // 예약 상태 확인
+          const updatedReservation = await this.reservationRepository.findOne({
+            where: { timeTableId, seatId },
+            select: ['stats'], // state를 조회하도록 변경
+          });
+
+          if (updatedReservation && !updatedReservation.stats) {
+            // 이미 결제가 완료되었으면 취소하지 않음
+            return;
+          }
+          // 예약 취소 처리
+          updatedReservation.stats = true;
+          await this.deleteReservation(reservation.id); // 예시: 예약 정보 삭제 함수
+        }, 10 * 60 * 1000); // 10분 후에 실행 (밀리초 단위)
+
+        reservations.push(reservation);
+      }
+    }
+  }
+
+  async getReservedTimesForSeat(seatId: number): Promise<string[]> {
+    // 해당 좌석에 대한 모든 예약 정보를 가져옵니다.
+    const reservations = await this.reservationRepository.find({
+      where: { seatId },
+    });
+
+    if (!reservations || reservations.length === 0) {
+      return []; // 예약된 시간대가 없는 경우
+    }
+
+    // 모든 예약된 타임테이블 ID를 배열에 저장
+    const timeTableIds = reservations.map((res) => res.timeTableId);
+
+    // 타임테이블 ID를 사용하여 해당 시간 정보를 가져옵니다.
+    const reservedTimeTables = await this.timeTableRepository.find({
+      where: {
+        timeTableId: In(timeTableIds),
+      },
+    });
+
+    // 모든 예약된 시간대를 배열에 저장하고 반환합니다.
+    return reservedTimeTables.map((timeTable) => timeTable.timeSlot);
   }
 
   private async processPayment(

@@ -27,5 +27,5 @@ export class TimeTable {
   roomId: number;
 
   @Column({ type: 'varchar' }) // 시간대 정보
-  timeSlot: String;
+  timeSlot: string;
 }
