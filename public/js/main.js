@@ -1,4 +1,19 @@
 $(document).ready(async () => {
+  // 페이지 접속 시 토큰 만료 확인
+  await axios
+    .get('/user/isLogin', {
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+    })
+    .catch(async () => {
+      await axios.get('/user/out').catch((response) => {
+        console.log(response);
+
+        alert('서버 오류');
+      });
+    });
+
   const pageSize = 15;
   let currentPage = 1;
   let publicStudies = [];
