@@ -44,6 +44,44 @@ async function loadUserProfile(userId) {
   }
 }
 
+// 사용자 예약 정보를 로드하는 함수
+async function loadUserReservation(userId) {
+  try {
+    const response = await axios.get(`/user/reservation/${userId}`, {
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+    });
+    const reservations = response.data; // 예약 정보 배열
+    // 예약 정보를 표시할 컨테이너 선택
+    const container = document.querySelector('.reservation-container');
+    // 컨테이너의 모든 자식 요소 제거
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    // 각 예약 정보를 반복하며 HTML에 추가
+    reservations.forEach((data, index) => {
+      // 예약 정보를 담을 div 요소 생성
+      const reservationDiv = document.createElement('div');
+      reservationDiv.classList.add('reservation-details');
+      // 예약 정보를 설정하여 HTML에 추가
+      reservationDiv.innerHTML = `
+        <p>예약한 스터디룸: ${data.name}</p>
+        <p>예약 시간: ${data.timeTable}</p>
+        <p>예약 좌석 타입: ${data.type}</p>
+        <p>예약 가격: ${data.price}</p>
+        <p>스터디룸의 주소: ${data.address}</p>
+      `;
+      // 컨테이너에 예약 정보 추가
+      container.appendChild(reservationDiv);
+    });
+  } catch (error) {
+    console.error('사용자 예약 정보를 가져오는 데 실패했습니다:', error);
+  }
+}
+// 예약 정보를 표시할 사용자의 ID (예: 1)를 전달하여 함수 호출
+loadUserReservation(1); // 사용자 ID를 원하는 값으로 설정
+
 // 시작할 때 사용자 프로필 로드
 function init() {
   const token = getCookie('Authorization').replace('Bearer%20', '');
@@ -51,6 +89,7 @@ function init() {
     const decodedToken = parseJwt(token);
     const userId = decodedToken.id;
     loadUserProfile(userId);
+    loadUserReservation(userId);
   }
 }
 

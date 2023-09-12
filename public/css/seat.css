@@ -64,7 +64,7 @@ header {
 }
 
 .seat.selected {
-  background-color: green;
+  background-color: #19baa4;
 }
 
 #seatModal {
@@ -76,10 +76,34 @@ header {
   border: 1px solid black;
   padding: 20px;
   background-color: white;
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+#paymentBtn {
+  background-color: #19baa4;
+  color: #fff;
+  width: 80px;
+  height: 40px;
+  font-size: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+#seatModal .close-btn {
+  background-color: red;
+  color: #fff;
+  width: 80px;
+  height: 40px;
+  padding: 0 !important;
+  font-size: 18px;
 }
 
 #cafeimage {
   position: relative;
+  width: 600px;
+  height: 400px;
+  margin-top: 30px;
 }
 
 .seatsection {
@@ -99,26 +123,31 @@ main {
 .single-seat {
   background-color: #fff;
   font-size: 8px;
-  width: 40px;
-  height: 20px;
-}
-
-.four-seat {
-  background-color: blue;
-  width: 80px;
+  width: 60px;
   height: 40px;
 }
 
+.four-seat {
+  background-color: #e0e0e0;
+  width: 80px;
+  height: 40px;
+  font-size: 8px;
+}
+
 .meeting-room {
-  background-color: aquamarine;
+  background-color: #ccc;
   width: 100px;
   height: 60px;
+  font-size: 8px;
 }
 
 #seatsGrid {
   margin-top: 30px;
 }
 
-.reserved-time {
-  color: red; /* 또는 원하는 색상 */
+#reservationBtn {
+  background-color: #19baa4;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 50px;
 }

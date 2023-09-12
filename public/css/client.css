@@ -21,6 +21,7 @@ header {
   justify-content: center;
   width: 100%;
   margin-top: 15px;
+  flex-wrap: wrap;
 }
 
 .room {
@@ -35,6 +36,8 @@ header {
   height: 250px;
   text-align: center;
   border: none;
+  margin-bottom: 40px;
+  background-color: #c5decfd5;
 }
 
 .room:hover {
@@ -48,9 +51,8 @@ header {
 }
 
 .room-image {
-  max-width: 250px;
-  max-height: 250px;
-  margin-bottom: 20px;
+  width: 200px;
+  height: 200px;
 }
 
 .room h3 {
