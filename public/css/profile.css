@@ -279,8 +279,6 @@ a {
 .close {
   color: #aaa;
   float: right;
-  font-size: 28px;
-  font-weight: bold;
 }
 .close:hover,
 .close:focus {
@@ -391,4 +389,70 @@ a {
   height: 200px;
   min-width: 300px !important;
   min-height: 200px !important;
+}
+
+.confirmPasswordBtn {
+  width: 50px !important;
+  padding: 0 !important;
+  position: absolute;
+  font-size: 14px;
+  right: 20px;
+  top: 23px;
+  background-color: #19baa4;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+}
+
+#confirmPassword {
+  width: 160px;
+  padding: 0 !important;
+  position: absolute;
+  top: 23px;
+  left: 100px;
+  margin-left: 5px;
+}
+
+#byebyeuser .modal-content {
+  position: relative;
+  width: 300px;
+  display: flex;
+  border: 1px solid #19baa4;
+  height: 30px;
+}
+
+#byebyeuser .close {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  cursor: pointer;
+}
+
+#byebyePassword {
+  width: 160px;
+  padding: 0 !important;
+  position: absolute;
+  top: 23px;
+  left: 100px;
+  margin-left: 5px;
+}
+
+.byebye {
+  width: 50px !important;
+  padding: 0 !important;
+  position: absolute;
+  font-size: 14px;
+  right: 20px;
+  top: 23px;
+  background-color: #19baa4;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.reservation-container {
+  background-color: red;
+  position: absolute;
+  right: 200px;
+  top: 180px;
 }
