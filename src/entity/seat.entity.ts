@@ -29,8 +29,8 @@ export class Seat {
   @JoinColumn({ name: 'roomId' }) // JoinColumn 데코레이터를 추가
   room: Room;
 
-  @OneToMany(() => Reservation, (reservation) => reservation.seats)
-  reservations: Reservation;
+  @OneToMany(() => Reservation, (reservation) => reservation.seat)
+  reservation: Reservation;
 
   @OneToMany(() => SeatPrice, (seatPrice) => seatPrice.seat)
   @JoinColumn({ name: 'seatId' })

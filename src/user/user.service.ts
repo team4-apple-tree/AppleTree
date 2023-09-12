@@ -5,19 +5,28 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import _ from 'lodash';
-import { Repository } from 'typeorm';
+import { FindOneOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { User, roleEnum } from 'src/entity/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CheckEmailDto } from 'src/dto/user/checkEmail.dto';
 import { Point } from 'src/entity/point.entity';
+import { Reservation } from 'src/entity/reservation.entity';
+import { Seat } from 'src/entity/seat.entity';
+import { Room } from 'src/entity/room.entity';
+import { TimeTable } from 'src/entity/timeTable.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Point) private pointRepository: Repository<Point>,
+    @InjectRepository(Room) private roomRepository: Repository<Room>,
+    @InjectRepository(TimeTable) private timeTableRepository: Repository<TimeTable>,
+    @InjectRepository(Reservation) private reservationRepository: Repository<Reservation>,
+    @InjectRepository(Seat) // Seat의 Repository를 주입합니다.
+    private seatRepository: Repository<Seat>,
     private jwtService: JwtService,
   ) {}
 
@@ -143,6 +152,53 @@ export class UserService {
       throw new NotFoundException('해당 유저의 정보가 존재하지 않습니다.');
     }
     return user;
+  }
+
+  async getReservation(userId: number) {
+    const reservations = await this.reservationRepository.find({
+      where: { userId },
+      relations: ['seat','seat.room','timeTable'],
+    });
+
+    if (!reservations || reservations.length === 0) {
+      throw new NotFoundException('예약 정보가 없습니다.');
+    }
+    console.log("리저베이션",reservations)
+    const formattedReservations = await Promise.all(
+      reservations.map(async (reservation) => {
+      const room = await  this.findRoom(reservation.seatId)
+        const seat = await this.seatRepository.findOne({
+          where : { seatId : reservation.seatId}
+        })
+        const timeTable = await this.timeTableRepository.findOne({
+          where : {timeTableId : reservation.timeTableId}
+        })
+        return {
+          name:room.name,
+          address:room.address,
+          type : seat.type,
+          price : seat.price,
+          timeTable: timeTable.timeSlot,
+        };
+      }),
+    );
+    return formattedReservations;
+  }
+
+  private async findRoom(seatId: number) {
+    const seat = await this.seatRepository.findOne({
+      where: { seatId },
+      relations: ['room'], 
+      select: ['room'], 
+    });
+    if (!seat) {
+      // seat를 찾지 못한 경우 예외 처리
+      throw new NotFoundException(`Seat with ID ${seatId} not found.`);
+    }
+    return {
+      name: seat.room.name,
+      address: seat.room.address,
+    };
   }
 
   // 밑 로직 userId를 통해 password찾기
