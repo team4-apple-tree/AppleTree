@@ -32,6 +32,7 @@ export class JwtAuthGuard implements CanActivate {
 
     if (!userId) {
       return false;
+      // throw new
     }
 
     const user = this.userService.findById(userId);
@@ -56,6 +57,7 @@ export class JwtAuthGuard implements CanActivate {
 
       return userId;
     } catch (error) {
+      console.log(error.name);
       return null;
     }
   }
