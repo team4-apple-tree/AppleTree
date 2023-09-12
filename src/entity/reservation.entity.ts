@@ -19,6 +19,9 @@ export class Reservation {
   @Column()
   seatId: number;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => TimeTable, (timeTable) => timeTable.reservations)
   timeTable: TimeTable;
 

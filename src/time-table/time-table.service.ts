@@ -104,6 +104,7 @@ export class TimeTableService {
           const reservation = new Reservation();
           reservation.timeTableId = timeTableId;
           reservation.seatId = seatId;
+          reservation.userId = userId;
 
           await this.reservationRepository.save(reservation);
           const paymentSuccessful = await this.processPayment(
