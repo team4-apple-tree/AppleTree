@@ -1,13 +1,10 @@
 import {
-  BadRequestException,
   Body,
   ConflictException,
   Controller,
   Delete,
   ForbiddenException,
   Get,
-  HttpException,
-  HttpStatus,
   InternalServerErrorException,
   NotFoundException,
   Param,
@@ -27,14 +24,9 @@ import { Response } from 'express';
 import { InviteGroupDto } from 'src/dto/group/invite-group.dto';
 import { Member } from 'src/entity/member.entity';
 import { UpdateGroupDto } from 'src/dto/group/update-group.dto';
-import { Access } from 'src/entity/access.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from 'src/aws.service';
 import { JwtAuthGuard } from 'src/user/jwt.guard';
-import { validate } from 'class-validator';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RolesGuard } from 'src/user/roles.guard';
-import { roleEnum } from 'src/enums/userRoles.enum';
 import { VerifyPasswordDto } from 'src/dto/group/VerifyPassword.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
@@ -110,21 +102,6 @@ export class GroupController {
       throw new InternalServerErrorException('서버 오류');
     }
   }
-
-  //내가 속한 스터디 조회
-  // @Get('/my')
-  // @UseGuards(JwtAuthGuard)
-  // async findMyGroups(@Req() req: any, userId: number): Promise<Group[]> {
-  //   try {
-  //     const userId = await req.user.id;
-  //     return await this.groupService.findMyGroup(userId);
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw new InternalServerErrorException(
-  //       '내가 속한 스터디 조회 실패했습니다.',
-  //     );
-  //   }
-  // }
 
   // 내가 속한 스터디 그룹 조회
   @Get('myGroup')
@@ -238,44 +215,6 @@ export class GroupController {
     }
   }
 
-  // 스터디그룹 입장
-  @Post('/enter/:groupId')
-  @UseGuards(JwtAuthGuard)
-  async enterGroup(
-    @Param('groupId') groupId: number,
-    @Res({ passthrough: true }) res: Response,
-    @Req() req: any,
-  ): Promise<any> {
-    try {
-      const user = await req.user;
-
-      await this.groupService.enterGroup(groupId, user);
-
-      return { message: '접속하였습니다.' };
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof ConflictException) {
-        throw error;
-      } else if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
-  }
-
-  // 스터디그룹 퇴장
-  @Delete(':groupId/exit')
-  async exitGroup(
-    @Param('groupId') groupId: number,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const user = res.locals.user;
-
-    await this.groupService.exitGroup(groupId, user.id);
-  }
-
   // 스터디그룹 멤버 초대
   @Post(':groupId')
   async inviteMember(
@@ -292,48 +231,6 @@ export class GroupController {
       if (error instanceof NotFoundException) {
         throw error;
       } else if (error instanceof ConflictException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
-  }
-
-  // 스터디그룹 접속해 있는 유저 조회
-  @Get(':groupId/members')
-  async findMAccess(@Param('groupId') groupId: number): Promise<Access[]> {
-    try {
-      return await this.groupService.findMAccess(groupId);
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
-  }
-
-  // 스터디그룹 접속해 있는 유저 추방
-  @Delete(':groupId/members/:userId')
-  async deleteMember(
-    @Param('groupId') groupId: number,
-    @Param('userId') userId: number,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<any> {
-    try {
-      const user = res.locals.user;
-
-      await this.groupService.deleteMember(groupId, user, userId);
-
-      return { message: '스터디그룹 멤버에서 삭제되었습니다.' };
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else if (error instanceof ForbiddenException) {
         throw error;
       } else {
         throw new InternalServerErrorException('서버 오류');

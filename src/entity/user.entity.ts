@@ -3,21 +3,13 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
-  OneToOne,
-  Index,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 import { Member } from './member.entity';
-import { Board } from './board.entity';
 import { Room } from './room.entity';
-import { Comment } from './comment.entity';
-import { Post } from './post.entity';
 import { Group } from './group.entity';
-import { Access } from './access.entity';
 import { Payment } from './payment.entity';
 import { Point } from './point.entity';
 export enum roleEnum {
@@ -30,20 +22,14 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Board, (board) => board.user)
-  boards: Board[];
   @OneToMany(() => Member, (member) => member.user)
   members: Member[];
   @OneToMany(() => Room, (room) => room.user)
   rooms: Room[];
-  @OneToMany(() => Comment, (comment) => comment.user)
-  comments: Comment[];
-  @OneToMany(() => Post, (post) => post.user)
-  posts: Post[];
+
   @OneToMany(() => Group, (group) => group.user)
   groups: Group[];
-  @OneToMany(() => Access, (access) => access.user)
-  access: Access[];
+
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment;
 

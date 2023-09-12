@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 
 import { Group } from './group.entity';
@@ -30,10 +29,6 @@ export class Card {
   @Column({ type: 'enum', enum: ToDoState, default: ToDoState.TODO })
   selectToDo: ToDoState;
 
-  // @ManyToOne(() => Todo, (todo) => todo.cards)
-  // @JoinColumn({ name: 'todoId' })
-  // toDos: Todo;
-
   @CreateDateColumn()
   createdAt: Date;
 
@@ -43,6 +38,6 @@ export class Card {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToOne(() => Group, (group) => group.todos) // Group과의 일대다 관계 설정
+  @ManyToOne(() => Group, (group) => group.card) // Many-to-one relationship to Group
   group: Group;
 }

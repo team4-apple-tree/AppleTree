@@ -15,8 +15,6 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Member } from './member.entity';
-import { Access } from './access.entity';
-import { Todo } from './to-do.entity';
 import { Card } from './card.entity';
 @Entity({ schema: 'apple', name: 'group' })
 export class Group {
@@ -69,11 +67,8 @@ export class Group {
   @OneToMany(() => Member, (member) => member.group)
   members: Member[];
 
-  @OneToMany(() => Access, (access) => access.group)
-  access: Access[];
-
-  @OneToMany(() => Card, (todo) => todo.group) // Todo와의 일대다 관계 설정
-  todos: Todo[];
+  @OneToMany(() => Card, (card) => card.group) // One-to-many relationship to Card
+  card: Card;
 
   @Column({ nullable: true })
   videoChatURL: string | null;

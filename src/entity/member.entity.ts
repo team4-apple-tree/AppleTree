@@ -2,19 +2,14 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  OneToMany,
-  OneToOne,
-  Index,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
-  PrimaryColumn,
   Unique,
-  JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { Todo } from './to-do.entity';
+
 import { Group } from './group.entity';
 
 export enum Role {
@@ -27,17 +22,6 @@ export enum Role {
 export class Member {
   @PrimaryGeneratedColumn()
   id: number;
-
-  // @ManyToOne(() => User, (user) => user.members)
-  // user: User;
-  // @OneToMany(() => Todo, (todo) => todo.members)
-  // toDos: Todo;
-
-  // @PrimaryColumn()
-  // userId: number;
-
-  // @PrimaryColumn()
-  // groupId: number;
 
   @ManyToOne(() => User, (user) => user.members)
   user: User;

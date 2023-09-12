@@ -6,15 +6,13 @@ import { Group } from 'src/entity/group.entity';
 import { UserModule } from 'src/user/user.module';
 import { Member } from 'src/entity/member.entity';
 import { User } from 'src/entity/user.entity';
-import { Access } from 'src/entity/access.entity';
 import { S3Service } from 'src/aws.service';
 import { UploadService } from 'src/upload.service';
-import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Group, Member, User, Access]),
+    TypeOrmModule.forFeature([Group, Member, User]),
     UserModule,
     ConfigModule,
   ],

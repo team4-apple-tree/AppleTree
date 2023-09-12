@@ -32,11 +32,24 @@ header {
   max-width: 1280px;
 }
 
+.reservationmodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
 .profile-container {
   display: inline-block;
   width: 600px;
   margin: 0 auto;
   padding: 40px 0;
+  position: relative;
 }
 
 .text-lg-left {
@@ -451,8 +464,25 @@ a {
 }
 
 .reservation-container {
-  background-color: red;
-  position: absolute;
-  right: 200px;
-  top: 180px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.myreservation {
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ccc;
+}
+
+.reservationinfo {
+  color: #fff;
+  font-size: 18px;
+  width: 200px;
+  background-color: #19baa4;
+  margin-top: 10px;
+  margin-left: 20px;
 }

@@ -11,14 +11,10 @@ import {
 import { CardService } from './card.service';
 import { CreateCardDto } from '../dto/card/create-card-dto';
 import { Card } from '../entity/card.entity';
-import { TodoService } from '../to-do/to-do.service';
 
 @Controller('card')
 export class CardController {
-  constructor(
-    private readonly cardService: CardService,
-    private readonly todoService: TodoService,
-  ) {}
+  constructor(private readonly cardService: CardService) {}
 
   @Get('/room/:groupId')
   async getCards(@Param('groupId') groupId: number): Promise<Card[]> {

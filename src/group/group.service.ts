@@ -15,7 +15,7 @@ import { User } from 'src/entity/user.entity';
 import { UserService } from 'src/user/user.service';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import * as _ from 'lodash';
-import { Access } from 'src/entity/access.entity';
+
 import { UploadService } from 'src/upload.service';
 import { EntityManager, DataSource } from 'typeorm';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -24,7 +24,6 @@ export class GroupService {
   constructor(
     @InjectRepository(Group) private groupRepository: Repository<Group>,
     @InjectRepository(Member) private memberRepository: Repository<Member>,
-    @InjectRepository(Access) private accessRepository: Repository<Access>,
 
     private readonly userService: UserService,
     private readonly uploadService: UploadService,
@@ -197,41 +196,6 @@ export class GroupService {
     }
   }
 
-  // 스터디그룹 입장
-  async enterGroup(
-    groupId: number,
-    user: User,
-    password?: string,
-  ): Promise<void> {
-    const group = await this.findGroup(groupId);
-
-    if (group.isPassword && group.password !== password) {
-      throw new ForbiddenException('비밀번호가 일치하지 않습니다.');
-    }
-
-    const access = new Access();
-
-    access.user = user;
-    access.group = group;
-    access.deletedAt = null;
-
-    try {
-      await this.accessRepository.save(access);
-    } catch (error) {
-      throw new ConflictException('이미 해당 스터디그룹에 접속해 있습니다.');
-    }
-  }
-
-  // 스터디그룹 퇴장
-  async exitGroup(groupId: number, userId: number) {
-    await this.findGroup(groupId);
-
-    await this.accessRepository.softDelete({
-      user: { id: userId },
-      group: { id: groupId },
-    });
-  }
-
   // 스터디그룹 멤버 초대
   async inviteMember(data: InviteGroupDto[], groupId: number): Promise<void> {
     const group = await this.findGroup(groupId);
@@ -271,65 +235,6 @@ export class GroupService {
           '초대 이메일을 보낼 수 없습니다.',
         );
       }
-    }
-  }
-
-  // 스터디그룹 접속해 있는 유저 조회
-  async findMAccess(groupId: number): Promise<Access[]> {
-    await this.findGroup(groupId);
-
-    const access = await this.accessRepository.find({
-      where: { group: { id: groupId } },
-      relations: ['user'],
-    });
-
-    return access;
-  }
-
-  // 스터디그룹 접속해 있는 유저 추방
-  async deleteMember(
-    groupId: number,
-    user: User,
-    userId: number,
-  ): Promise<void> {
-    await this.findGroup(groupId);
-
-    const member = await this.memberRepository.findOne({
-      where: { user: { id: user.id }, group: { id: groupId } },
-      relations: ['user'],
-    });
-
-    if (_.isNil(member) || member.role !== 1) {
-      throw new ForbiddenException(
-        '해당 스터디그룹을 삭제할 권한이 존재하지 않습니다.',
-      );
-    }
-
-    const isExistUser = await this.userService.findById(userId);
-
-    if (_.isNil(isExistUser)) {
-      throw new NotFoundException('존재하지 않는 유저입니다.');
-    }
-
-    const invitedUser = await this.accessRepository.findOne({
-      where: { user: { id: userId }, group: { id: groupId } },
-    });
-
-    if (_.isNil(invitedUser)) {
-      throw new NotFoundException(
-        '해당 유저는 스터디그룹에 존재하지 않습니다.',
-      );
-    }
-
-    const deleteResult = (
-      await this.accessRepository.softDelete({
-        user: { id: userId },
-        group: { id: groupId },
-      })
-    ).affected;
-
-    if (!deleteResult) {
-      throw new NotFoundException('스터디그룹 멤버 삭제에 실패하였습니다.');
     }
   }
 

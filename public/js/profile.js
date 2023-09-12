@@ -66,11 +66,11 @@ async function loadUserReservation(userId) {
       reservationDiv.classList.add('reservation-details');
       // 예약 정보를 설정하여 HTML에 추가
       reservationDiv.innerHTML = `
-        <p>예약한 스터디룸: ${data.name}</p>
+       <div class = "myreservation"> <p>예약한 스터디룸: ${data.name}</p>
         <p>예약 시간: ${data.timeTable}</p>
         <p>예약 좌석 타입: ${data.type}</p>
         <p>예약 가격: ${data.price}</p>
-        <p>스터디룸의 주소: ${data.address}</p>
+        <p>스터디룸의 주소: ${data.address}</p></div>
       `;
       // 컨테이너에 예약 정보 추가
       container.appendChild(reservationDiv);
@@ -311,3 +311,16 @@ document
       reader.readAsDataURL(file);
     }
   });
+
+document
+  .querySelector('.reservationinfo')
+  .addEventListener('click', function () {
+    document.getElementById('reservationmodal').style.display = 'block';
+  });
+
+window.onclick = function (event) {
+  const modal = document.getElementById('reservationmodal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+};

@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { Group } from 'src/entity/group.entity';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Member } from 'src/entity/member.entity';
-import { Access } from 'src/entity/access.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmConfigService } from 'src/config/typeorm.config.service';
 import { UserModule } from 'src/user/user.module';
@@ -14,7 +13,6 @@ describe('GroupService', () => {
   let service: GroupService;
   let memberRepository: Repository<Member>;
   let groupRepository: Repository<Group>;
-  let accessRepository: Repository<Access>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,9 +32,6 @@ describe('GroupService', () => {
     groupRepository = module.get<Repository<Group>>(getRepositoryToken(Group));
     memberRepository = module.get<Repository<Member>>(
       getRepositoryToken(Member),
-    );
-    accessRepository = module.get<Repository<Access>>(
-      getRepositoryToken(Access),
     );
   });
 

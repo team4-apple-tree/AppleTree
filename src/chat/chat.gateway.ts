@@ -13,7 +13,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { GroupService } from 'src/group/group.service';
 import * as _ from 'lodash';
 import { Repository, getRepository } from 'typeorm';
-import { Access } from 'src/entity/access.entity';
 import { ConfigService } from '@nestjs/config';
 
 @WebSocketGateway()
@@ -26,7 +25,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private messageCache: { [room: string]: any[] } = {};
 
   constructor(
-    @InjectRepository(Access) private accessRepository: Repository<Access>,
     private readonly socketGuard: SocketGuard,
     private readonly groupService: GroupService,
     private readonly configService: ConfigService,
@@ -68,32 +66,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server.to(roomId).emit('members', members);
 
       await this.groupService.plusCount(roomId);
-
-      // const group = await this.groupService.findGroup(roomId);
-
-      // const roomUser = await this.accessRepository.findOne({
-      //   where: { group: { id: roomId }, user: { id: user.id } },
-      // });
-
-      // if (_.isNil(roomUser)) {
-      //   const access = new Access();
-
-      //   access.user = user;
-      //   access.group = group;
-      //   access.clientId = client.id;
-      //   access.deletedAt = null;
-      //   await this.accessRepository.save(access);
-      // }
-
-      // const roomUsers = await this.accessRepository.find({
-      //   relations: ['user'],
-      //   where: { group: { id: roomId } },
-      // });
-
-      // const roomUsersName = roomUsers.map((client) => client.user.name);
-
-      // this.server.to(roomId).emit('userList', roomUsersName);
-      // this.server.to(roomId).emit('enter', user.name);
     } catch (error) {
       console.error(error);
 
@@ -121,20 +93,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       members.sort();
 
       this.server.to(roomId).emit('members', members);
-      // const token = client.handshake.headers['authorization'];
-      // const user = await this.socketGuard.validateToken(token);
-
-      // await this.accessRepository.softDelete({ clientId: client.id });
-
-      // const roomUsers = await this.accessRepository.find({
-      //   relations: ['user'],
-      //   where: { group: { id: +roomId } },
-      // });
-
-      // const roomUsersName = roomUsers.map((client) => client.user.name);
-
-      // this.server.to(roomId).emit('userList', roomUsersName);
-      // this.server.to(roomId).emit('exit', user.name);
     }
     await this.groupService.minusCount(roomId);
   }
@@ -153,7 +111,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       message: message,
       timestamp: new Date(),
     };
-    // chatCollection.insertOne(chatData);
 
     this.server
       .to(roomId)
