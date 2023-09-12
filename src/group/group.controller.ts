@@ -155,7 +155,7 @@ export class GroupController {
     return { message: '성공적으로 그룹에 입장했습니다.' };
   }
 
-  // 스터디그룹 정보 조히
+  // 스터디그룹 정보 조회
   @Get(':groupId/info')
   async findGroupInfo(@Param('groupId') groupId: number): Promise<Group> {
     try {

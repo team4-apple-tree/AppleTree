@@ -1,9 +1,9 @@
 // 쿠키를 파싱하는 함수
 function getCookie(name) {
-  const value = '; ' + document.cookie;
-  const parts = value.split('; ' + name + '=');
-  if (parts.length == 2) return parts.pop().split(';').shift();
-  return null;
+  const value = decodeURIComponent(document.cookie).match(
+    '(^|;) ?' + name + '=([^;]*)(;|$)',
+  );
+  return value ? value[2] : null;
 }
 
 // JWT 토큰에서 사용자 ID를 추출하는 함수
@@ -25,14 +25,19 @@ function parseJwt(token) {
 // 사용자 프로필 정보를 로드하는 함수
 async function loadUserProfile(userId) {
   try {
-    const response = await fetch(`/user/${userId}`);
-    const data = await response.json();
+    const response = await axios.get('/user', {
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+    });
+    const data = response.data;
+    console.log(data.user);
 
     // HTML 요소에 데이터 설정
-    document.querySelector('.emailAddress-tx').textContent = data.email;
-    document.querySelector('input[name="userNickname"]').value = data.name;
-    document.querySelector('.profileTxarea').textContent = data.expectation; // 예시로 추가한 내 각오 데이터
-
+    document.querySelector('.emailAddress-tx').textContent = data.user.email;
+    document.querySelector('input[name="userNickname"]').value = data.user.name;
+    document.querySelector('.profileTxarea').textContent = data.user.desc;
+    document.querySelector('#previewImage').src = data.user.profileImage;
     // ... 다른 데이터도 동일한 방식으로 설정
   } catch (error) {
     console.error('사용자 프로필을 가져오는 데 실패했습니다:', error);
@@ -52,84 +57,218 @@ function init() {
 // 페이지 로드 시 init 함수 실행
 window.onload = init;
 
-async function updateUser(userId, data) {
-  try {
-    const response = await fetch(`/user/${userId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer ' + getCookie('Authorization').replace('Bearer%20', ''),
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      alert('정보가 업데이트되었습니다.');
-      return result;
-    } else {
-      alert('정보 업데이트에 실패했습니다.');
-      throw new Error('Update failed');
-    }
-  } catch (error) {
-    console.error('사용자 정보 업데이트 중 오류:', error);
-  }
-}
-
-// 사용자 삭제 함수
-async function deleteUser(userId, password) {
-  try {
-    const response = await fetch(`/user/${userId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer ' + getCookie('Authorization').replace('Bearer%20', ''),
-      },
-      body: JSON.stringify({ password }),
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      alert('사용자가 삭제되었습니다.');
-      window.location.href = '/'; // 삭제 후 메인 페이지로 리디렉션
-      return result;
-    } else {
-      alert('사용자 삭제에 실패했습니다.');
-      throw new Error('Deletion failed');
-    }
-  } catch (error) {
-    console.error('사용자 삭제 중 오류:', error);
-  }
-}
-
-// 이벤트 핸들러 설정
-document.querySelector('.createRoomBtn').addEventListener('click', async () => {
-  const userId = parseJwt(
-    getCookie('Authorization').replace('Bearer%20', ''),
-  ).id;
-
-  // const currentPassword = document.getElementById('password').value;
-  // const newPassword = document.getElementById('newPassword').value;
-  // const role = document.getElementById('role').value;
-  const desc = document.getElementById('profileTxarea').value;
-
-  const data = {
-    //  password: '',
-    // role: '',
-    desc: desc,
-    // newPassword: '',
-  };
-  await updateUser(userId, data);
+// 비밀번호 변경 모달
+document.querySelector('.pass-chg-btn').addEventListener('click', function () {
+  document.getElementById('changeconfirmpasswordmodal').style.display = 'block';
 });
 
-document.querySelector('.withdrawalBtn').addEventListener('click', async () => {
-  const userId = parseJwt(
-    getCookie('Authorization').replace('Bearer%20', ''),
-  ).id;
-  const password = ''; // TODO: 비밀번호 입력 받기
-  if (confirm('정말로 탈퇴하시겠습니까?')) {
-    await deleteUser(userId, password);
+document.querySelector('.confirmclose').addEventListener('click', function () {
+  document.getElementById('changeconfirmpasswordmodal').style.display = 'none';
+});
+
+// '확인' 버튼을 눌렀을 때 '비밀번호 확인 모달'을 닫고 '비밀번호 변경 모달'을 열기
+document
+  .querySelector('.confirmchange')
+  .addEventListener('click', async function () {
+    // 여기에서는 비밀번호 확인 로직을 추가할 수 있습니다.
+    const password = document.querySelector('.confirmpasswordInput').value;
+
+    const data = { password };
+
+    await axios
+      .post('/user/checkPassword', data, {
+        headers: {
+          Authorization: getCookie('Authorization'),
+        },
+      })
+      .then(() => {
+        document.getElementById('confirmpasswordmodal').style.display = 'none';
+        document.getElementById('passwordModal').style.display = 'block';
+      })
+      .catch((response) => {
+        alert(response.response.data.message);
+      });
+  });
+
+// 비밀번호 변경 클릭 이벤트
+document
+  .querySelector('#changepassword')
+  .addEventListener('click', async () => {
+    const password = document.querySelector('#changenewpassword').value;
+    const confirm = document.querySelector('#changenewpasswordconfirm').value;
+
+    const data = {
+      password,
+      confirm,
+    };
+
+    await axios
+      .put('/user/updatePassword', data, {
+        headers: {
+          Authorization: getCookie('Authorization'),
+        },
+      })
+      .then((response) => {
+        alert(response.data.message);
+
+        window.location.reload();
+      })
+      .catch((response) => {
+        alert(response.response.data.message);
+      });
+  });
+
+document.querySelector('.close').addEventListener('click', function () {
+  document.getElementById('passwordModal').style.display = 'none';
+});
+
+window.onclick = function (event) {
+  if (event.target == document.getElementById('passwordModal')) {
+    document.getElementById('passwordModal').style.display = 'none';
+  }
+};
+// 비밀번호 변경 모달
+
+// 프로필 설정완료 비밀번호 확인 모달
+document.querySelector('.createRoomBtn').addEventListener('click', function () {
+  // 모달 표시
+  document.getElementById('confirmpasswordmodal').style.display = 'block';
+});
+
+document
+  .querySelector('.confirmpasswordmodalclose')
+  .addEventListener('click', function () {
+    // 모달 숨기기
+    document.getElementById('confirmpasswordmodal').style.display = 'none';
+  });
+
+window.onclick = function (event) {
+  if (event.target == document.getElementById('confirmpasswordmodal')) {
+    document.getElementById('confirmpasswordmodal').style.display = 'none';
+  }
+};
+
+document
+  .querySelector('.confirmPasswordBtn')
+  .addEventListener('click', async () => {
+    const password = document.querySelector('#confirmPassword').value;
+
+    const data = { password };
+
+    await axios
+      .post('/user/checkPassword', data, {
+        headers: {
+          Authorization: getCookie('Authorization'),
+        },
+      })
+      .then(() => {
+        updateUserProfile();
+      })
+      .catch((response) => {
+        alert(response.response.data.message);
+      });
+  });
+
+// 유저 정보 수정
+async function updateUserProfile() {
+  const name = document.querySelector('.nameInput').value;
+  const desc = document.querySelector('.profileTxarea').value;
+  const profileImage = document.querySelector('#imageInput').files[0];
+
+  const formData = new FormData();
+
+  formData.append('name', name);
+  formData.append('desc', desc);
+  formData.append('profileImage', profileImage);
+
+  await axios
+    .put('/user', formData, {
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+    })
+    .then(() => {
+      alert('프로필이 수정되었습니다.');
+
+      window.location.reload();
+    })
+    .catch((response) => {
+      console.log(response);
+      alert(response.response.data.message);
+    });
+}
+
+// "회원 탈퇴" 버튼에 이벤트 리스너 추가
+document.querySelector('.withdrawalBtn').addEventListener('click', function () {
+  const confirmation = confirm('정말 탈퇴하시겠습니까?');
+  if (confirmation) {
+    // byebyeuser 모달 표시
+    document.getElementById('byebyeuser').style.display = 'block';
   }
 });
+
+// 모달 닫기 버튼 이벤트 리스너
+document
+  .querySelector('#byebyeuser .close')
+  .addEventListener('click', function () {
+    document.getElementById('byebyeuser').style.display = 'none';
+  });
+
+// 비밀번호 확인 후 로직 실행 (예: 서버에 탈퇴 요청)
+document.querySelector('.byebye').addEventListener('click', async () => {
+  const password = document.querySelector('#byebyePassword').value;
+
+  const data = { password };
+
+  // 여기에서 서버에 탈퇴 요청 로직을 추가할 수 있습니다.
+  // 예: axios.post('/user/withdrawal', { password }, ...)
+  await axios
+    .post('/user/checkPassword', data, {
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+    })
+    .then(async () => {
+      await deleteUser();
+    })
+    .catch((response) => {
+      alert(response.response.data.message);
+    });
+
+  // 후처리: 예를 들면 모달을 닫거나, 성공/실패 메시지를 표시하거나, 페이지를 리디렉션하는 등의 작업
+  document.getElementById('byebyeuser').style.display = 'none';
+});
+
+// 회원탈퇴 api 요청
+async function deleteUser() {
+  await axios
+    .delete('/user', {
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+    })
+    .then((response) => {
+      alert(response.data.message);
+
+      window.location.href = '/';
+    })
+    .catch((response) => {
+      console.log(response);
+      alert(response.response.data.message);
+    });
+}
+
+// 이미지 미리보기
+document
+  .getElementById('imageInput')
+  .addEventListener('change', async function () {
+    const file = this.files[0];
+    if (file) {
+      // 미리보기 이미지 설정
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById('previewImage').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });

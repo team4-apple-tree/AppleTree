@@ -10,6 +10,28 @@ $(document).ready(async () => {
   let currentPage = 1;
   let publicStudies = [];
 
+  // 유저 각오, 포인트 조회
+  await axios
+    .get('/user', {
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+    })
+    .then((response) => {
+      const desc = response.data.user.desc;
+      const point = response.data.point.point;
+      const image = response.data.user.profileImage;
+
+      if (desc) {
+        $('.tx').text(desc);
+      }
+      $('#myimg').attr('src', image);
+      $('.d-day-tx').text(point);
+    })
+    .catch((response) => {
+      console.log(response);
+    });
+
   const displayPage = (data, page) => {
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;

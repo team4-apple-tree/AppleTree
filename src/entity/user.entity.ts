@@ -73,4 +73,7 @@ export class User {
 
   @Column({ type: 'enum', enum: roleEnum, default: roleEnum.유저 })
   role: roleEnum;
+
+  @Column('varchar', { nullable: true })
+  profileImage: string;
 }

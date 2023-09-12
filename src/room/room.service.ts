@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../entity/room.entity';
+import { CreateRoomDto } from 'src/dto/room/create-room-dto';
 
 @Injectable()
 export class RoomService {
@@ -11,8 +12,14 @@ export class RoomService {
   ) {}
 
   // 새로운 Room 생성
-  async create(createRoomData: Partial<Room>): Promise<Room> {
-    const newRoom = this.roomRepository.create(createRoomData);
+  async create(
+    createRoomData: Omit<CreateRoomDto, 'image'>,
+    image: string,
+  ): Promise<Room> {
+    const newRoom = this.roomRepository.create({
+      ...createRoomData,
+      image,
+    });
     return this.roomRepository.save(newRoom);
   }
 

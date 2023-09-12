@@ -12,6 +12,9 @@ import { User, roleEnum } from 'src/entity/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CheckEmailDto } from 'src/dto/user/checkEmail.dto';
 import { Point } from 'src/entity/point.entity';
+import { UpdateUserDto } from 'src/dto/user/update-user-dto';
+import { CheckPasswordDto } from 'src/dto/user/checkPassword.dto';
+import { UpdatePasswordDto } from 'src/dto/user/updatePassword.dto';
 
 @Injectable()
 export class UserService {
@@ -110,56 +113,86 @@ export class UserService {
     return accessToken;
   }
 
-  // 패스워드 수정 부분이 누락되어있다.
-  // 이 부분 추가
+  // 유저 이름, 한 줄 소개, 이미지수정
   async update(
-    userId: number,
-    password: string,
-    newRole: roleEnum,
-    desc: string,
-    newPassword: string,
-  ) {
-    await this.checkPassword(userId, password);
-    const hash = await bcrypt.hash(newPassword, 10);
-    newPassword = hash;
-    return this.userRepository.update(userId, {
-      role: newRole,
-      desc,
-      password: newPassword,
-    });
-  }
+    user: User,
+    data: Omit<UpdateUserDto, 'profileImage'>,
+    image: string,
+  ): Promise<boolean> {
+    const updateResult = (
+      await this.userRepository.update(
+        { id: user.id },
+        {
+          ...data,
+          profileImage: image,
+        },
+      )
+    ).affected;
 
-  async deleteUser(userId: number, password: string) {
-    await this.checkPassword(userId, password);
-    return this.userRepository.softDelete(userId);
-  }
-
-  async getUser(userId: number) {
-    const user = await this.userRepository.findOne({
-      where: { deleteAt: null, id: userId },
-      select: ['name', 'email', 'role'],
-    });
-    if (_.isNil(user)) {
-      throw new NotFoundException('해당 유저의 정보가 존재하지 않습니다.');
+    if (!updateResult) {
+      throw new NotFoundException('유저 정보 수정에 실패하였습니다.');
     }
-    return user;
+
+    return true;
   }
 
-  // 밑 로직 userId를 통해 password찾기
-  private async checkPassword(userId: number, password: string) {
-    const user = await this.userRepository.findOne({
-      where: [{ deleteAt: null }, { id: userId }],
+  // 회원탈퇴
+  async deleteUser(user: User): Promise<void> {
+    const deleteResult = (await this.userRepository.softDelete({ id: user.id }))
+      .affected;
+
+    if (!deleteResult) {
+      throw new NotFoundException('회원탈퇴에 실패하였습니다.');
+    }
+  }
+
+  // 유저 정보 조회
+  async getUser(user: User): Promise<Point> {
+    const point = await this.pointRepository.findOne({
+      where: { userId: user.id },
+      select: ['point'],
+    });
+    return point;
+  }
+
+  // 비밀번호 확인
+  async checkPassword(user: User, data: CheckPasswordDto): Promise<boolean> {
+    const isExistUser = await this.userRepository.findOne({
+      where: [{ deleteAt: null }, { id: user.id }],
       select: ['password'],
     });
-    if (!user) {
-      throw new NotFoundException('유저가 없지롱~쿠쿠루삥뽕');
+    if (!isExistUser) {
+      throw new NotFoundException('해당 유저가 존재하지않습니다.');
       //(`User not found. userId: ${userId}`);
     }
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(data.password, isExistUser.password);
     if (!match) {
-      throw new UnauthorizedException('비밀번호가 틀렸지롱~쿠쿠루삥뽕');
+      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
+    }
+
+    return true;
+  }
+
+  // 비밀번호 변경
+  async updatePassword(user: User, data: UpdatePasswordDto): Promise<void> {
+    if (data.password !== data.confirm) {
+      throw new NotFoundException('비밀번호가 일치하지 않습니다.');
+    }
+
+    const newPassword = await bcrypt.hash(data.password, 10);
+
+    const updatePasswordResult = (
+      await this.userRepository.update(
+        { id: user.id },
+        { password: newPassword },
+      )
+    ).affected;
+
+    if (!updatePasswordResult) {
+      throw new NotFoundException('비밀번호 변경에 실패하였습니다.');
     }
   }
+
   // 밑 로직 refreshToken 검사
   // refreshToken 기능 구현 중
   async refreshTokens(refreshToken: string) {

@@ -11,6 +11,7 @@ import { RolesGuard } from './roles.guard';
 import { SocketGuard } from './socket.guard';
 import { Member } from 'src/entity/member.entity';
 import { Point } from 'src/entity/point.entity';
+import { S3Service } from 'src/aws.service';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { Point } from 'src/entity/point.entity';
       inject: [ConfigService],
     }),
   ],
-  providers: [UserService, JwtAuthGuard, RolesGuard, SocketGuard],
+  providers: [UserService, JwtAuthGuard, RolesGuard, SocketGuard, S3Service],
   controllers: [UserController],
   exports: [UserService, SocketGuard],
 })

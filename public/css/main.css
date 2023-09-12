@@ -215,6 +215,10 @@ header {
   margin-top: 15px;
 }
 
+.setting1 {
+  display: none;
+}
+
 .mine-goal-record-tx-wrap {
   margin-top: 12px;
   display: flex;
@@ -269,6 +273,7 @@ header {
 }
 
 .my-contents {
+  margin-top: 10px;
   min-width: 0;
   flex: 1;
   display: flex;
@@ -836,4 +841,21 @@ ul {
 
 #kakaoPay {
   cursor: pointer;
+}
+
+.myprofile {
+  display: flex;
+  position: relative;
+}
+
+.myimg {
+  display: flex;
+  background-color: red;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.myimg img {
+  width: 40px;
+  height: 40px;
 }

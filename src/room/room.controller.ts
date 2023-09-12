@@ -7,17 +7,42 @@ import {
   Delete,
   Post,
   BadRequestException,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { Room } from '../entity/room.entity';
+import { CreateRoomDto } from 'src/dto/room/create-room-dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { S3Service } from 'src/aws.service';
 
 @Controller('room')
 export class RoomController {
-  constructor(private readonly roomService: RoomService) {}
+  constructor(
+    private readonly roomService: RoomService,
+    private readonly s3Service: S3Service,
+  ) {}
 
   @Post()
-  async create(@Body() createRoomDto: any): Promise<Room> {
-    return this.roomService.create(createRoomDto);
+  @UseInterceptors(FileInterceptor('image'))
+  async create(
+    @Body() createRoomDto: Omit<CreateRoomDto, 'image'>,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Room> {
+    const folderName = 'room-image';
+    const originalName = file.originalname;
+    const fileName = `${Date.now()}_${Buffer.from(
+      originalName,
+      'latin1',
+    ).toString('utf8')}`;
+
+    const image = await this.s3Service.uploadImageToS3(
+      file,
+      folderName,
+      fileName,
+    );
+
+    return this.roomService.create(createRoomDto, image);
   }
 
   @Get()

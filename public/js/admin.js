@@ -1,25 +1,22 @@
 // 방 생성 함수
-function createRoom() {
+async function createRoom() {
   const roomName = document.getElementById('room-name').value;
   const roomAddress = document.getElementById('room-address').value;
-  const image = document.getElementById('room-image-url').value;
-  fetch('/room', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: roomName,
-      address: roomAddress,
-      image: image,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Log:', data);
+  const image = document.getElementById('room-image-url').files[0];
+
+  const formData = new FormData();
+
+  formData.append('name', roomName);
+  formData.append('address', roomAddress);
+  formData.append('image', image);
+
+  await axios
+    .post('/room', formData)
+    .then((response) => {
+      console.log('Log:', response.data);
       listRooms();
     })
-    .catch((error) => {
+    .catch((response) => {
       console.error('Error:', error);
     });
 }

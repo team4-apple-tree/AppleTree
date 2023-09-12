@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <title>내 정보</title>
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/profile.css" />
@@ -19,8 +26,17 @@
           class="col-md-3 col-sm-3 text-lg-left text-md-left text-sm-left text-xs-center m-543-pd-00"
         >
           <span class="profile_photo_area position-relative"
-            ><img src="./images/pngwing.com.png"
-          /></span>
+            ><img
+              id="previewImage"
+              src="./images/pngwing.com.png"
+              alt="UserProfileImg"
+            />
+            <input type="file" id="imageInput" style="display: none" /><button
+              onclick="document.getElementById('imageInput').click()"
+            >
+              Upload Image
+            </button></span
+          >
           <!---->
         </div>
 
@@ -30,33 +46,48 @@
               <h3 class="emailAddress-tx">test@naver.com</h3>
               <button class="pass-chg-btn">비밀번호 변경</button>
             </div>
-            <!-- 비밀번호 변경 부분 -->
-            <div class="form-group passwordArea m-b-2">
-              <label class="profileLabel">현재 비밀번호</label>
-              <input
-                type="password"
-                name="currentPassword"
-                placeholder="현재 비밀번호"
-                class="form-control input-h44"
-              />
-
-              <label class="profileLabel">새 비밀번호</label>
-              <input
-                type="password"
-                name="newPassword"
-                placeholder="새 비밀번호"
-                class="form-control input-h44"
-              />
+            <!-- 비밀번호 확인 모달 -->
+            <div id="changeconfirmpasswordmodal" class="modal">
+              <div class="modal-content">
+                <span class="confirmclose">&times;</span>
+                <div class="form-group passwordArea m-b-2">
+                  <label class="profileLabel">비밀번호 확인</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="비밀번호를 입력하세요"
+                    class="confirmpasswordInput"
+                  />
+                </div>
+                <button class="confirmchange">확인</button>
+              </div>
             </div>
 
-            <!-- 사용자의 역할 입력 부분 (예시) -->
-            <div class="form-group roleArea m-b-2">
-              <label class="profileLabel">역할</label>
-              <select name="role" class="form-control input-h44">
-                <option value="user">사용자</option>
-                <option value="admin">관리자</option>
-                <!-- 다른 역할 옵션들도 추가 가능 -->
-              </select>
+            <!-- 비밀번호 변경 부분 -->
+            <div id="passwordModal" class="modal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="form-group passwordArea m-b-2">
+                  <label class="profileLabel">새 비밀번호</label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    placeholder="새 비밀번호"
+                    class="form-control input-h44"
+                    id="changenewpassword"
+                  />
+
+                  <label class="profileLabel">새 비밀번호 확인</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    placeholder="새 비밀번호 확인"
+                    class="form-control input-h44"
+                    id="changenewpasswordconfirm"
+                  />
+                  <button id="changepassword">변경</button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="form-group nicknameArea m-b-2">
@@ -68,7 +99,7 @@
               maxlength="25"
               placeholder="asd"
               title="이름"
-              class="form-control input-h44"
+              class="form-control input-h44 nameInput"
               aria-required="true"
               aria-invalid="false"
             />
@@ -92,8 +123,45 @@
               프로필 설정 완료
             </button>
           </div>
+
+          <div id="confirmpasswordmodal" class="modal">
+            <div class="modal-content">
+              <span class="confirmpasswordmodalclose">&times;</span>
+              <div class="form-group passwordArea m-b-2">
+                <label class="profileLabel">비밀번호 확인</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="비밀번호를 입력하세요"
+                  class="form-control input-h44"
+                  id="confirmPassword"
+                />
+              </div>
+              <button class="btn btn-lg btn-skin confirmPasswordBtn">
+                확인
+              </button>
+            </div>
+          </div>
           <div class="withdrawal-btn-wrapper">
             <button class="withdrawalBtn">회원 탈퇴</button>
+          </div>
+
+          <!-- 회원 탈퇴 모달 -->
+          <div id="byebyeuser" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h3>비밀번호 확인</h3>
+              <div class="form-group passwordArea m-b-2">
+                <label class="profileLabel">비밀번호</label>
+                <input
+                  type="password"
+                  id="byebyePassword"
+                  placeholder="비밀번호 입력"
+                  class="form-control input-h44"
+                />
+              </div>
+              <button class="byebye">확인</button>
+            </div>
           </div>
         </div>
       </div>
