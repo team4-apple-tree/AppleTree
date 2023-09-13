@@ -55,7 +55,7 @@ export class RoomService {
   async getImagePath(roomId: number): Promise<string> {
     const room = await this.roomRepository.findOne({ where: { roomId } });
     if (!room) {
-      throw new NotFoundException(`Room with ID ${roomId} not found`);
+      throw new NotFoundException(`해당하는 룸 ${roomId}을 찾을 수 없습니다.`);
     }
     return room.image;
   }

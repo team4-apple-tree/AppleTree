@@ -24,12 +24,19 @@ header {
 }
 
 .exit {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 30px;
   cursor: pointer;
   position: absolute;
   right: -110px;
-  top: -8px;
+  top: 0;
+  background-color: #2acf30;
+  color: #fff;
+  border: none;
+}
+
+.exit:hover {
+  background: red;
 }
 
 #groupName {
