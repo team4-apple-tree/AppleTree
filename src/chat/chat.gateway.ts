@@ -53,7 +53,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       client.join(roomId);
 
+      const group = await this.groupService.findGroupInfo(roomId);
+      const max = group.max;
+
       const ids = Array.from(this.server.sockets.adapter.rooms.get(roomId));
+
+      this.server.to(client.id).emit('max', { max, leng: ids.length });
 
       ids.forEach((id) => {
         const name = this.server.sockets.sockets.get(id)['userName'];
@@ -65,7 +70,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       this.server.to(roomId).emit('members', members);
 
-      await this.groupService.plusCount(roomId);
+      await this.groupService.plusCount(roomId, ids.length);
     } catch (error) {
       console.error(error);
 
@@ -93,8 +98,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       members.sort();
 
       this.server.to(roomId).emit('members', members);
+
+      await this.groupService.minusCount(roomId, ids.length);
     }
-    await this.groupService.minusCount(roomId);
   }
 
   @SubscribeMessage('chatMessage')

@@ -102,7 +102,7 @@ function getSeatType(type) {
   }
 }
 
-function drawSeats(seatShape, seatData) {
+async function drawSeats(seatShape, seatData) {
   const seatsGrid = document.getElementById('seatsGrid');
   seatsGrid.innerHTML = '';
 
@@ -114,6 +114,7 @@ function drawSeats(seatShape, seatData) {
       const seatInfo = seatData.seats.find(
         (seat) => seat.row === i && seat.column === j,
       );
+
       const seatElement = document.createElement('div');
       seatElement.dataset.row = i;
       seatElement.dataset.column = j;
@@ -129,6 +130,12 @@ function drawSeats(seatShape, seatData) {
           selectedInfo.splice(index, 1);
         }
       };
+
+      const seatTime = await fetchReservedTimes(seatInfo.seatId);
+
+      if (seatTime.length) {
+        seatElement.style.backgroundColor = 'red';
+      }
 
       if (seatInfo) {
         seatElement.addEventListener('click', function () {

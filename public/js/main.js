@@ -171,43 +171,52 @@ $(document).ready(async () => {
         }
       });
   });
+
   // 기존에 있던 스터디 그룹 클릭 이벤트
   $(document).on('click', '.study-item-img-wrap', async (e) => {
-    const studyItem = e.target.closest('.study-item-img-wrap');
-    const studyId = studyItem.id;
-    let count;
-    let max;
+    if (getCookie('Authorization')) {
+      const studyItem = e.target.closest('.study-item-img-wrap');
+      const studyId = studyItem.id;
+      let count;
+      let max;
 
-    if (studyItem.querySelector('.countmax')) {
-      [count, max] = studyItem
-        .querySelector('.countmax')
-        .textContent.split('/');
+      if (studyItem.querySelector('.countmax')) {
+        [count, max] = studyItem
+          .querySelector('.countmax')
+          .textContent.split('/');
 
-      count = +count.trim();
-      max = +max.trim();
-    } else {
-      count = +studyItem.querySelector('#count').textContent;
-      max = +studyItem.querySelector('#max').textContent.slice(1);
-    }
+        count = +count.trim();
+        max = +max.trim();
+      } else {
+        count = +studyItem.querySelector('#count').textContent;
+        max = +studyItem.querySelector('#max').textContent.slice(1);
+      }
 
-    if (+count < +max) {
-      try {
-        const isPasswordResponse = await axios.get(
-          `/group/${studyId}/is-password-protected`,
-        );
-        if (isPasswordResponse.data.isPassword) {
-          // 비밀번호 보호되어 있을 때 팝업 모달 띄우기
-          document.getElementById('passwordModal').style.display = 'block';
-          document.getElementById('passwordModal').dataset.currentStudyItemId =
-            studyId;
-        } else {
-          window.location.href = `/room.html?id=${studyId}`;
+      if (+count < +max) {
+        try {
+          const isPasswordResponse = await axios.get(
+            `/group/${studyId}/is-password-protected`,
+          );
+          if (isPasswordResponse.data.isPassword) {
+            // 비밀번호 보호되어 있을 때 팝업 모달 띄우기
+            document.getElementById('passwordModal').style.display = 'block';
+            document.getElementById(
+              'passwordModal',
+            ).dataset.currentStudyItemId = studyId;
+          } else {
+            window.location.href = `/room.html?id=${studyId}`;
+          }
+        } catch (error) {
+          console.error(
+            'Error checking if group is password protected:',
+            error,
+          );
         }
-      } catch (error) {
-        console.error('Error checking if group is password protected:', error);
+      } else {
+        alert('인원을 초과하여 입장할 수 없습니다.');
       }
     } else {
-      alert('인원을 초과하여 입장할 수 없습니다.');
+      alert('로그인해야 입장할 수 있습니다.');
     }
   });
 

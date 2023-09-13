@@ -16,11 +16,20 @@ $(document).ready(async () => {
       roomId,
     },
   });
+  await socket.on('max', (data) => {
+    const max = data.max;
+    const leng = data.leng;
+
+    if (leng > max) {
+      alert('인원수가 초과되었습니다.');
+
+      window.location.href = '/';
+    }
+  });
 
   // await socket.on('connect', async () => {
   // 스터디그룹에 접속한 멤버 목록
   await socket.on('members', async (members) => {
-    console.log('aaa');
     const chatMember = await $('.chatMember');
 
     await chatMember.empty();
@@ -41,7 +50,6 @@ $(document).ready(async () => {
     .get(`/chat/${roomId}`)
     .then((response) => {
       const messages = response.data;
-      console.log(messages);
 
       messages.forEach((m) => {
         appendMessage({ userName: m.name, message: m.message });

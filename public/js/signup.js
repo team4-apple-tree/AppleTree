@@ -23,6 +23,6 @@ $(document).on('click', '#signinbtn', async (e) => {
     })
     .catch((error) => {
       console.error(error);
-      alert('회원가입 실패');
+      alert(error.response.data.message);
     });
 });

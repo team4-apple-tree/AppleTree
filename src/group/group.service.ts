@@ -111,7 +111,16 @@ export class GroupService {
   async findGroupInfo(groupId: number): Promise<Group> {
     const group = await this.groupRepository.findOne({
       where: { id: groupId },
-      select: ['id', 'name', 'desc', 'image', 'max', 'startDate', 'endDate'],
+      select: [
+        'id',
+        'name',
+        'desc',
+        'image',
+        'max',
+        'startDate',
+        'endDate',
+        'count',
+      ],
     });
 
     if (_.isNil(group)) {
@@ -297,22 +306,22 @@ export class GroupService {
   }
 
   // 스터디 그룹 인원수 증가
-  async plusCount(groupId: number): Promise<void> {
+  async plusCount(groupId: number, leng: number): Promise<void> {
     const group = await this.findGroup(groupId);
     const count = group.count;
 
-    if (count <= group.max) {
-      await this.groupRepository.update({ id: groupId }, { count: count + 1 });
+    if (count < group.max) {
+      await this.groupRepository.update({ id: groupId }, { count: leng });
     }
   }
 
   // 스터디 그룹 인원수 감소
-  async minusCount(groupId: number): Promise<void> {
+  async minusCount(groupId: number, leng: number): Promise<void> {
     const group = await this.findGroup(groupId);
     const count = group.count;
 
     if (count >= 1) {
-      await this.groupRepository.update({ id: groupId }, { count: count - 1 });
+      await this.groupRepository.update({ id: groupId }, { count: leng });
     }
   }
 }
