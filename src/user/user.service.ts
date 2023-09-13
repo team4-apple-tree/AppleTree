@@ -128,20 +128,30 @@ export class UserService {
   async update(
     user: User,
     data: Omit<UpdateUserDto, 'profileImage'>,
-    image: string,
+    image?: string,
   ): Promise<boolean> {
-    const updateResult = (
-      await this.userRepository.update(
-        { id: user.id },
-        {
-          ...data,
-          profileImage: image,
-        },
-      )
-    ).affected;
+    if (image) {
+      const updateResult = (
+        await this.userRepository.update(
+          { id: user.id },
+          {
+            ...data,
+            profileImage: image,
+          },
+        )
+      ).affected;
 
-    if (!updateResult) {
-      throw new NotFoundException('유저 정보 수정에 실패하였습니다.');
+      if (!updateResult) {
+        throw new NotFoundException('유저 정보 수정에 실패하였습니다.');
+      }
+    } else {
+      const updateResult = (
+        await this.userRepository.update({ id: user.id }, data)
+      ).affected;
+
+      if (!updateResult) {
+        throw new NotFoundException('유저 정보 수정에 실패하였습니다.');
+      }
     }
 
     return true;
