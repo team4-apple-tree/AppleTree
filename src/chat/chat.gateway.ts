@@ -100,6 +100,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server.to(roomId).emit('members', members);
 
       await this.groupService.minusCount(roomId, ids.length);
+    } else {
+      await this.groupService.minusCount(roomId, 0);
     }
   }
 
