@@ -118,11 +118,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       timestamp: new Date(),
     };
 
+    chatCollection.insertOne(chatData);
+
     this.server
       .to(roomId)
       .emit('chatMessage', { userName: user.name, message });
 
-    this.cacheMessage(+roomId, chatData); // 캐시에 채팅 데이터 추가
+    // this.cacheMessage(+roomId, chatData); // 캐시에 채팅 데이터 추가
   }
 
   // 메시지를 캐시에 저장하는 메서드
