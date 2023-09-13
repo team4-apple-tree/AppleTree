@@ -209,5 +209,3 @@ function getQueryParam(key) {
   const urlSearchParams = new URLSearchParams(window.location.search);
   return urlSearchParams.get(key);
 }
-
-console.log('test1');
