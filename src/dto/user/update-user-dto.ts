@@ -12,5 +12,6 @@ import { roleEnum } from 'src/entity/user.entity';
 
 export class UpdateUserDto extends PickType(CreateUserDto, ['name', 'desc']) {
   @IsString()
+  @IsOptional()
   profileImage: string;
 }

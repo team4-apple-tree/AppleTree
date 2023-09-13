@@ -66,24 +66,28 @@ export class UserController {
   async update(
     @Body() data: Omit<UpdateUserDto, 'profileImage'>,
     @Req() req: any,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
     const user = await req.user;
 
-    const folderName = 'user-image';
-    const originalName = file.originalname;
-    const fileName = `${Date.now()}_${Buffer.from(
-      originalName,
-      'latin1',
-    ).toString('utf8')}`;
+    if (file) {
+      const folderName = 'user-image';
+      const originalName = file.originalname;
+      const fileName = `${Date.now()}_${Buffer.from(
+        originalName,
+        'latin1',
+      ).toString('utf8')}`;
 
-    const image = await this.s3Service.uploadImageToS3(
-      file,
-      folderName,
-      fileName,
-    );
+      const image = await this.s3Service.uploadImageToS3(
+        file,
+        folderName,
+        fileName,
+      );
 
-    return await this.userService.update(user, data, image);
+      return await this.userService.update(user, data, image);
+    } else {
+      return await this.userService.update(user, data);
+    }
   }
 
   // 회원탈퇴
@@ -154,9 +158,9 @@ export class UserController {
   }
 
   @Get('reservation/:userId')
-    async getReservation(@Param("userId") userId:number){
-      return await this.userService.getReservation(userId)
-    }
-  
+  async getReservation(@Param('userId') userId: number) {
+    return await this.userService.getReservation(userId);
+  }
+
   //Get user로 얻어올 정보 이름, 이메일, 한마디
 }

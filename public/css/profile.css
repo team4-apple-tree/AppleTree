@@ -422,7 +422,7 @@ a {
   padding: 0 !important;
   position: absolute;
   top: 23px;
-  left: 100px;
+  left: 110px;
   margin-left: 5px;
 }
 
@@ -442,11 +442,11 @@ a {
 }
 
 #byebyePassword {
-  width: 160px;
+  width: 140px;
   padding: 0 !important;
   position: absolute;
   top: 23px;
-  left: 100px;
+  left: 120px;
   margin-left: 5px;
 }
 

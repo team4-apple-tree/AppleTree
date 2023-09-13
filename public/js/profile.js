@@ -31,13 +31,15 @@ async function loadUserProfile(userId) {
       },
     });
     const data = response.data;
-    console.log(data.user);
 
     // HTML 요소에 데이터 설정
     document.querySelector('.emailAddress-tx').textContent = data.user.email;
     document.querySelector('input[name="userNickname"]').value = data.user.name;
     document.querySelector('.profileTxarea').textContent = data.user.desc;
-    document.querySelector('#previewImage').src = data.user.profileImage;
+    if (data.user.profileImage) {
+      document.querySelector('#previewImage').src = data.user.profileImage;
+    }
+
     // ... 다른 데이터도 동일한 방식으로 설정
   } catch (error) {
     console.error('사용자 프로필을 가져오는 데 실패했습니다:', error);
@@ -218,7 +220,9 @@ async function updateUserProfile() {
 
   formData.append('name', name);
   formData.append('desc', desc);
-  formData.append('profileImage', profileImage);
+  if (profileImage) {
+    formData.append('profileImage', profileImage);
+  }
 
   await axios
     .put('/user', formData, {
