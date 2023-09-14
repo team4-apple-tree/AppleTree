@@ -47,23 +47,29 @@ export class GroupController {
     @Body() data: Omit<CreateGroupDto, 'image'>,
     @Res({ passthrough: true }) res: Response,
     @Req() req: any,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file?: Express.Multer.File,
   ): Promise<any> {
     try {
       const user = await req.user;
+      let image;
 
-      const folderName = 'image';
-      const originalName = file.originalname;
-      const fileName = `${Date.now()}_${Buffer.from(
-        originalName,
-        'latin1',
-      ).toString('utf8')}`;
+      if (file) {
+        const folderName = 'image';
+        const originalName = file.originalname;
+        const fileName = `${Date.now()}_${Buffer.from(
+          originalName,
+          'latin1',
+        ).toString('utf8')}`;
 
-      const image = await this.s3Service.uploadImageToS3(
-        file,
-        folderName,
-        fileName,
-      );
+        image = await this.s3Service.uploadImageToS3(
+          file,
+          folderName,
+          fileName,
+        );
+      } else {
+        image = './images/로고.png';
+      }
+
       const apiKey = this.configService.get<string>('DAILY_API_KEY');
       const dailyResponse = await axios.post(
         'https://api.daily.co/v1/rooms',

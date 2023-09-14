@@ -85,7 +85,6 @@ $(document).ready(function () {
         const password = $("input[name='password']").val();
         const desc = $('#studyEtiquette').val();
 
-        console.log(isPublic);
         if (!isPublic) {
           alert('공개 여부를 선택해주세요.');
 
@@ -96,10 +95,6 @@ $(document).ready(function () {
           $('#previewModal').hide();
         } else if (!name) {
           alert('스터디 이름을 입력해주세요.');
-
-          $('#previewModal').hide();
-        } else if (!image) {
-          alert('대표 이미지를 삽입해주세요.');
 
           $('#previewModal').hide();
         } else if (!startDate || !endDate) {
@@ -263,6 +258,13 @@ function createStudy(
       });
   });
 }
+
+// 기본 이미지 선택
+$(document).on('click', '#basicImage', () => {
+  const image = document.querySelector('#roomImage');
+
+  image.src = './images/로고.png';
+});
 
 // 쿠키 값 가져오는 함수
 // function getCookie() {
