@@ -1,6 +1,9 @@
 import {
   ConflictException,
+  HttpException,
+  HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -19,9 +22,16 @@ import { TimeTable } from 'src/entity/timeTable.entity';
 import { UpdateUserDto } from 'src/dto/user/update-user-dto';
 import { CheckPasswordDto } from 'src/dto/user/checkPassword.dto';
 import { UpdatePasswordDto } from 'src/dto/user/updatePassword.dto';
+import { MailerService } from '@nestjs-modules/mailer';
+import { ConfigService } from '@nestjs/config';
+import { AuthEmailDto } from 'src/dto/user/authEmail.dto';
+import { MongoClient, MongoClientOptions } from 'mongodb';
+import { CheckCodeDto } from 'src/dto/user/checkCode.dto';
 
 @Injectable()
 export class UserService {
+  private mongoClient: MongoClient;
+
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Point) private pointRepository: Repository<Point>,
@@ -33,7 +43,17 @@ export class UserService {
     @InjectRepository(Seat) // Seat의 Repository를 주입합니다.
     private seatRepository: Repository<Seat>,
     private jwtService: JwtService,
-  ) {}
+    private mailerService: MailerService,
+    private configService: ConfigService,
+  ) {
+    const mongoOptions: MongoClientOptions = {};
+
+    this.mongoClient = new MongoClient(
+      this.configService.get<string>('MONGODB_ATLAS'),
+      mongoOptions,
+    );
+    this.mongoClient.connect();
+  }
 
   // 이메일로 사용자 조회
   async findByEmail(email: string): Promise<User> {
@@ -259,6 +279,66 @@ export class UserService {
     if (!updatePasswordResult) {
       throw new NotFoundException('비밀번호 변경에 실패하였습니다.');
     }
+  }
+
+  // 회원가입 시 이메일로 인증코드 발송
+  async authByEmail(data: AuthEmailDto): Promise<void> {
+    const email = data.email;
+    const authCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    const isExistEmail = await this.findByEmail(email);
+
+    if (isExistEmail) {
+      throw new HttpException(
+        '이미 존재하는 이메일입니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const authCodeCollection = this.mongoClient
+      .db('auth_logs')
+      .collection('auth_code');
+    const authCodeData = {
+      email: email,
+      code: authCode,
+      createdAt: new Date(),
+    };
+    await authCodeCollection.insertOne(authCodeData);
+    await authCodeCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 20 },
+    );
+
+    try {
+      await this.mailerService.sendMail({
+        to: email,
+        from: this.configService.get<string>('SMTP_USER'),
+        subject: 'Apple Tree: 인증코드 발송',
+        text: '인증코드를 입력해주세요',
+        html: `<p>인증코드: ${authCode}</p>`,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException('초대 이메일을 보낼 수 없습니다.');
+    }
+  }
+
+  // 인증코드 확인
+  async checkAuthCode(data: CheckCodeDto): Promise<boolean> {
+    const codeByUser = data.code;
+    const authCodeCollection = this.mongoClient
+      .db('auth_logs')
+      .collection('auth_code');
+
+    const authCode = await authCodeCollection.findOne(
+      { email: data.email },
+      { sort: { _id: -1 } },
+    );
+
+    if (codeByUser !== +authCode.code) {
+      return false;
+    }
+
+    return true;
   }
 
   // 밑 로직 refreshToken 검사

@@ -26,6 +26,8 @@ import { CheckPasswordDto } from 'src/dto/user/checkPassword.dto';
 import { UpdatePasswordDto } from 'src/dto/user/updatePassword.dto';
 import { S3Service } from 'src/aws.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthEmailDto } from 'src/dto/user/authEmail.dto';
+import { CheckCodeDto } from 'src/dto/user/checkCode.dto';
 
 @Controller('user')
 export class UserController {
@@ -140,10 +142,21 @@ export class UserController {
     return true;
   }
 
+  // 회원가입 시 이메일로 인증코드 발송
+  @Post('/auth')
+  async authByEmail(@Body() data: CheckEmailDto): Promise<void> {
+    await this.userService.authByEmail(data);
+  }
+
+  // 인증코드 확인
+  @Post('/auth/code')
+  async checkAuthCode(@Body() data: CheckCodeDto): Promise<boolean> {
+    return await this.userService.checkAuthCode(data);
+  }
+
   // 존재하는 이메일인지 확인
   @Post('/checkEmail')
   async checkEmail(@Body() data: CheckEmailDto): Promise<boolean> {
-    console.log(data);
     return await this.userService.checkEmail(data);
   }
 

@@ -10,7 +10,7 @@ import {
 import { roleEnum } from 'src/entity/user.entity';
 
 export class CreateUserDto {
-  @IsEmail()
+  @IsEmail({}, { message: '이메일 오류' })
   readonly email: string;
 
   @IsString()
