@@ -2,14 +2,19 @@ let AuthResult = false;
 
 // 회원가입
 $(document).on('click', '#signinbtn', async (e) => {
+  const email = $('#signloginId').val();
+  const password = $('#signpassword').val();
+  const confirm = $('#signpasswordConfirm').val();
+  const name = $('#signnickname').val();
+
+  if (!email) {
+    alert('이메일을 입력해주세요.');
+
+    return;
+  }
   e.preventDefault();
 
   if (AuthResult === true) {
-    const email = $('#signloginId').val();
-    const password = $('#signpassword').val();
-    const confirm = $('#signpasswordConfirm').val();
-    const name = $('#signnickname').val();
-
     const data = {
       email,
       password,
@@ -27,7 +32,7 @@ $(document).on('click', '#signinbtn', async (e) => {
       })
       .catch((error) => {
         console.error(error);
-        alert(error.response.data.message);
+        alert(error.response.data.message[0]);
       });
   } else {
     alert('이메일 인증을 해주세요.');
