@@ -12,6 +12,7 @@ import {
   UseGuards,
   UploadedFile,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dto/user/create-user-dto';
@@ -28,6 +29,8 @@ import { S3Service } from 'src/aws.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthEmailDto } from 'src/dto/user/authEmail.dto';
 import { CheckCodeDto } from 'src/dto/user/checkCode.dto';
+import { PickType } from '@nestjs/mapped-types';
+import { IsOptional, IsString, validate } from 'class-validator';
 
 @Controller('user')
 export class UserController {
@@ -65,11 +68,19 @@ export class UserController {
   @Put()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('profileImage'))
-  async update(
-    @Body() data: Omit<UpdateUserDto, 'profileImage'>,
-    @Req() req: any,
-    @UploadedFile() file?: Express.Multer.File,
-  ) {
+  async update(@Req() req: any, @UploadedFile() file?: Express.Multer.File) {
+    const data = new UpdateUserDto();
+
+    data.name = req.body.name;
+    data.desc = req.body.desc;
+
+    const errors = await validate(data);
+
+    if (errors.length > 0) {
+      const constraints = Object.values(errors[0].constraints)[0];
+      throw new BadRequestException({ message: constraints });
+    }
+
     const user = await req.user;
 
     if (file) {

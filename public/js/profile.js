@@ -172,6 +172,13 @@ window.onclick = function (event) {
 
 // 프로필 설정완료 비밀번호 확인 모달
 document.querySelector('.createRoomBtn').addEventListener('click', function () {
+  const name = document.querySelector('.nameInput').value;
+
+  if (!name) {
+    alert('이름을 입력해주세요.');
+
+    return;
+  }
   // 모달 표시
   document.getElementById('confirmpasswordmodal').style.display = 'block';
 });
@@ -236,8 +243,9 @@ async function updateUserProfile() {
       window.location.reload();
     })
     .catch((response) => {
-      console.log(response);
       alert(response.response.data.message);
+
+      document.getElementById('confirmpasswordmodal').style.display = 'none';
     });
 }
 

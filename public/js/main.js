@@ -15,8 +15,6 @@ $(document).ready(async () => {
     })
     .catch(async () => {
       await axios.get('/user/out').catch((response) => {
-        console.log(response);
-
         alert('서버 오류');
       });
     });
@@ -50,9 +48,7 @@ $(document).ready(async () => {
 
       $('.d-day-tx').text(point);
     })
-    .catch((response) => {
-      console.log(response);
-    });
+    .catch(() => {});
 
   const displayPage = (data, page) => {
     const startIndex = (page - 1) * pageSize;

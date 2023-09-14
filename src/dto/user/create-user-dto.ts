@@ -17,7 +17,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty({ message: '이름을 입력해주세요.' })
-  readonly name: string;
+  name: string;
 
   @IsString()
   @MinLength(4)
@@ -38,7 +38,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
-  readonly desc: string | null;
+  desc: string | null;
 
   @IsEnum(roleEnum)
   @IsOptional()
