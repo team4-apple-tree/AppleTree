@@ -304,9 +304,10 @@ export class UserService {
       createdAt: new Date(),
     };
     await authCodeCollection.insertOne(authCodeData);
+    await authCodeCollection.dropIndex('createdAt_1');
     await authCodeCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 20 },
+      { expireAfterSeconds: 180 },
     );
 
     try {
@@ -333,6 +334,8 @@ export class UserService {
       { email: data.email },
       { sort: { _id: -1 } },
     );
+
+    console.log(authCode);
 
     if (codeByUser !== +authCode.code) {
       return false;
