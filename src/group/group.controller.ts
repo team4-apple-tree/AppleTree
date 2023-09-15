@@ -49,64 +49,48 @@ export class GroupController {
     @Req() req: any,
     @UploadedFile() file?: Express.Multer.File,
   ): Promise<any> {
-    try {
-      const user = await req.user;
-      let image;
+    const user = await req.user;
+    let image;
 
-      if (file) {
-        const folderName = 'image';
-        const originalName = file.originalname;
-        const fileName = `${Date.now()}_${Buffer.from(
-          originalName,
-          'latin1',
-        ).toString('utf8')}`;
+    if (file) {
+      const folderName = 'image';
+      const originalName = file.originalname;
+      const fileName = `${Date.now()}_${Buffer.from(
+        originalName,
+        'latin1',
+      ).toString('utf8')}`;
 
-        image = await this.s3Service.uploadImageToS3(
-          file,
-          folderName,
-          fileName,
-        );
-      } else {
-        image = './images/로고.png';
-      }
-
-      const apiKey = this.configService.get<string>('DAILY_API_KEY');
-      const dailyResponse = await axios.post(
-        'https://api.daily.co/v1/rooms',
-        {
-          name: 'room_' + new Date().getTime(),
-          privacy: 'public',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey}`,
-          },
-        },
-      );
-
-      const videoChatURL = dailyResponse.data.url;
-
-      await this.groupService.createGroup(data, image, user, videoChatURL);
-
-      return { message: '스터디그룹이 생성되었습니다.', videoChatURL };
-    } catch (error) {
-      console.error(error);
-
-      throw new InternalServerErrorException('서버 오류');
+      image = await this.s3Service.uploadImageToS3(file, folderName, fileName);
+    } else {
+      image = './images/로고.png';
     }
+
+    const apiKey = this.configService.get<string>('DAILY_API_KEY');
+    const dailyResponse = await axios.post(
+      'https://api.daily.co/v1/rooms',
+      {
+        name: 'room_' + new Date().getTime(),
+        privacy: 'public',
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+      },
+    );
+
+    const videoChatURL = dailyResponse.data.url;
+
+    await this.groupService.createGroup(data, image, user, videoChatURL);
+
+    return { message: '스터디그룹이 생성되었습니다.', videoChatURL };
   }
 
   // 공개 스터디 전체 조회
   @Get()
   async findAllGroups(): Promise<Group[]> {
-    try {
-      return await this.groupService.findAllGroups();
-    } catch (error) {
-      console.error(error);
-
-      throw new InternalServerErrorException('서버 오류');
-    }
+    return await this.groupService.findAllGroups();
   }
 
   // 내가 속한 스터디 그룹 조회
@@ -141,33 +125,13 @@ export class GroupController {
   // 스터디그룹 정보 조회
   @Get(':groupId/info')
   async findGroupInfo(@Param('groupId') groupId: number): Promise<Group> {
-    try {
-      return await this.groupService.findGroupInfo(groupId);
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
+    return await this.groupService.findGroupInfo(groupId);
   }
 
   // 스터디그룹 상세 조회
   @Get(':groupId')
   async findGroup(@Param('groupId') groupId: number): Promise<Group> {
-    try {
-      return await this.groupService.findGroup(groupId);
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
+    return await this.groupService.findGroup(groupId);
   }
 
   // 스터디그룹 정보 수정
@@ -179,21 +143,9 @@ export class GroupController {
     @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ): Promise<Group> {
-    try {
-      const user = await req.user;
+    const user = await req.user;
 
-      return await this.groupService.updateGroup(data, groupId, user);
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else if (error instanceof ForbiddenException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
+    return await this.groupService.updateGroup(data, groupId, user);
   }
 
   // 스터디그룹 삭제
@@ -202,23 +154,11 @@ export class GroupController {
     @Param('groupId') groupId: number,
     @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
-    try {
-      const user = res.locals.user;
+    const user = res.locals.user;
 
-      await this.groupService.deleteGroup(groupId, user);
+    await this.groupService.deleteGroup(groupId, user);
 
-      return { message: '스터디그룹이 삭제되었습니다.' };
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else if (error instanceof ForbiddenException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
+    return { message: '스터디그룹이 삭제되었습니다.' };
   }
 
   // 스터디그룹 멤버 초대
@@ -227,21 +167,9 @@ export class GroupController {
     @Body() data: InviteGroupDto[],
     @Param('groupId') groupId: number,
   ): Promise<any> {
-    try {
-      await this.groupService.inviteMember(data, groupId);
+    await this.groupService.inviteMember(data, groupId);
 
-      return { message: '초대되었습니다.' };
-    } catch (error) {
-      console.error(error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else if (error instanceof ConflictException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('서버 오류');
-      }
-    }
+    return { message: '초대되었습니다.' };
   }
 
   @Get(':groupId/is-password-protected')

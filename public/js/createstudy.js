@@ -262,7 +262,9 @@ function createStudy(
 // 기본 이미지 선택
 $(document).on('click', '#basicImage', () => {
   const image = document.querySelector('#roomImage');
+  const file = document.querySelector('#imageUpload');
 
+  file.value = '';
   image.src = './images/로고.png';
 });
 
