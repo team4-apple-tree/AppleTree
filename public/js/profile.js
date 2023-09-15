@@ -336,3 +336,13 @@ window.onclick = function (event) {
     modal.style.display = 'none';
   }
 };
+
+document.addEventListener('DOMContentLoaded', function () {
+  const textarea = document.getElementById('profileTxarea');
+  const lengthDisplay = document.querySelector('.text-length span');
+
+  textarea.addEventListener('input', function () {
+    const currentLength = textarea.value.length;
+    lengthDisplay.textContent = currentLength;
+  });
+});
