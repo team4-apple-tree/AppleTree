@@ -39,6 +39,28 @@ $(document).on('click', '#signinbtn', async (e) => {
   }
 });
 
+let timer;
+let timeLeft = 180;
+
+function startTimer() {
+  timer = setInterval(function () {
+    timeLeft--;
+
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+
+    document.getElementById('codeInput').placeholder = `${minutes}:${
+      seconds < 10 ? '0' : ''
+    }${seconds}`;
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      document.getElementById('codeInput').placeholder = '인증코드';
+      alert('인증 시간이 만료되었습니다. 다시 시도하세요.');
+    }
+  }, 1000);
+}
+
 // 이메일 인증 요청 버튼 클릭 이벤트
 $(document).on('click', '#authBtn', async (e) => {
   e.preventDefault();
@@ -56,6 +78,8 @@ $(document).on('click', '#authBtn', async (e) => {
       alert('이메일로 전송된 인증코드를 입력해주세요.');
 
       document.querySelector('.auth_code').style.display = 'block';
+
+      startTimer();
     })
     .catch((error) => {
       alert(error.response.data.message);

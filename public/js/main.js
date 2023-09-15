@@ -308,6 +308,9 @@ $(document).ready(async () => {
     logoutButton.addEventListener('click', async function () {
       try {
         await axios.get('/user/out');
+        if (window.stopTimerAndClearStorage) {
+          window.stopTimerAndClearStorage(); // 타이머 중지 및 localStorage 지우기
+        }
         alert('로그아웃이 성공적으로 완료 되었습니다.');
         window.location.reload();
       } catch (error) {
@@ -316,13 +319,6 @@ $(document).ready(async () => {
     });
   }
 
-  // function getCookie() {
-  //   const cookie = decodeURIComponent(document.cookie);
-  //   const [name, value] = cookie.split(';')[0].split('=');
-  //   console.log(cookie);
-  //   // console.log(value);
-  //   return value;
-  // }
   function getCookie(name) {
     const value = decodeURIComponent(document.cookie).match(
       '(^|;) ?' + name + '=([^;]*)(;|$)',
