@@ -304,7 +304,6 @@ export class UserService {
       createdAt: new Date(),
     };
     await authCodeCollection.insertOne(authCodeData);
-    await authCodeCollection.dropIndex('createdAt_1');
     await authCodeCollection.createIndex(
       { createdAt: 1 },
       { expireAfterSeconds: 180 },
