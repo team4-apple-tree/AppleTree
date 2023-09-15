@@ -2,6 +2,8 @@ let AuthResult = false;
 
 // 회원가입
 $(document).on('click', '#signinbtn', async (e) => {
+  e.preventDefault();
+
   const email = $('#signloginId').val();
   const password = $('#signpassword').val();
   const confirm = $('#signpasswordConfirm').val();
@@ -12,7 +14,6 @@ $(document).on('click', '#signinbtn', async (e) => {
 
     return;
   }
-  e.preventDefault();
 
   if (AuthResult === true) {
     const data = {
