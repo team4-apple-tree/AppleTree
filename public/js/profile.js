@@ -298,8 +298,10 @@ async function deleteUser() {
         Authorization: getCookie('Authorization'),
       },
     })
-    .then((response) => {
+    .then(async (response) => {
       alert(response.data.message);
+
+      await axios.get('/user/out');
 
       window.location.href = '/';
     })
