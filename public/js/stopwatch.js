@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
       totalHours = userHours;
       totalMinutes = userMinutes;
 
+      console.log(goalText.textContent);
+      console.log(currentTimeDisplay.textContent);
+
       goalText.textContent = `목표시간: ${totalHours}시간 ${totalMinutes}분`;
       currentTimeDisplay.textContent = `0시간 0분 0초`;
 

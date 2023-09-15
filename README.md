@@ -6,7 +6,8 @@
 
 ### 로고
 
-![Alt text](./로고.png)
+<!-- ![Alt text](./로고.png) -->
+<img src="./로고.png" width="200" height="100" alt="">
 
 ### 팀원 소개
 
