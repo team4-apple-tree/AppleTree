@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   formSettingButton.addEventListener('click', () => {
+    if (window.stopTimerAndClearStorage) {
+      window.stopTimerAndClearStorage(); // 타이머 중지 및 localStorage 지우기
+    }
+
     const userHours = parseInt(
       prompt('목표 시간(시)을 입력하세요:', totalHours),
     );
@@ -64,6 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const seconds = currentTime % 60;
 
       currentTimeDisplay.textContent = `${hours}시간 ${remainingMinutes}분 ${seconds}초`;
+      const gaugeWidth = ((hours * 60 + remainingMinutes) / (60 * 24)) * 100; // 하루는 1440분
+      gauge.style.width = `${gaugeWidth}%`;
     }, 1000);
     window.stopTimerAndClearStorage = function () {
       clearInterval(intervalId);
